@@ -1,0 +1,14 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "pie.ilikepiefoo2.kubejsadditions.mixin",
+  "compatibilityLevel": "JAVA_8",
+  "refmap": "kubejsadditions.refmap.json",
+  "mixins": [
+  ],
+  "client": [
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}
