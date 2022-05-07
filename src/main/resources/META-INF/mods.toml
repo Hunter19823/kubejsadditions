@@ -64,17 +64,3 @@ versionRange = "[1802,)"
 ordering = "AFTER"
 side = "BOTH"
 
-[[dependencies.kubejsadditions]]
-modId = "rhino"
-mandatory = true
-versionRange = "[1801.1.9-build.137,)"
-ordering = "AFTER"
-side = "BOTH"
-
-[[dependencies.kubejsadditions]]
-modId = "architectury"
-mandatory = true
-versionRange = "[1.31,)"
-ordering = "AFTER"
-side = "BOTH"
-

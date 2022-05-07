@@ -3,7 +3,7 @@ buildscript {
         // These repositories are only for Gradle plugins, put any other repositories in the repository block further below
         maven { url = 'https://repo.spongepowered.org/repository/maven-public/' }
 		maven { url = "https://plugins.gradle.org/m2/" }
-        mavenCentral()
+        //mavenCentral()
     }
     dependencies {
         classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '5.1.+', changing: true
@@ -30,26 +30,23 @@ repositories {
 	maven {
 		// Shedaniel's maven (Architectury API)
 		url = "https://maven.architectury.dev"
-		/*content {
+		content {
 			includeGroup "me.shedaniel"
-		}*/
+		}
 	}
-
 	maven {
 		// saps.dev Maven (KubeJS and Rhino)
 		url = "https://maven.saps.dev/minecraft"
-		/*content {
+		content {
 			includeGroup "dev.latvian.mods"
-		}*/
+		}
 	}
-
-
-	maven { url = 'https://maven.minecraftforge.net' }
-
 	maven {
 		url "https://maven.nanite.dev"
 	}
-
+	maven { url "https://maven.fabricmc.net/" }
+	maven { url "https://maven.minecraftforge.net/" }
+	maven { url "https://maven.shedaniel.me/" }
 	maven { url "https://plugins.gradle.org/m2/" }
 	maven {
 		url "https://www.cursemaven.com"
@@ -63,28 +60,13 @@ repositories {
 
 minecraft {
 	mappings channel: 'official', version: '1.18.2'
-
-    // accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
-
-    // Default run configurations.
-    // These can be tweaked, removed, or duplicated as needed.
     runs {
         client {
             workingDirectory project.file('run')
 
 			property 'mixin.env.remapRefMap', 'true'
 			property 'mixin.env.refMapRemappingFile', "${projectDir}/build/createSrgToMcp/output.srg"
-
-            // Recommended logging data for a userdev environment
-            // The markers can be added/removed as needed separated by commas.
-            // "SCAN": For mods scan.
-            // "REGISTRIES": For firing of registry events.
-            // "REGISTRYDUMP": For getting the contents of all registries.
             property 'forge.logging.markers', 'REGISTRIES'
-
-            // Recommended logging level for the console
-            // You can set various levels here.
-            // Please read: https://stackoverflow.com/questions/2031163/when-to-use-the-different-log-levels
             property 'forge.logging.console.level', 'debug'
 
             mods {
@@ -96,17 +78,7 @@ minecraft {
 
         server {
             workingDirectory project.file('run')
-
-            // Recommended logging data for a userdev environment
-            // The markers can be added/removed as needed separated by commas.
-            // "SCAN": For mods scan.
-            // "REGISTRIES": For firing of registry events.
-            // "REGISTRYDUMP": For getting the contents of all registries.
             property 'forge.logging.markers', 'REGISTRIES'
-
-            // Recommended logging level for the console
-            // You can set various levels here.
-            // Please read: https://stackoverflow.com/questions/2031163/when-to-use-the-different-log-levels
             property 'forge.logging.console.level', 'debug'
 
             mods {
@@ -119,19 +91,9 @@ minecraft {
         data {
             workingDirectory project.file('run')
 
-            // Recommended logging data for a userdev environment
-            // The markers can be added/removed as needed separated by commas.
-            // "SCAN": For mods scan.
-            // "REGISTRIES": For firing of registry events.
-            // "REGISTRYDUMP": For getting the contents of all registries.
             property 'forge.logging.markers', 'REGISTRIES'
+			property 'forge.logging.console.level', 'debug'
 
-            // Recommended logging level for the console
-            // You can set various levels here.
-            // Please read: https://stackoverflow.com/questions/2031163/when-to-use-the-different-log-levels
-            property 'forge.logging.console.level', 'debug'
-
-            // Specify the modid for data generation, where to output the resulting resource, and where to look for existing resources.
             args '--mod', project.mod_id, '--all', '--output', file('src/generated/resources/'), '--existing', file('src/main/resources/')
 
             mods {
@@ -154,9 +116,6 @@ sourceSets.main.resources { srcDir 'src/generated/resources' }
 
 
 dependencies {
-    // Specify the version of Minecraft to use. If this is any group other than 'net.minecraft' it is assumed
-    // that the dep is a ForgeGradle 'patcher' dependency, and its patches will be applied.
-    // The userdev artifact is a special name and will get all sorts of transformations applied to it.
     minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
 
 	// KubeJS
@@ -168,7 +127,7 @@ dependencies {
 
 	// these two are unfortunately needed since fg.deobf doesn't respect transitive dependencies as of yet
 	implementation fg.deobf("dev.latvian.mods:rhino-forge:${rhino_version}")
-	implementation fg.deobf("me.shedaniel:architectury-forge:${architectury_version}")
+	implementation fg.deobf("dev.architectury:architectury-forge:${architectury_version}")
 
     // Real mod deobf dependency examples - these get remapped to your current mappings
     // compileOnly fg.deobf("mezz.jei:jei-${mc_version}:${jei_version}:api") // Adds JEI API as a compile dependency
