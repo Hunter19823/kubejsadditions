@@ -6,7 +6,6 @@ import org.apache.logging.log4j.Logger;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.nio.file.Path;
 
 public class DotFileCreator {
 	private static final Logger LOGGER = LogManager.getLogger();
@@ -32,8 +31,18 @@ public class DotFileCreator {
 		sb.append("\t").append(fromNode).append(" -> ").append(toNode).append(" [").append(metadata).append("];\n");
 	}
 
-	public void createDotFile() throws IOException {
-		File file = new File("out/recipe_graph.dot");
+	public void createDotFile(String fileName) throws IOException, IllegalArgumentException {
+		if(fileName == null) {
+			throw new IllegalArgumentException("Invalid filename. Filename cannot be null.");
+		}
+		if(fileName.isEmpty()) {
+			throw new IllegalArgumentException("Invalid filename. Filename cannot be empty.");
+		}
+		// Check fileName to make sure it is a valid windows file name and has a dot extension
+		if(!fileName.matches("^[a-zA-Z0-9_\\-\\.]+\\.dot$")) {
+			throw new IllegalArgumentException("Invalid filename. Filename must end with .dot");
+		}
+		File file = new File("out/" + fileName);
 		FileWriter writer = new FileWriter(file);
 		writer.write(sb+"}");
 		writer.close();

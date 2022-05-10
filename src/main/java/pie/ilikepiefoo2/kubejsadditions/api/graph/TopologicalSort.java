@@ -7,9 +7,9 @@ import java.util.LinkedList;
 
 public class TopologicalSort<DATA, EDGE extends WeightedEdge<DATA>> {
 	private final static Logger LOGGER = LogManager.getLogger();
-	private final WeightedDiGraph<DATA, EDGE> data;
-	private final LinkedList<DATA> order;
-	private boolean containsCycle;
+	protected final WeightedDiGraph<DATA, EDGE> data;
+	protected final LinkedList<DATA> order;
+	protected boolean containsCycle;
 
 	public TopologicalSort(WeightedDiGraph<DATA, EDGE> data) {
 		this.data = data;
