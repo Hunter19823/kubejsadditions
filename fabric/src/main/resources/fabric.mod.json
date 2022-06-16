@@ -1,0 +1,31 @@
+{
+  "schemaVersion": 1,
+  "id": "kubejsadditions",
+  "version": "${version}",
+  "name": "KubeJS Additions (Fabric)",
+  "description": "A mod that serves as a bunch of additional features to KubeJS.",
+  "authors": [
+    "ILIKEPIEFOO2"
+  ],
+  "contact": {
+    "homepage": "https://fabricmc.net/",
+    "sources": "https://github.com/FabricMC/fabric-example-mod"
+  },
+  "license": "Insert License Here",
+  "icon": "assets/kubejsadditions/icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "pie.ilikepiefoo.fabric.KubeJSAdditionsFabric"
+    ]
+  },
+  "mixins": [
+    "kubejsadditions.mixins.json",
+    "kubejsadditions-common.mixins.json"
+  ],
+  "depends": {
+    "fabric": "*",
+    "minecraft": ">=1.16.5",
+    "architectury": ">=1.32.63"
+  }
+}

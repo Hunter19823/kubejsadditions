@@ -1,183 +1,58 @@
-buildscript {
-    repositories {
-        // These repositories are only for Gradle plugins, put any other repositories in the repository block further below
-        maven { url = 'https://repo.spongepowered.org/repository/maven-public/' }
-		maven { url = "https://plugins.gradle.org/m2/" }
-        //mavenCentral()
+plugins {
+    id "architectury-plugin" version "3.4-SNAPSHOT"
+    id "dev.architectury.loom" version "0.12.0-SNAPSHOT" apply false
+}
+
+architectury {
+    minecraft = rootProject.minecraft_version
+}
+
+subprojects {
+    apply plugin: "dev.architectury.loom"
+
+    loom {
+        silentMojangMappingsLicense()
     }
+
     dependencies {
-        classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '5.1.+', changing: true
-        classpath 'org.spongepowered:mixingradle:0.7-SNAPSHOT'
-		classpath 'com.wynprice.cursemaven:CurseMaven:1.2.+'
-		classpath group: 'gradle.plugin.com.matthewprenger', name: 'CurseGradle', version: '1.+'
+        minecraft "com.mojang:minecraft:${rootProject.minecraft_version}"
+        // The following line declares the mojmap mappings, you may use other mappings as well
+        mappings loom.officialMojangMappings()
+        // The following line declares the yarn mappings you may select this one as well.
+        // mappings "net.fabricmc:yarn:1.16.5+build.10:v2"
     }
 }
 
-apply plugin: 'net.minecraftforge.gradle'
-apply plugin: 'org.spongepowered.mixin'
-apply plugin: 'com.matthewprenger.cursegradle'
+allprojects {
+    apply plugin: "java"
+    apply plugin: "architectury-plugin"
+    apply plugin: "maven-publish"
 
+    archivesBaseName = rootProject.archives_base_name
+    version = rootProject.mod_version
+    group = rootProject.maven_group
 
-def ENV = System.getenv()
+    repositories {
+        // Add repositories to retrieve artifacts from in here.
+        // You should only use this when depending on other mods because
+        // Loom adds the essential maven repositories to download Minecraft and libraries from automatically.
+        // See https://docs.gradle.org/current/userguide/declaring_repositories.html
+        // for more information about repositories.
+    }
 
-group = project.group_name
-version = project.mod_version
-archivesBaseName = project.mod_name
+    tasks.withType(JavaCompile) {
+        options.encoding = "UTF-8"
 
-java.toolchain.languageVersion = JavaLanguageVersion.of(17)
-
-repositories {
-	maven {
-		// Shedaniel's maven (Architectury API)
-		url = "https://maven.architectury.dev"
-		content {
-			includeGroup "me.shedaniel"
-		}
-	}
-	maven {
-		// saps.dev Maven (KubeJS and Rhino)
-		url = "https://maven.saps.dev/minecraft"
-		content {
-			includeGroup "dev.latvian.mods"
-		}
-	}
-	maven {
-		url "https://maven.nanite.dev"
-	}
-	maven { url "https://maven.fabricmc.net/" }
-	maven { url "https://maven.minecraftforge.net/" }
-	maven { url "https://maven.shedaniel.me/" }
-	maven { url "https://plugins.gradle.org/m2/" }
-	maven {
-		url "https://www.cursemaven.com"
-		content {
-			includeGroup "curse.maven"
-		}
-	}
-
-}
-
-
-minecraft {
-	mappings channel: 'official', version: '1.18.2'
-    runs {
-        client {
-            workingDirectory project.file('run')
-
-			property 'mixin.env.remapRefMap', 'true'
-			property 'mixin.env.refMapRemappingFile', "${projectDir}/build/createSrgToMcp/output.srg"
-            property 'forge.logging.markers', 'REGISTRIES'
-            property 'forge.logging.console.level', 'debug'
-
-            mods {
-                kubejsadditions {
-                    source sourceSets.main
-                }
-            }
-        }
-
-        server {
-            workingDirectory project.file('run')
-            property 'forge.logging.markers', 'REGISTRIES'
-            property 'forge.logging.console.level', 'debug'
-
-            mods {
-                kubejsadditions {
-                    source sourceSets.main
-                }
-            }
-        }
-
-        data {
-            workingDirectory project.file('run')
-
-            property 'forge.logging.markers', 'REGISTRIES'
-			property 'forge.logging.console.level', 'debug'
-
-            args '--mod', project.mod_id, '--all', '--output', file('src/generated/resources/'), '--existing', file('src/main/resources/')
-
-            mods {
-                kubejsadditions {
-                    source sourceSets.main
-                }
-            }
+        // The Minecraft launcher currently installs Java 8 for users, so your mod probably wants to target Java 8 too
+        // JDK 9 introduced a new way of specifying this that will make sure no newer classes or methods are used.
+        // We'll use that if it's available, but otherwise we'll use the older option.
+        def targetVersion = 8
+        if (JavaVersion.current().isJava9Compatible()) {
+            options.release = targetVersion
         }
     }
-}
 
-mixin {
-    add sourceSets.main, "kubejsadditions.refmap.json"
-
-    config "kubejsadditions.mixins.json"
-}
-
-// Include resources generated by data generators.
-sourceSets.main.resources { srcDir 'src/generated/resources' }
-
-
-dependencies {
-    minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
-
-	// KubeJS
-	// Loom (Fabric / Quilt / Architectury)
-	//modImplementation ("dev.latvian.mods:kubejs-forge:${kubejs_version}")
-
-	// ForgeGradle
-	implementation fg.deobf("dev.latvian.mods:kubejs-forge:${kubejs_version}")
-
-	// these two are unfortunately needed since fg.deobf doesn't respect transitive dependencies as of yet
-	implementation fg.deobf("dev.latvian.mods:rhino-forge:${rhino_version}")
-	implementation fg.deobf("dev.architectury:architectury-forge:${architectury_version}")
-
-    // Real mod deobf dependency examples - these get remapped to your current mappings
-    // compileOnly fg.deobf("mezz.jei:jei-${mc_version}:${jei_version}:api") // Adds JEI API as a compile dependency
-    // runtimeOnly fg.deobf("mezz.jei:jei-${mc_version}:${jei_version}") // Adds the full JEI mod as a runtime dependency
-    // implementation fg.deobf("com.tterrag.registrate:Registrate:MC${mc_version}-${registrate_version}") // Adds registrate as a dependency
-
-    // Examples using mod jars from ./libs
-    // implementation fg.deobf("blank:coolmod-${mc_version}:${coolmod_version}")
-
-    // For more info...
-    // http://www.gradle.org/docs/current/userguide/artifact_dependencies_tutorial.html
-    // http://www.gradle.org/docs/current/userguide/dependency_management.html
-
-    annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
-}
-
-// Example for how to get properties into the manifest for reading at runtime.
-jar {
-    manifest {
-        attributes([
-                "Specification-Title"     : project.mod_id,
-                "Specification-Vendor"    : project.mod_author,
-                "Specification-Version"   : "1", // We are version 1 of ourselves
-                "Implementation-Title"    : project.mod_name,
-                "Implementation-Version"  : project.jar.archiveVersion,
-                "Implementation-Vendor"   : project.mod_author,
-                "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")
-        ])
+    java {
+        withSourcesJar()
     }
-}
-
-jar.finalizedBy('reobfJar')
-
-if (ENV.CURSEFORGE_KEY) {
-	println('Found Curseforge key')
-	curseforge {
-		apiKey = ENV.CURSEFORGE_KEY
-		project {
-			id = project.curseforge_id_forge
-			releaseType = project.curseforge_type
-			releaseType = "release"
-			addGameVersion "Forge"
-			addGameVersion "1.16.5"
-			relations {
-				requiredDependency 'kubejs-forge'
-				requiredDependency 'rhino'
-				requiredDependency 'architectury-forge'
-			}
-		}
-	}
-}else{
-	println('Did Not find Curseforge key')
 }

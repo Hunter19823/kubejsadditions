@@ -1,0 +1,35 @@
+modLoader = "javafml"
+loaderVersion = "[36,)"
+#issueTrackerURL = ""
+license = "Insert License Here"
+
+[[mods]]
+modId = "kubejsadditions"
+version = "${version}"
+displayName = "KubeJS Additons (Forge)"
+authors = "ILIKEPIEFOO2"
+description = '''
+A mod that serves as a bunch of additional features to KubeJS.
+'''
+#logoFile = ""
+
+[[dependencies.kubejsadditions]]
+modId = "forge"
+mandatory = true
+versionRange = "[36,)"
+ordering = "NONE"
+side = "BOTH"
+
+[[dependencies.kubejsadditions]]
+modId = "minecraft"
+mandatory = true
+versionRange = "[1.16.5,)"
+ordering = "NONE"
+side = "BOTH"
+
+[[dependencies.kubejsadditions]]
+modId = "architectury"
+mandatory = true
+versionRange = "[1.32.63,)"
+ordering = "AFTER"
+side = "BOTH"

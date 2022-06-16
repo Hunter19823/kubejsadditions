@@ -1,0 +1,13 @@
+{
+  "required": true,
+  "package": "pie.ilikepiefoo.mixin",
+  "compatibilityLevel": "JAVA_8",
+  "client": [
+    "MixinTitleScreen"
+  ],
+  "mixins": [
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}
