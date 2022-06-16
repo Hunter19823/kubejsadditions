@@ -31,6 +31,8 @@ dependencies {
 
     common(project(path: ":common", configuration: "namedElements")) { transitive false }
     shadowCommon(project(path: ":common", configuration: "transformProductionForge")) { transitive = false }
+
+	modImplementation("dev.latvian.mods:kubejs-forge:${rootProject.kubejs_version}")
 }
 
 processResources {
