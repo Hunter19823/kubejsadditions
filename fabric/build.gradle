@@ -1,5 +1,6 @@
 plugins {
     id "com.github.johnrengelman.shadow" version "7.1.2"
+	id 'me.shedaniel.unified-publishing'
 }
 
 architectury {
@@ -81,4 +82,41 @@ publishing {
     repositories {
         // Add repositories to publish to here.
     }
+}
+
+unifiedPublishing {
+	project {
+		releaseType = rootProject.artifact_type
+		gameVersions = [
+				rootProject.minecraft_version
+		]
+		gameLoaders = ["fabric"]
+		displayName = "$mod_name Fabric $project.version"
+		mainPublication remapJar
+
+		relations {
+			depends {
+				curseforge = modrinth = "architectury-api"
+			}
+			depends {
+				curseforge = modrinth = "rhino"
+			}
+		}
+
+		var CF = System.getenv("CURSEFORGE_KEY")
+		if (CF != null) {
+			curseforge {
+				token = CF
+				id = project.curseforge_id
+			}
+		}
+		var MT = System.getenv("MODRINTH_TOKEN")
+		if (MT != null) {
+			modrinth {
+				token = mt
+				id = project.modrinth_id
+				version = "$project.version+$project.name"
+			}
+		}
+	}
 }
