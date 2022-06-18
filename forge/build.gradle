@@ -13,6 +13,8 @@ loom {
     forge {
         convertAccessWideners = true
         extraAccessWideners.add loom.accessWidenerPath.get().asFile.name
+		mixinConfig "kubejsadditions.mixins.json"
+		mixinConfig "kubejsadditions-common.mixins.json"
     }
 }
 
