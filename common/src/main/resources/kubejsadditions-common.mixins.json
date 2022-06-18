@@ -6,7 +6,9 @@
     "MixinTitleScreen"
   ],
   "mixins": [
-    "MixinFluidStackJS"
+    "MixinFluidStackJS",
+    "MixinPlayerJS",
+    "MixinWorldJS"
   ],
   "injectors": {
     "defaultRequire": 1
