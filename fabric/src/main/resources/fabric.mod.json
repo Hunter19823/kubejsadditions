@@ -11,8 +11,8 @@
     "homepage": "https://fabricmc.net/",
     "sources": "https://github.com/FabricMC/fabric-example-mod"
   },
-  "license": "Insert License Here",
-  "icon": "assets/kubejsadditions/icon.png",
+  "license": "All Rights Reserved",
+  "icon": "assets/kubejsadditions/kubejs_logo.png",
   "environment": "*",
   "entrypoints": {
     "main": [
@@ -25,7 +25,7 @@
   ],
   "depends": {
     "fabric": "*",
-    "minecraft": ">=1.16.5",
-    "architectury": ">=1.32.63"
+    "minecraft": ">=1.18.2",
+    "architectury": ">=4.4.70"
   }
 }
