@@ -10,9 +10,12 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.animal.Animal;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import pie.ilikepiefoo.events.EntityEnterChunkEventJS;
+import pie.ilikepiefoo.events.EntityTameEventJS;
 import pie.ilikepiefoo.events.FarmlandTrampleEventJS;
 import pie.ilikepiefoo.events.PlayerChangeDimensionEventJS;
 import pie.ilikepiefoo.events.PlayerCloneEventJS;
@@ -26,6 +29,27 @@ public class EventHandler {
 		PlayerEvent.PLAYER_RESPAWN.register(EventHandler::onPlayerRespawn);
 		InteractionEvent.FARMLAND_TRAMPLE.register(EventHandler::onFarmlandTrampled);
 		EntityEvent.ENTER_SECTION.register(EventHandler::onEntityEnterChunk);
+		EntityEvent.ANIMAL_TAME.register(EventHandler::onEntityTame);
+	}
+
+	/**
+	 * Invoked before a tamable animal is tamed.
+	 * This event only works on vanilla mobs. Mods implementing their own entities may want to make their own events or invoke this.
+	 * Equivalent to Forge's {@code AnimalTameEvent} event.
+	 *
+	 * @param animal The animal being tamed.
+	 * @param player The tamer.
+	 * @return A {@link EventResult} determining the outcome of the event,
+	 * the action may be cancelled by the result.
+	 */
+	private static EventResult onEntityTame(Animal animal, Player player) {
+		EntityTameEventJS event = EntityTameEventJS.of(animal,player);
+		event.post(AdditionalEventsJS.ENTITY_TAME);
+		if(event.isCancelled()){
+			return EventResult.interruptFalse();
+		}else {
+			return EventResult.pass();
+		}
 	}
 
 	/**

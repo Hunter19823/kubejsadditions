@@ -6,4 +6,5 @@ public class AdditionalEventsJS {
 	public static final String PLAYER_CLONE = "player.clone";
 	public static final String PLAYER_RESPAWN = "player.respawn";
 	public static final String ENTITY_ENTER_CHUNK = "entity.enter_chunk";
+	public static final String ENTITY_TAME = "entity.tame";
 }
