@@ -3,6 +3,7 @@ package pie.ilikepiefoo.mixin;
 
 import dev.latvian.mods.kubejs.fluid.FluidStackJS;
 import dev.latvian.mods.kubejs.util.MapJS;
+import dev.latvian.mods.rhino.mod.util.NBTUtils;
 import net.minecraft.resources.ResourceLocation;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -16,7 +17,7 @@ import pie.ilikepiefoo.fluid.FluidTagJS;
 public class MixinFluidStackJS {
 	private static final Logger LOGGER = LogManager.getLogger();
 
-	@Inject(at = @At("HEAD"), method = "of(Ljava/lang/Object;)Ldev/latvian/kubejs/fluid/FluidStackJS;", cancellable = true)
+	@Inject(at = @At("HEAD"), method = "of(Ljava/lang/Object;)Ldev/latvian/mods/kubejs/fluid/FluidStackJS;", cancellable = true)
 	private static void ofString(Object o, CallbackInfoReturnable<FluidStackJS> cir) {
 		if(o instanceof CharSequence || o instanceof ResourceLocation) {
 			String s = o.toString().trim();
@@ -31,7 +32,7 @@ public class MixinFluidStackJS {
 
 	@Inject(
 			at = @At(value = "RETURN", shift = At.Shift.BEFORE, ordinal = 8),
-			method = "of(Ljava/lang/Object;)Ldev/latvian/kubejs/fluid/FluidStackJS;",
+			method = "of(Ljava/lang/Object;)Ldev/latvian/mods/kubejs/fluid/FluidStackJS;",
 			cancellable = true)
 	private static void ofMap(Object o, CallbackInfoReturnable<FluidStackJS> cir) {
 		MapJS map = MapJS.of(o);
@@ -39,12 +40,12 @@ public class MixinFluidStackJS {
 		if(map != null && map.containsKey("fluidTag")){
 			FluidTagJS tagJS = new FluidTagJS(new ResourceLocation(map.get("fluidTag").toString()));
 
-			if (map.get("amount") instanceof Number) {
-				tagJS.setAmount(((Number) map.get("amount")).intValue());
+			if (map.get("amount") instanceof Number number) {
+				tagJS.setAmount(number.longValue());
 			}
 
 			if (map.containsKey("nbt")) {
-				tagJS.setNbt(MapJS.nbt(map.get("nbt")));
+				tagJS.setNbt(NBTUtils.toTagCompound(map.get("nbt")));
 			}
 			cir.setReturnValue(tagJS);
 			cir.cancel();

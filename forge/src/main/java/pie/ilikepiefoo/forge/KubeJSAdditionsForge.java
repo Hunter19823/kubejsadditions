@@ -1,6 +1,6 @@
 package pie.ilikepiefoo.forge;
 
-import me.shedaniel.architectury.platform.forge.EventBuses;
+import dev.architectury.platform.forge.EventBuses;
 import pie.ilikepiefoo.KubeJSAdditions;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;

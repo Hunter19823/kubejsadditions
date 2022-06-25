@@ -2,12 +2,12 @@ package pie.ilikepiefoo.fluid;
 
 import com.google.gson.JsonObject;
 import dev.architectury.fluid.FluidStack;
+import dev.latvian.mods.kubejs.KubeJSRegistries;
 import dev.latvian.mods.kubejs.fluid.FluidStackJS;
 import dev.latvian.mods.kubejs.util.MapJS;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.material.Fluid;
-import net.minecraft.world.level.material.Fluids;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Collection;
@@ -44,7 +44,11 @@ public class FluidTagJS extends FluidStackJS {
 
 	@Override
 	public Fluid getFluid() {
-		return .getTagOrEmpty(tag).getValues().stream().findFirst().orElse(Fluids.EMPTY);
+		if(KubeJSRegistries.fluids().contains(tag)){
+			return KubeJSRegistries.fluids().get(tag);
+		} else {
+			throw new UnsupportedOperationException("Using getFluid on FluidTags is not supported. This should only be used with recipes.");
+		}
 	}
 
 	@Override
@@ -55,12 +59,7 @@ public class FluidTagJS extends FluidStackJS {
 	@Override
 	public void setAmount(long amount) {
 		this.amount = amount;
-	}
-
-	@Override
-	public void setAmount(int amount) {
-		this.amount = amount;
-		cached = null;
+		this.cached = null;
 	}
 
 	@Override
@@ -117,7 +116,7 @@ public class FluidTagJS extends FluidStackJS {
 		JsonObject o = new JsonObject();
 		o.addProperty("fluidTag", getId());
 
-		if (getAmount() != FluidStack.bucketAmount().intValue()) {
+		if (getAmount() != FluidStack.bucketAmount()) {
 			o.addProperty("amount", getAmount());
 		}
 
