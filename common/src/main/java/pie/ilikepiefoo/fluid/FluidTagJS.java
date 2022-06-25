@@ -1,13 +1,9 @@
 package pie.ilikepiefoo.fluid;
 
-import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import dev.latvian.kubejs.KubeJSRegistries;
-import dev.latvian.kubejs.fluid.FluidStackJS;
-import dev.latvian.kubejs.util.MapJS;
-import dev.latvian.kubejs.util.Tags;
-import me.shedaniel.architectury.fluid.FluidStack;
-import me.shedaniel.architectury.utils.Fraction;
+import dev.architectury.fluid.FluidStack;
+import dev.latvian.mods.kubejs.fluid.FluidStackJS;
+import dev.latvian.mods.kubejs.util.MapJS;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.material.Fluid;
@@ -17,21 +13,20 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Objects;
-import java.util.Set;
 
 public class FluidTagJS extends FluidStackJS {
 	private final ResourceLocation tag;
 	private final String fluid;
-	private int amount;
+	private long amount;
 	private CompoundTag nbt;
 	private FluidStack cached;
 
 	public FluidTagJS(ResourceLocation location) {
 		this.tag = location;
 		this.fluid = tag.toString();
-		amount = FluidStack.bucketAmount().intValue();
-		nbt = null;
-		cached = null;
+		this.amount = FluidStack.bucketAmount();
+		this.nbt = null;
+		this.cached = null;
 	}
 
 	@Override
@@ -42,19 +37,24 @@ public class FluidTagJS extends FluidStackJS {
 	@Override
 	public FluidStack getFluidStack() {
 		if(cached == null) {
-			cached = FluidStack.create(this::getFluid, Fraction.ofWhole(amount), nbt);
+			cached = FluidStack.create(this::getFluid, amount, nbt);
 		}
 		return cached;
 	}
 
 	@Override
 	public Fluid getFluid() {
-		return Tags.fluids().getTagOrEmpty(tag).getValues().stream().findFirst().orElse(Fluids.EMPTY);
+		return .getTagOrEmpty(tag).getValues().stream().findFirst().orElse(Fluids.EMPTY);
 	}
 
 	@Override
-	public int getAmount() {
+	public long getAmount() {
 		return amount;
+	}
+
+	@Override
+	public void setAmount(long amount) {
+		this.amount = amount;
 	}
 
 	@Override

@@ -1,8 +1,8 @@
 package pie.ilikepiefoo.mixin;
 
-import dev.latvian.kubejs.fluid.EmptyFluidStackJS;
-import dev.latvian.kubejs.fluid.FluidStackJS;
-import dev.latvian.kubejs.util.MapJS;
+
+import dev.latvian.mods.kubejs.fluid.FluidStackJS;
+import dev.latvian.mods.kubejs.util.MapJS;
 import net.minecraft.resources.ResourceLocation;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

@@ -1,7 +1,7 @@
 package pie.ilikepiefoo.events;
 
-import dev.latvian.kubejs.entity.EntityJS;
-import dev.latvian.kubejs.player.PlayerEventJS;
+import dev.latvian.mods.kubejs.entity.EntityJS;
+import dev.latvian.mods.kubejs.player.PlayerEventJS;
 import net.minecraft.server.level.ServerPlayer;
 
 public class PlayerCloneEventJS extends PlayerEventJS {

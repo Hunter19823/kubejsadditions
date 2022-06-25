@@ -1,9 +1,10 @@
 package pie.ilikepiefoo.events;
 
-import dev.latvian.kubejs.entity.EntityJS;
-import dev.latvian.kubejs.player.PlayerEventJS;
-import dev.latvian.kubejs.util.UtilsJS;
-import dev.latvian.kubejs.world.WorldJS;
+
+import dev.latvian.mods.kubejs.entity.EntityJS;
+import dev.latvian.mods.kubejs.level.LevelJS;
+import dev.latvian.mods.kubejs.player.PlayerEventJS;
+import dev.latvian.mods.kubejs.util.UtilsJS;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.level.Level;
@@ -28,12 +29,12 @@ public class PlayerChangeDimensionEventJS extends PlayerEventJS {
 		return oldWorld;
 	}
 
-	public WorldJS getOldWorld() {
-		return UtilsJS.getWorld(player.getServer().getLevel(oldWorld));
+	public LevelJS getOldLevel() {
+		return UtilsJS.getLevel(player.getServer().getLevel(oldWorld));
 	}
 
-	public WorldJS getNewWorld() {
-		return UtilsJS.getWorld(player.getServer().getLevel(newWorld));
+	public LevelJS getNewLevel() {
+		return UtilsJS.getLevel(player.getServer().getLevel(newWorld));
 	}
 
 	public ResourceKey<Level> getNewWorldKey() {

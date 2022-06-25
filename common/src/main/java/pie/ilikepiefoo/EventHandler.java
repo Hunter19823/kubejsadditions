@@ -1,10 +1,11 @@
 package pie.ilikepiefoo;
 
-import dev.latvian.kubejs.script.ScriptType;
-import me.shedaniel.architectury.event.EventResult;
-import me.shedaniel.architectury.event.events.EntityEvent;
-import me.shedaniel.architectury.event.events.InteractionEvent;
-import me.shedaniel.architectury.event.events.PlayerEvent;
+
+import dev.architectury.event.EventResult;
+import dev.architectury.event.events.common.EntityEvent;
+import dev.architectury.event.events.common.InteractionEvent;
+import dev.architectury.event.events.common.PlayerEvent;
+import dev.latvian.mods.kubejs.script.ScriptType;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerPlayer;
@@ -24,7 +25,7 @@ public class EventHandler {
 		PlayerEvent.PLAYER_CLONE.register(EventHandler::onPlayerClone);
 		PlayerEvent.PLAYER_RESPAWN.register(EventHandler::onPlayerRespawn);
 		InteractionEvent.FARMLAND_TRAMPLE.register(EventHandler::onFarmlandTrampled);
-		EntityEvent.ENTER_CHUNK.register(EventHandler::onEntityEnterChunk);
+		EntityEvent.ENTER_SECTION.register(EventHandler::onEntityEnterChunk);
 	}
 
 	/**
@@ -37,8 +38,8 @@ public class EventHandler {
 	 * @param prevX  The previous chunk x-coordinate.
 	 * @param prevZ  The previous chunk z-coordinate.
 	 */
-	private static void onEntityEnterChunk(Entity entity, int chunkX, int chunkZ, int prevX, int prevZ) {
-		EntityEnterChunkEventJS.of(entity, chunkX, chunkZ, prevX, prevZ).post(AdditionalEventsJS.ENTITY_ENTER_CHUNK);
+	private static void onEntityEnterChunk(Entity entity, int chunkX, int chunkY, int chunkZ, int prevX, int prevY, int prevZ) {
+		EntityEnterChunkEventJS.of(entity, chunkX, chunkY, chunkZ, prevX, prevY, prevZ).post(AdditionalEventsJS.ENTITY_ENTER_CHUNK);
 	}
 
 	/**
