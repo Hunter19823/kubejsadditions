@@ -66,9 +66,6 @@ public class MixinServerJS {
 	@Shadow
 	private MinecraftServer minecraftServer;
 
-	@Shadow
-	public static ServerJS instance;
-
 	public GameType getDefaultGameType() {
 		return minecraftServer.getDefaultGameType();
 	}
@@ -149,13 +146,13 @@ public class MixinServerJS {
 	}
 
 	public ServerWorldJS overworld() {
-		return new ServerWorldJS(instance, minecraftServer.overworld());
+		return new ServerWorldJS(ServerJS.instance, minecraftServer.overworld());
 	}
 
 	@Nullable
 	public ServerWorldJS getLevel(ResourceKey<Level> resourceKey) {
 		ServerLevel level = minecraftServer.getLevel(resourceKey);
-		return level == null ? null : new ServerWorldJS(instance, level);
+		return level == null ? null : new ServerWorldJS(ServerJS.instance, level);
 	}
 
 	public Set<ResourceKey<Level>> levelKeys() {
@@ -163,7 +160,7 @@ public class MixinServerJS {
 	}
 
 	public Iterable<ServerWorldJS> getAllLevels() {
-		return StreamSupport.stream(minecraftServer.getAllLevels().spliterator(),true).map((level)->new ServerWorldJS(instance,level)).collect(Collectors.toList());
+		return StreamSupport.stream(minecraftServer.getAllLevels().spliterator(),true).map((level)->new ServerWorldJS(ServerJS.instance,level)).collect(Collectors.toList());
 	}
 
 	public String getServerVersion() {
