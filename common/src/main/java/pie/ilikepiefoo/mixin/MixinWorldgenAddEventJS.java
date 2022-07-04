@@ -28,7 +28,7 @@ import org.spongepowered.asm.mixin.Shadow;
 
 import java.util.function.Consumer;
 
-@Mixin(WorldgenAddEventJS.class)
+@Mixin(value = WorldgenAddEventJS.class, remap = false)
 public abstract class MixinWorldgenAddEventJS {
 	@Shadow
 	protected abstract boolean verifyBiomes(WorldgenEntryList biomes);
