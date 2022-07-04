@@ -3,11 +3,19 @@
   "package": "pie.ilikepiefoo.mixin",
   "compatibilityLevel": "JAVA_8",
   "client": [
-    "MixinTitleScreen"
-  ],
+		"MixinClientWorldJS"
+	],
   "mixins": [
+		"MixinBlockContainerJS",
+		"MixinEntityJS",
     "MixinFluidStackJS",
+		"MixinItemEntityJS",
+		"MixinItemFrameEntityJS",
+		"MixinItemStackJS",
+		"MixinLivingEntityJS",
+		"MixinMaterialJS",
     "MixinPlayerJS",
+		"MixinServerJS",
     "MixinWorldJS"
   ],
   "injectors": {
