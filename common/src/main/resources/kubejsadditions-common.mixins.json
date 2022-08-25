@@ -6,7 +6,8 @@
   "mixins": [
     "MixinFluidStackJS",
     "MixinPlayerJS",
-    "MixinWorldJS"
+    "MixinWorldJS",
+		"MixinServerLevelJS"
   ],
   "injectors": {
     "defaultRequire": 1
