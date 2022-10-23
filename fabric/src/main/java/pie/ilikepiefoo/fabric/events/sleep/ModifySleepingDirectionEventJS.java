@@ -10,6 +10,13 @@ import net.minecraft.world.entity.LivingEntity;
 import org.jetbrains.annotations.Nullable;
 import pie.ilikepiefoo.fabric.FabricEventsJS;
 
+/**
+ * An event that can be used to provide the entity's sleep direction if missing.
+ *
+ * <p>This is useful for custom bed blocks that need to determine the sleeping direction themselves.
+ * If the block is not a {@link net.minecraft.world.level.block.BedBlock}, you need to provide the sleeping direction manually
+ * with this event.
+ */
 public class ModifySleepingDirectionEventJS extends LivingEntityEventJS {
 
 	private final LivingEntity entity;
@@ -49,6 +56,15 @@ public class ModifySleepingDirectionEventJS extends LivingEntityEventJS {
 		this.sleepingDirection = sleepingDirection;
 	}
 
+	/**
+	 * Modifies or provides a sleeping direction for a block.
+	 * The sleeping direction is where a player's head is pointing when they're sleeping.
+	 *
+	 * @param entity            the sleeping entity
+	 * @param sleepingPos       the position of the block slept on
+	 * @param sleepingDirection the old sleeping direction, or {@code null} if not determined by vanilla or previous callbacks
+	 * @return the new sleeping direction
+	 */
 	@Nullable
 	public static Direction handler(LivingEntity entity, BlockPos sleepingPos, @Nullable Direction sleepingDirection) {
 		ModifySleepingDirectionEventJS event = new ModifySleepingDirectionEventJS(entity, sleepingPos, sleepingDirection);

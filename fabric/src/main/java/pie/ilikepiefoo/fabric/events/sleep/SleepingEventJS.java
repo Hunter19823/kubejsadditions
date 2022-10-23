@@ -8,6 +8,11 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.LivingEntity;
 import pie.ilikepiefoo.fabric.FabricEventsJS;
 
+/**
+ * An event that is called when an entity starts to sleep.
+ * or
+ * An event that is called when an entity stops sleeping and wakes up.
+ */
 public class SleepingEventJS extends LivingEntityEventJS {
 
 	private final LivingEntity entity;
@@ -26,11 +31,23 @@ public class SleepingEventJS extends LivingEntityEventJS {
 		return getLevel().getBlock(sleepingPos);
 	}
 
+	/**
+	 * Called when an entity starts to sleep.
+	 *
+	 * @param entity      the sleeping entity
+	 * @param sleepingPos the {@linkplain LivingEntity#getSleepingPos() sleeping position} of the entity
+	 */
 	public static void startHandler(LivingEntity entity, BlockPos sleepingPos) {
 		SleepingEventJS event = new SleepingEventJS(entity, sleepingPos);
 		event.post(ScriptType.SERVER, FabricEventsJS.START_SLEEPING);
 	}
 
+	/**
+	 * Called when an entity stops sleeping and wakes up.
+	 *
+	 * @param entity      the sleeping entity
+	 * @param sleepingPos the {@linkplain LivingEntity#getSleepingPos() sleeping position} of the entity
+	 */
 	public static void stopHandler(LivingEntity entity, BlockPos sleepingPos) {
 		SleepingEventJS event = new SleepingEventJS(entity, sleepingPos);
 		event.post(ScriptType.SERVER, FabricEventsJS.STOP_SLEEPING);

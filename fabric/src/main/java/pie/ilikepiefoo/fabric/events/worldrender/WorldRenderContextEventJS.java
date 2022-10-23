@@ -3,6 +3,7 @@ package pie.ilikepiefoo.fabric.events.worldrender;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Matrix4f;
 import dev.latvian.mods.kubejs.event.EventJS;
+import dev.latvian.mods.kubejs.script.ScriptType;
 import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderContext;
 import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderEvents;
 import net.minecraft.client.Camera;
@@ -14,6 +15,8 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.culling.Frustum;
 import net.minecraft.util.profiling.ProfilerFiller;
 import org.jetbrains.annotations.Nullable;
+import pie.ilikepiefoo.fabric.FabricEventsJS;
+
 
 public class WorldRenderContextEventJS extends EventJS {
 	private final WorldRenderContext context;
@@ -125,6 +128,118 @@ public class WorldRenderContextEventJS extends EventJS {
 	 */
 	public @Nullable Frustum frustum() {
 		return context.frustum();
+	}
+
+	/**
+	 * Called after the Solid, Cutout and Cutout Mipped terrain layers have been output to the framebuffer.
+	 *
+	 * <p>Use to render non-translucent terrain to the framebuffer.
+	 *
+	 * <p>Note that 3rd-party renderers may combine these passes or otherwise alter the
+	 * rendering pipeline for sake of performance or features. This can break direct writes to the
+	 * framebuffer.  Use this event for cases that cannot be satisfied by FabricBakedModel,
+	 * BlockEntityRenderer or other existing abstraction. If at all possible, use an existing terrain
+	 * RenderLayer instead of outputting to the framebuffer directly with GL calls.
+	 *
+	 * <p>The consumer is responsible for setup and tear down of GL state appropriate for the intended output.
+	 *
+	 * <p>Because solid and cutout quads are depth-tested, order of output does not matter except to improve
+	 * culling performance, which should not be significant after primary terrain rendering. This means
+	 * mods that currently hook calls to individual render layers can simply execute them all at once when
+	 * the event is called.
+	 *
+	 * <p>This event fires before entities and block entities are rendered and may be useful to prepare them.
+	 */
+	public static void beforeEntitiesHandle(WorldRenderContext context) {
+		WorldRenderContextEventJS eventJS = new WorldRenderContextEventJS(context);
+		eventJS.post(ScriptType.CLIENT, FabricEventsJS.CLIENT_BEFORE_ENTITIES);
+	}
+
+	/**
+	 * Called after entity, terrain, and particle translucent layers have been
+	 * drawn to the framebuffer but before translucency combine has happened
+	 * in fabulous mode.
+	 *
+	 * <p>Use for drawing overlays or other effects on top of those targets
+	 * (or the main target when fabulous isn't active) before clouds and weather
+	 * are drawn.  However, note that {@code WorldRenderPostEntityCallback} will
+	 * offer better results in most use cases.
+	 *
+	 * <p>Vertex consumers are not available in this event because all buffered quads
+	 * are drawn before this event is called.  Any rendering here must be drawn
+	 * directly to the frame buffer.  The render state matrix will not include
+	 * camera transformation, so {@link #LAST} may be preferable if that is wanted.
+	 */
+	public static void afterTranslucentHandle(WorldRenderContext context) {
+		WorldRenderContextEventJS eventJS = new WorldRenderContextEventJS(context);
+		eventJS.post(ScriptType.CLIENT, FabricEventsJS.CLIENT_AFTER_TRANSLUCENT);
+	}
+
+	/**
+	 * Called after entities are rendered and solid entity layers
+	 * have been drawn to the main frame buffer target, before
+	 * block entity rendering begins.
+	 *
+	 * <p>Use for global block entity render setup, or
+	 * to append block-related quads to the entity consumers using the
+	 * {@VertexConsumerProvider} from the provided context. This
+	 * will generally give better (if not perfect) results
+	 * for non-terrain translucency vs. drawing directly later on.
+	 */
+	public static void afterEntitiesHandle(WorldRenderContext context) {
+		WorldRenderContextEventJS eventJS = new WorldRenderContextEventJS(context);
+		eventJS.post(ScriptType.CLIENT, FabricEventsJS.CLIENT_AFTER_ENTITIES);
+	}
+
+	/**
+	 * Called before world rendering executes. Input parameters are available but frustum is not.
+	 * Use this event instead of injecting to the HEAD of {@link LevelRenderer#renderLevel} to avoid
+	 * compatibility problems with 3rd-party renderer implementations.
+	 *
+	 * <p>Use for setup of state that is needed during the world render call that
+	 * does not depend on the view frustum.
+	 */
+	public static void startHandle(WorldRenderContext context) {
+		WorldRenderContextEventJS eventJS = new WorldRenderContextEventJS(context);
+		eventJS.post(ScriptType.CLIENT, FabricEventsJS.CLIENT_START_RENDER);
+	}
+
+	/**
+	 * Called after all framebuffer writes are complete but before all world
+	 * rendering is torn down.
+	 *
+	 * <p>Unlike most other events, renders in this event are expected to be drawn
+	 * directly and immediately to the framebuffer. The OpenGL render state view
+	 * matrix will be transformed to match the camera view before the event is called.
+	 *
+	 * <p>Use to draw content that should appear on top of the world before hand and GUI rendering occur.
+	 */
+	public static void lastHandle(WorldRenderContext context) {
+		WorldRenderContextEventJS eventJS = new WorldRenderContextEventJS(context);
+		eventJS.post(ScriptType.CLIENT, FabricEventsJS.CLIENT_LAST_RENDER);
+	}
+
+	/**
+	 * Called after all world rendering is complete and changes to GL state are unwound.
+	 *
+	 * <p>Use to draw overlays that handle GL state management independently or to tear
+	 * down transient state in event handlers or as a hook that precedes hand/held item
+	 * and GUI rendering.
+	 */
+	public static void endHandle(WorldRenderContext context) {
+		WorldRenderContextEventJS eventJS = new WorldRenderContextEventJS(context);
+		eventJS.post(ScriptType.CLIENT, FabricEventsJS.CLIENT_END_RENDER);
+	}
+
+	/**
+	 * Called after view Frustum is computed and all render chunks to be rendered are
+	 * identified and rebuilt but before chunks are uploaded to GPU.
+	 *
+	 * <p>Use for setup of state that depends on view frustum.
+	 */
+	public static void afterSetupHandle(WorldRenderContext context) {
+		WorldRenderContextEventJS eventJS = new WorldRenderContextEventJS(context);
+		eventJS.post(ScriptType.CLIENT, FabricEventsJS.CLIENT_AFTER_SETUP);
 	}
 }
 

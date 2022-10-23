@@ -11,6 +11,13 @@ import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 import pie.ilikepiefoo.fabric.FabricEventsJS;
 
+/**
+ * An event that can be used to provide the entity's wake-up position if missing.
+ *
+ * <p>This is useful for custom bed blocks that need to determine the wake-up position themselves.
+ * If the block is not a {@link net.minecraft.world.level.block.BedBlock}, you need to provide the wake-up position manually
+ * with this event.
+ */
 public class ModifyWakeUpPositionEventJS extends LivingEntityEventJS {
 	private final LivingEntity entity;
 	private final BlockPos sleepingPos;
@@ -57,6 +64,15 @@ public class ModifyWakeUpPositionEventJS extends LivingEntityEventJS {
 			this.wakeUpPos = null;
 	}
 
+	/**
+	 * Modifies or provides a wake-up position for an entity waking up.
+	 *
+	 * @param entity      the sleeping entity
+	 * @param sleepingPos the position of the block slept on
+	 * @param bedState    the block slept on
+	 * @param wakeUpPos   the old wake-up position, or {@code null} if not determined by vanilla or previous callbacks
+	 * @return the new wake-up position
+	 */
 	@Nullable
 	public static Vec3 handler(LivingEntity entity, BlockPos sleepingPos, BlockState bedState, @Nullable Vec3 wakeUpPos) {
 		ModifyWakeUpPositionEventJS event = new ModifyWakeUpPositionEventJS(entity, sleepingPos, bedState, wakeUpPos);

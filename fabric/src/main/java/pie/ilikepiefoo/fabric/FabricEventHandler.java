@@ -7,6 +7,8 @@ import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderContext;
 import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderEvents;
 import net.fabricmc.fabric.api.entity.event.v1.EntityElytraEvents;
 import net.fabricmc.fabric.api.entity.event.v1.EntitySleepEvents;
+import net.minecraft.client.renderer.LevelRenderer;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.phys.HitResult;
 import org.jetbrains.annotations.Nullable;
 import pie.ilikepiefoo.fabric.events.sleep.AllowBedEventJS;
@@ -35,26 +37,67 @@ public class FabricEventHandler {
 		registerSleepEvents();
 	}
 
+	/**
+	 * Mods should use these events to introduce custom rendering during {@link LevelRenderer#renderLevel(com.mojang.blaze3d.vertex.PoseStack, float, long, boolean, net.minecraft.client.Camera, net.minecraft.client.renderer.GameRenderer, net.minecraft.client.renderer.LightTexture, com.mojang.math.Matrix4f)}
+	 * without adding complicated and conflict-prone injections there.  Using these events also enables 3rd-party renderers
+	 * that make large-scale changes to rendering maintain compatibility by calling any broken event invokers directly.
+	 *
+	 * <p>The order of events each frame is as follows:
+	 * <ul><li>START
+	 * <li>AFTER_SETUP
+	 * <li>BEFORE_ENTITIES
+	 * <li>AFTER_ENTITIES
+	 * <li>BEFORE_BLOCK_OUTLINE
+	 * <li>BLOCK_OUTLINE  (If not cancelled in BEFORE_BLOCK_OUTLINE)
+	 * <li>BEFORE_DEBUG_RENDER
+	 * <li>AFTER_TRANSLUCENT
+	 * <li>LAST
+	 * <li>END</ul>
+	 *
+	 * <p>These events are not dependent on the Fabric rendering API or Indigo but work when those are present.
+	 */
 	private static void registerWorldRenderEvents() {
-		WorldRenderEvents.BEFORE_ENTITIES.register((context) -> postRenderContextEvent(context, FabricEventsJS.CLIENT_BEFORE_ENTITIES));
-		WorldRenderEvents.AFTER_TRANSLUCENT.register((context) -> postRenderContextEvent(context, FabricEventsJS.CLIENT_AFTER_TRANSLUCENT));
-		WorldRenderEvents.AFTER_ENTITIES.register((context) -> postRenderContextEvent(context, FabricEventsJS.CLIENT_AFTER_ENTITIES));
-		WorldRenderEvents.START.register((context) -> postRenderContextEvent(context, FabricEventsJS.CLIENT_START_RENDER));
-		WorldRenderEvents.END.register((context) -> postRenderContextEvent(context, FabricEventsJS.CLIENT_END_RENDER));
-		WorldRenderEvents.AFTER_SETUP.register((context) -> postRenderContextEvent(context, FabricEventsJS.CLIENT_AFTER_SETUP));
-		WorldRenderEvents.BEFORE_BLOCK_OUTLINE.register(FabricEventHandler::postBeforeBlockOutlineEvent);
-		WorldRenderEvents.BLOCK_OUTLINE.register(FabricEventHandler::postBlockOutlineEvent);
+		WorldRenderEvents.BEFORE_ENTITIES.register(WorldRenderContextEventJS::beforeEntitiesHandle);
+		WorldRenderEvents.AFTER_TRANSLUCENT.register(WorldRenderContextEventJS::afterTranslucentHandle);
+		WorldRenderEvents.AFTER_ENTITIES.register(WorldRenderContextEventJS::afterEntitiesHandle);
+		WorldRenderEvents.START.register(WorldRenderContextEventJS::startHandle);
+		WorldRenderEvents.LAST.register(WorldRenderContextEventJS::lastHandle);
+		WorldRenderEvents.END.register(WorldRenderContextEventJS::endHandle);
+		WorldRenderEvents.AFTER_SETUP.register(WorldRenderContextEventJS::afterSetupHandle);
+		WorldRenderEvents.BEFORE_BLOCK_OUTLINE.register(BeforeBlockOutlineRenderEventJS::handle);
+		WorldRenderEvents.BLOCK_OUTLINE.register(BlockOutlineRenderEventJS::handle);
 	}
 
 	private static void registerHudEvents() {
-		HudRenderCallback.EVENT.register(FabricEventHandler::postRenderContextEvent);
+		HudRenderCallback.EVENT.register(HudRenderEventJS::handle);
 	}
 
+	/**
+	 * Events related to elytra flight for living entities. Elytra flight is also known as "fall flying".
+	 */
 	private static void registerElytraEvents() {
 		EntityElytraEvents.ALLOW.register(AllowElytraFlightEventJS::handler);
 		EntityElytraEvents.CUSTOM.register(CustomElytraFlightEventJS::handler);
 	}
 
+	/**
+	 * Events about the sleep of {@linkplain LivingEntity living entities}.
+	 *
+	 * <p>These events can be categorized into three groups:
+	 * <ol>
+	 * <li>Simple listeners: {@link #START_SLEEPING} and {@link #STOP_SLEEPING}</li>
+	 * <li>Predicates: {@link #ALLOW_BED}, {@link #ALLOW_SLEEP_TIME}, {@link #ALLOW_RESETTING_TIME},
+	 * {@link #ALLOW_NEARBY_MONSTERS}, {@link #ALLOW_SETTING_SPAWN} and {@link #ALLOW_SLEEPING}
+	 *
+	 * <p><b>Note:</b> Only the {@link #ALLOW_BED} event applies to non-player entities.</li>
+	 * <li>Modifiers: {@link #MODIFY_SLEEPING_DIRECTION}, {@link #SET_BED_OCCUPATION_STATE}
+	 * and {@link #MODIFY_WAKE_UP_POSITION}</li>
+	 * </ol>
+	 *
+	 * <p>Sleep events are useful for making custom bed blocks that do not extend {@link net.minecraft.world.level.block.BedBlock}.
+	 * Custom beds generally only need a custom {@link #ALLOW_BED} checker and a {@link #MODIFY_SLEEPING_DIRECTION} callback,
+	 * but the other events might be useful as well.
+	 */
 	private static void registerSleepEvents() {
 		EntitySleepEvents.ALLOW_SLEEPING.register(AllowSleepingEventJS::handler);
 		EntitySleepEvents.START_SLEEPING.register(SleepingEventJS::startHandler);
@@ -68,28 +111,5 @@ public class FabricEventHandler {
 		EntitySleepEvents.SET_BED_OCCUPATION_STATE.register(SetBedOccupationStateEventJS::handler);
 		EntitySleepEvents.MODIFY_WAKE_UP_POSITION.register(ModifyWakeUpPositionEventJS::handler);
 	}
-
-	public static void postRenderContextEvent(WorldRenderContext context, String eventID) {
-		WorldRenderContextEventJS eventJS = new WorldRenderContextEventJS(context);
-		eventJS.post(ScriptType.CLIENT, eventID);
-	}
-
-	private static void postRenderContextEvent(PoseStack matrix, float tickDelta) {
-		HudRenderEventJS eventjs = new HudRenderEventJS(tickDelta, matrix);
-		eventjs.post(ScriptType.CLIENT, FabricEventsJS.CLIENT_RENDER_HUD);
-	}
-
-	private static boolean postBeforeBlockOutlineEvent(WorldRenderContext context, @Nullable HitResult hitResult) {
-		BeforeBlockOutlineRenderEventJS event = new BeforeBlockOutlineRenderEventJS(context, hitResult);
-		event.post(ScriptType.CLIENT, FabricEventsJS.CLIENT_BEFORE_BLOCK_OUTLINE);
-		return event.isCancelled();
-	}
-
-	private static boolean postBlockOutlineEvent(WorldRenderContext context, WorldRenderContext.BlockOutlineContext blockOutlineContext) {
-		BlockOutlineRenderEventJS event = new BlockOutlineRenderEventJS(context, blockOutlineContext);
-		event.post(ScriptType.CLIENT, FabricEventsJS.CLIENT_BLOCK_OUTLINE);
-		return event.isCancelled();
-	}
-
 }
 

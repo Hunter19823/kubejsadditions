@@ -7,6 +7,7 @@ public class FabricEventsJS {
 	public static final String CLIENT_AFTER_ENTITIES = "fabric.client.after_entities";
 	public static final String CLIENT_AFTER_SETUP = "fabric.client.after_setup";
 	public static final String CLIENT_START_RENDER = "fabric.client.start_render";
+	public static final String CLIENT_LAST_RENDER = "fabric.client.last_render";
 	public static final String CLIENT_END_RENDER = "fabric.client.end_render";
 	public static final String CLIENT_BEFORE_BLOCK_OUTLINE = "fabric.client.before_block_outline";
 	public static final String CLIENT_BLOCK_OUTLINE = "fabric.client.block_outline";
@@ -30,8 +31,6 @@ public class FabricEventsJS {
 	public static final String ALLOW_SETTING_SPAWN = "fabric.allow_setting_spawn";
 	public static final String SET_BED_OCCUPATION_STATE = "fabric.set_bed_occupation_state";
 	public static final String MODIFY_WAKE_UP_POSITION = "fabric.modify_wake_up_position";
-
-
 
 
 }

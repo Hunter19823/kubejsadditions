@@ -6,6 +6,10 @@ import dev.latvian.mods.kubejs.script.ScriptType;
 import net.minecraft.world.entity.LivingEntity;
 import pie.ilikepiefoo.fabric.FabricEventsJS;
 
+/**
+ * An event to check if elytra flight (both through normal and custom elytras) is allowed.
+ * All listeners need to return true to allow the entity to fly, otherwise elytra flight will be blocked/stopped.
+ */
 public class AllowElytraFlightEventJS extends LivingEntityEventJS {
 	private final LivingEntity entity;
 
@@ -18,6 +22,9 @@ public class AllowElytraFlightEventJS extends LivingEntityEventJS {
 		return true;
 	}
 
+	/**
+	 * @return false to block elytra flight, true to allow it (unless another listener returns false)
+	 */
 	public static boolean handler(LivingEntity entity) {
 		AllowElytraFlightEventJS event = new AllowElytraFlightEventJS(entity);
 		event.post(ScriptType.SERVER, FabricEventsJS.ALLOW_ELYTRA_FLIGHT);

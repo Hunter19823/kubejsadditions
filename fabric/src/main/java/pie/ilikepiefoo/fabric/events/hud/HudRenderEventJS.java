@@ -4,6 +4,8 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Matrix4f;
 import com.mojang.math.Quaternion;
 import dev.latvian.mods.kubejs.event.EventJS;
+import dev.latvian.mods.kubejs.script.ScriptType;
+import pie.ilikepiefoo.fabric.FabricEventsJS;
 
 public class HudRenderEventJS extends EventJS {
 	private final float tickDelta;
@@ -56,6 +58,17 @@ public class HudRenderEventJS extends EventJS {
 
 	public void mulPoseMatrix(Matrix4f matrix4f) {
 		matrixStack.mulPoseMatrix(matrix4f);
+	}
+
+	/**
+	 * Called after rendering the whole hud, which is displayed in game, in a world.
+	 *
+	 * @param matrixStack the matrixStack
+	 * @param tickDelta Progress for linearly interpolating between the previous and current game state
+	 */
+	public static void handle(PoseStack matrixStack, float tickDelta) {
+		HudRenderEventJS eventjs = new HudRenderEventJS(tickDelta, matrixStack);
+		eventjs.post(ScriptType.CLIENT, FabricEventsJS.CLIENT_RENDER_HUD);
 	}
 }
 
