@@ -1,4 +1,4 @@
-package pie.ilikepiefoo.fabric.events;
+package pie.ilikepiefoo.fabric.events.hud;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Matrix4f;

@@ -1,4 +1,4 @@
-package pie.ilikepiefoo.fabric.events;
+package pie.ilikepiefoo.fabric.events.worldrender;
 
 import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderContext;
 import net.minecraft.world.entity.Entity;

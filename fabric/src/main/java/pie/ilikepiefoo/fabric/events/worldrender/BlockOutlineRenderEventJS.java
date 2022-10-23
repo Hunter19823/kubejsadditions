@@ -1,4 +1,4 @@
-package pie.ilikepiefoo.fabric.events;
+package pie.ilikepiefoo.fabric.events.worldrender;
 
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderContext;
