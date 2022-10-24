@@ -78,7 +78,7 @@ public class BlockOutlineRenderEventJS extends WorldRenderContextEventJS {
 	public static boolean handle(WorldRenderContext context, WorldRenderContext.BlockOutlineContext blockOutlineContext) {
 		BlockOutlineRenderEventJS event = new BlockOutlineRenderEventJS(context, blockOutlineContext);
 		event.post(ScriptType.CLIENT, FabricEventsJS.CLIENT_BLOCK_OUTLINE);
-		return event.isCancelled();
+		return !event.isCancelled();
 	}
 
 }

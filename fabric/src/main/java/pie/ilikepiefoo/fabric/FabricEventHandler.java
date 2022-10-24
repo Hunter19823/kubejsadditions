@@ -1,38 +1,44 @@
 package pie.ilikepiefoo.fabric;
 
-import com.mojang.blaze3d.vertex.PoseStack;
-import dev.latvian.mods.kubejs.script.ScriptType;
+import dev.architectury.platform.Platform;
 import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
-import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderContext;
 import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderEvents;
 import net.fabricmc.fabric.api.entity.event.v1.EntityElytraEvents;
 import net.fabricmc.fabric.api.entity.event.v1.EntitySleepEvents;
 import net.minecraft.client.renderer.LevelRenderer;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.phys.HitResult;
-import org.jetbrains.annotations.Nullable;
-import pie.ilikepiefoo.fabric.events.sleep.AllowBedEventJS;
 import pie.ilikepiefoo.fabric.events.elytra.AllowElytraFlightEventJS;
+import pie.ilikepiefoo.fabric.events.elytra.CustomElytraFlightEventJS;
+import pie.ilikepiefoo.fabric.events.hud.HudRenderEventJS;
+import pie.ilikepiefoo.fabric.events.sleep.AllowBedEventJS;
 import pie.ilikepiefoo.fabric.events.sleep.AllowNearbyMonstersEventJS;
 import pie.ilikepiefoo.fabric.events.sleep.AllowResettingTimeEventJS;
 import pie.ilikepiefoo.fabric.events.sleep.AllowSettingSpawnEventJS;
 import pie.ilikepiefoo.fabric.events.sleep.AllowSleepTimeEventJS;
 import pie.ilikepiefoo.fabric.events.sleep.AllowSleepingEventJS;
-import pie.ilikepiefoo.fabric.events.worldrender.BeforeBlockOutlineRenderEventJS;
-import pie.ilikepiefoo.fabric.events.worldrender.BlockOutlineRenderEventJS;
-import pie.ilikepiefoo.fabric.events.elytra.CustomElytraFlightEventJS;
-import pie.ilikepiefoo.fabric.events.hud.HudRenderEventJS;
-import pie.ilikepiefoo.fabric.events.sleep.ModifyWakeUpPositionEventJS;
 import pie.ilikepiefoo.fabric.events.sleep.ModifySleepingDirectionEventJS;
+import pie.ilikepiefoo.fabric.events.sleep.ModifyWakeUpPositionEventJS;
 import pie.ilikepiefoo.fabric.events.sleep.SetBedOccupationStateEventJS;
 import pie.ilikepiefoo.fabric.events.sleep.SleepingEventJS;
+import pie.ilikepiefoo.fabric.events.worldrender.BeforeBlockOutlineRenderEventJS;
+import pie.ilikepiefoo.fabric.events.worldrender.BlockOutlineRenderEventJS;
 import pie.ilikepiefoo.fabric.events.worldrender.WorldRenderContextEventJS;
 
 public class FabricEventHandler {
 
 	public static void init() {
+		switch(Platform.getEnv()) {
+			case CLIENT -> registerClient();
+			case SERVER -> registerServer();
+		}
+	}
+
+	private static void registerClient() {
 		registerWorldRenderEvents();
 		registerHudEvents();
+	}
+
+	private static void registerServer() {
 		registerElytraEvents();
 		registerSleepEvents();
 	}
@@ -76,6 +82,7 @@ public class FabricEventHandler {
 	 * Events related to elytra flight for living entities. Elytra flight is also known as "fall flying".
 	 */
 	private static void registerElytraEvents() {
+
 		EntityElytraEvents.ALLOW.register(AllowElytraFlightEventJS::handler);
 		EntityElytraEvents.CUSTOM.register(CustomElytraFlightEventJS::handler);
 	}

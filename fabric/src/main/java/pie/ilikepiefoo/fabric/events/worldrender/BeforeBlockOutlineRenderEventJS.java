@@ -77,7 +77,7 @@ public class BeforeBlockOutlineRenderEventJS extends WorldRenderContextEventJS {
 	public static boolean handle(WorldRenderContext context, @Nullable HitResult hitResult) {
 		BeforeBlockOutlineRenderEventJS event = new BeforeBlockOutlineRenderEventJS(context, hitResult);
 		event.post(ScriptType.CLIENT, FabricEventsJS.CLIENT_BEFORE_BLOCK_OUTLINE);
-		return event.isCancelled();
+		return !event.isCancelled();
 	}
 }
 
