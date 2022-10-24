@@ -1,9 +1,11 @@
 package pie.ilikepiefoo.fabric.events.sleep;
 
+import dev.architectury.platform.Platform;
 import dev.latvian.mods.kubejs.entity.EntityJS;
 import dev.latvian.mods.kubejs.level.BlockContainerJS;
 import dev.latvian.mods.kubejs.player.PlayerEventJS;
 import dev.latvian.mods.kubejs.script.ScriptType;
+import net.fabricmc.api.EnvType;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -69,6 +71,8 @@ public class AllowSleepingEventJS extends PlayerEventJS {
 	 * @see Player#startSleepInBed(BlockPos)
 	 */
 	public static Player.BedSleepingProblem handler(Player player, BlockPos sleepingPos) {
+		if(ScriptType.SERVER.manager == null)
+			return null;
 		AllowSleepingEventJS event = new AllowSleepingEventJS(player, sleepingPos);
 		event.post(ScriptType.SERVER, FabricEventsJS.ALLOW_SLEEPING);
 		if(event.isCancelled() && event.getSleepingProblem() == null) {

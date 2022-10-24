@@ -1,9 +1,11 @@
 package pie.ilikepiefoo.fabric.events.sleep;
 
+import dev.architectury.platform.Platform;
 import dev.latvian.mods.kubejs.entity.EntityJS;
 import dev.latvian.mods.kubejs.entity.LivingEntityEventJS;
 import dev.latvian.mods.kubejs.level.BlockContainerJS;
 import dev.latvian.mods.kubejs.script.ScriptType;
+import net.fabricmc.api.EnvType;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.block.state.BlockState;
@@ -75,6 +77,8 @@ public class ModifyWakeUpPositionEventJS extends LivingEntityEventJS {
 	 */
 	@Nullable
 	public static Vec3 handler(LivingEntity entity, BlockPos sleepingPos, BlockState bedState, @Nullable Vec3 wakeUpPos) {
+		if(ScriptType.SERVER.manager == null)
+			return wakeUpPos;
 		ModifyWakeUpPositionEventJS event = new ModifyWakeUpPositionEventJS(entity, sleepingPos, bedState, wakeUpPos);
 		event.post(ScriptType.SERVER, FabricEventsJS.MODIFY_WAKE_UP_POSITION);
 		return event.getWakeUpPos();

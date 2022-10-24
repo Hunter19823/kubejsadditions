@@ -1,9 +1,11 @@
 package pie.ilikepiefoo.fabric.events.sleep;
 
+import dev.architectury.platform.Platform;
 import dev.latvian.mods.kubejs.entity.EntityJS;
 import dev.latvian.mods.kubejs.level.BlockContainerJS;
 import dev.latvian.mods.kubejs.player.PlayerEventJS;
 import dev.latvian.mods.kubejs.script.ScriptType;
+import net.fabricmc.api.EnvType;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.LivingEntity;
@@ -75,6 +77,8 @@ public class AllowNearbyMonstersEventJS extends PlayerEventJS {
 	 *         {@link InteractionResult#PASS} to fall back to other callbacks
 	 */
 	public static InteractionResult handler(Player player, BlockPos sleepingPos, boolean vanillaResult) {
+		if(ScriptType.SERVER.manager == null)
+			return InteractionResult.PASS;
 		AllowNearbyMonstersEventJS event = new AllowNearbyMonstersEventJS(player, sleepingPos, vanillaResult);
 		event.post(ScriptType.SERVER, FabricEventsJS.ALLOW_NEARBY_MONSTERS);
 		if(event.isCancelled() && event.getResult() == InteractionResult.PASS) {

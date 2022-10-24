@@ -1,9 +1,12 @@
 package pie.ilikepiefoo.fabric.events.elytra;
 
+import dev.architectury.platform.Platform;
 import dev.latvian.mods.kubejs.entity.EntityJS;
 import dev.latvian.mods.kubejs.entity.LivingEntityEventJS;
 import dev.latvian.mods.kubejs.script.ScriptType;
+import net.fabricmc.api.EnvType;
 import net.minecraft.world.entity.LivingEntity;
+import org.apache.logging.log4j.LogManager;
 import pie.ilikepiefoo.fabric.FabricEventsJS;
 
 /**
@@ -26,6 +29,8 @@ public class AllowElytraFlightEventJS extends LivingEntityEventJS {
 	 * @return false to block elytra flight, true to allow it (unless another listener returns false)
 	 */
 	public static boolean handler(LivingEntity entity) {
+		if(ScriptType.SERVER.manager == null)
+			return true;
 		AllowElytraFlightEventJS event = new AllowElytraFlightEventJS(entity);
 		event.post(ScriptType.SERVER, FabricEventsJS.ALLOW_ELYTRA_FLIGHT);
 		return !event.isCancelled();

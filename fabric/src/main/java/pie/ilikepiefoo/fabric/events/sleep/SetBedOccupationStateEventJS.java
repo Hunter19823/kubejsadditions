@@ -1,9 +1,11 @@
 package pie.ilikepiefoo.fabric.events.sleep;
 
+import dev.architectury.platform.Platform;
 import dev.latvian.mods.kubejs.entity.EntityJS;
 import dev.latvian.mods.kubejs.entity.LivingEntityEventJS;
 import dev.latvian.mods.kubejs.level.BlockContainerJS;
 import dev.latvian.mods.kubejs.script.ScriptType;
+import net.fabricmc.api.EnvType;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.block.state.BlockState;
@@ -60,6 +62,8 @@ public class SetBedOccupationStateEventJS extends LivingEntityEventJS {
 	 * @return {@code true} if the occupation state was successfully modified, {@code false} to fall back to other callbacks
 	 */
 	public static boolean handler(LivingEntity entity, BlockPos sleepingPos, BlockState bedState, boolean occupied) {
+		if(ScriptType.SERVER.manager == null)
+			return false;
 		SetBedOccupationStateEventJS event = new SetBedOccupationStateEventJS(entity, sleepingPos, bedState, occupied);
 		event.post(ScriptType.SERVER, FabricEventsJS.SET_BED_OCCUPATION_STATE);
 		return !event.isCancelled();

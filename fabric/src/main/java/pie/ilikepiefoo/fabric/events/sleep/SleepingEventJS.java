@@ -1,9 +1,13 @@
 package pie.ilikepiefoo.fabric.events.sleep;
 
+import dev.architectury.platform.Platform;
 import dev.latvian.mods.kubejs.entity.EntityJS;
 import dev.latvian.mods.kubejs.entity.LivingEntityEventJS;
 import dev.latvian.mods.kubejs.level.BlockContainerJS;
 import dev.latvian.mods.kubejs.script.ScriptType;
+import net.fabricmc.api.EnvType;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.server.IntegratedServer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.LivingEntity;
 import pie.ilikepiefoo.fabric.FabricEventsJS;
@@ -38,6 +42,8 @@ public class SleepingEventJS extends LivingEntityEventJS {
 	 * @param sleepingPos the {@linkplain LivingEntity#getSleepingPos() sleeping position} of the entity
 	 */
 	public static void startHandler(LivingEntity entity, BlockPos sleepingPos) {
+		if(ScriptType.SERVER.manager == null)
+			return;
 		SleepingEventJS event = new SleepingEventJS(entity, sleepingPos);
 		event.post(ScriptType.SERVER, FabricEventsJS.START_SLEEPING);
 	}
@@ -49,6 +55,8 @@ public class SleepingEventJS extends LivingEntityEventJS {
 	 * @param sleepingPos the {@linkplain LivingEntity#getSleepingPos() sleeping position} of the entity
 	 */
 	public static void stopHandler(LivingEntity entity, BlockPos sleepingPos) {
+		if(ScriptType.SERVER.manager == null)
+			return;
 		SleepingEventJS event = new SleepingEventJS(entity, sleepingPos);
 		event.post(ScriptType.SERVER, FabricEventsJS.STOP_SLEEPING);
 	}

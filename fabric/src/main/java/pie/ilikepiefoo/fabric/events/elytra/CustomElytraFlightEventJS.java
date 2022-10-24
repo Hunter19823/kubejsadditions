@@ -1,10 +1,13 @@
 package pie.ilikepiefoo.fabric.events.elytra;
 
+import dev.architectury.platform.Platform;
 import dev.latvian.mods.kubejs.entity.EntityJS;
 import dev.latvian.mods.kubejs.entity.LivingEntityEventJS;
 import dev.latvian.mods.kubejs.script.ScriptType;
+import net.fabricmc.api.EnvType;
 import net.fabricmc.fabric.api.entity.event.v1.FabricElytraItem;
 import net.minecraft.world.entity.LivingEntity;
+import org.apache.logging.log4j.LogManager;
 import pie.ilikepiefoo.fabric.FabricEventsJS;
 
 /**
@@ -56,6 +59,8 @@ public class CustomElytraFlightEventJS extends LivingEntityEventJS {
 	 * @return true to use a custom elytra, enabling elytra flight for the entity and cancelling subsequent handlers
 	 */
 	public static boolean handler(LivingEntity entity, boolean tickElytra) {
+		if(ScriptType.SERVER.manager == null)
+			return false;
 		CustomElytraFlightEventJS event = new CustomElytraFlightEventJS(entity, tickElytra);
 		event.post(ScriptType.SERVER, FabricEventsJS.CUSTOM_ELYTRA_FLIGHT);
 		return event.isCancelled();

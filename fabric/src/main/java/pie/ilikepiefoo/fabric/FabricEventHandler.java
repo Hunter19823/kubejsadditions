@@ -1,6 +1,7 @@
 package pie.ilikepiefoo.fabric;
 
 import dev.architectury.platform.Platform;
+import net.fabricmc.api.EnvType;
 import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
 import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderEvents;
 import net.fabricmc.fabric.api.entity.event.v1.EntityElytraEvents;
@@ -27,10 +28,10 @@ import pie.ilikepiefoo.fabric.events.worldrender.WorldRenderContextEventJS;
 public class FabricEventHandler {
 
 	public static void init() {
-		switch(Platform.getEnv()) {
-			case CLIENT -> registerClient();
-			case SERVER -> registerServer();
+		if (Platform.getEnv() == EnvType.CLIENT) {
+			registerClient();
 		}
+		registerServer();
 	}
 
 	private static void registerClient() {

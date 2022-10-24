@@ -36,6 +36,8 @@ public class AllowResettingTimeEventJS extends PlayerEventJS {
 	 * @return {@code true} if allowed, {@code false} otherwise
 	 */
 	public static boolean handler(Player player) {
+		if(ScriptType.SERVER.manager == null)
+			return true;
 		AllowResettingTimeEventJS event = new AllowResettingTimeEventJS(player);
 		event.post(ScriptType.SERVER, FabricEventsJS.ALLOW_RESETTING_TIME);
 		return !event.isCancelled();
