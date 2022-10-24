@@ -1,16 +1,14 @@
 package pie.ilikepiefoo.fabric.events.sleep;
 
-import dev.architectury.platform.Platform;
 import dev.latvian.mods.kubejs.entity.LivingEntityEventJS;
 import dev.latvian.mods.kubejs.entity.LivingEntityJS;
 import dev.latvian.mods.kubejs.level.BlockContainerJS;
 import dev.latvian.mods.kubejs.script.ScriptType;
-import net.fabricmc.api.EnvType;
+import dev.latvian.mods.kubejs.server.ServerScriptManager;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import org.apache.logging.log4j.LogManager;
 import org.jetbrains.annotations.NotNull;
 import pie.ilikepiefoo.fabric.FabricEventsJS;
 
@@ -91,7 +89,7 @@ public class AllowBedEventJS extends LivingEntityEventJS {
 	 *         {@link InteractionResult#PASS} to fall back to other callbacks
 	 */
 	public static InteractionResult handler(LivingEntity entity, BlockPos sleepingPos, BlockState state, boolean vanillaResult) {
-		if(ScriptType.SERVER.manager == null)
+		if(ServerScriptManager.instance == null)
 			return InteractionResult.PASS;
 		AllowBedEventJS event = new AllowBedEventJS(entity, sleepingPos, state, vanillaResult);
 		event.post(ScriptType.SERVER, FabricEventsJS.ALLOW_BED);

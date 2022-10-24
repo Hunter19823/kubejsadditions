@@ -3,6 +3,7 @@ package pie.ilikepiefoo.fabric.events.sleep;
 import dev.latvian.mods.kubejs.entity.EntityJS;
 import dev.latvian.mods.kubejs.player.PlayerEventJS;
 import dev.latvian.mods.kubejs.script.ScriptType;
+import dev.latvian.mods.kubejs.server.ServerScriptManager;
 import net.minecraft.world.entity.player.Player;
 import pie.ilikepiefoo.fabric.FabricEventsJS;
 
@@ -36,7 +37,7 @@ public class AllowResettingTimeEventJS extends PlayerEventJS {
 	 * @return {@code true} if allowed, {@code false} otherwise
 	 */
 	public static boolean handler(Player player) {
-		if(ScriptType.SERVER.manager == null)
+		if(ServerScriptManager.instance == null)
 			return true;
 		AllowResettingTimeEventJS event = new AllowResettingTimeEventJS(player);
 		event.post(ScriptType.SERVER, FabricEventsJS.ALLOW_RESETTING_TIME);

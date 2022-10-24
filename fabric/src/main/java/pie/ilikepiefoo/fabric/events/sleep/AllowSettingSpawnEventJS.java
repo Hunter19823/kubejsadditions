@@ -1,13 +1,11 @@
 package pie.ilikepiefoo.fabric.events.sleep;
 
-import dev.architectury.platform.Platform;
 import dev.latvian.mods.kubejs.entity.EntityJS;
 import dev.latvian.mods.kubejs.level.BlockContainerJS;
 import dev.latvian.mods.kubejs.player.PlayerEventJS;
 import dev.latvian.mods.kubejs.script.ScriptType;
-import net.fabricmc.api.EnvType;
+import dev.latvian.mods.kubejs.server.ServerScriptManager;
 import net.minecraft.core.BlockPos;
-import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import pie.ilikepiefoo.fabric.FabricEventsJS;
 
@@ -52,7 +50,7 @@ public class AllowSettingSpawnEventJS extends PlayerEventJS {
 	 * @return {@code true} if allowed, {@code false} otherwise
 	 */
 	public static boolean handler(Player player, BlockPos sleepingPos) {
-		if(ScriptType.SERVER.manager == null)
+		if(ServerScriptManager.instance == null)
 			return true;
 		AllowSettingSpawnEventJS event = new AllowSettingSpawnEventJS(player, sleepingPos);
 		event.post(ScriptType.SERVER, FabricEventsJS.ALLOW_SETTING_SPAWN);

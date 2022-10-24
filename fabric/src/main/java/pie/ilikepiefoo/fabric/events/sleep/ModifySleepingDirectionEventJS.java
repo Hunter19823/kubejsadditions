@@ -1,11 +1,10 @@
 package pie.ilikepiefoo.fabric.events.sleep;
 
-import dev.architectury.platform.Platform;
 import dev.latvian.mods.kubejs.entity.EntityJS;
 import dev.latvian.mods.kubejs.entity.LivingEntityEventJS;
 import dev.latvian.mods.kubejs.level.BlockContainerJS;
 import dev.latvian.mods.kubejs.script.ScriptType;
-import net.fabricmc.api.EnvType;
+import dev.latvian.mods.kubejs.server.ServerScriptManager;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.entity.LivingEntity;
@@ -69,7 +68,7 @@ public class ModifySleepingDirectionEventJS extends LivingEntityEventJS {
 	 */
 	@Nullable
 	public static Direction handler(LivingEntity entity, BlockPos sleepingPos, @Nullable Direction sleepingDirection) {
-		if(ScriptType.SERVER.manager == null)
+		if(ServerScriptManager.instance == null)
 			return sleepingDirection;
 		ModifySleepingDirectionEventJS event = new ModifySleepingDirectionEventJS(entity, sleepingPos, sleepingDirection);
 		event.post(ScriptType.SERVER, FabricEventsJS.MODIFY_SLEEPING_DIRECTION);
