@@ -30,6 +30,10 @@ dependencies {
     shadowCommon(project(path: ":common", configuration: "transformProductionFabric")) { transitive false }
 
 	modImplementation("dev.latvian.mods:kubejs-fabric:${rootProject.kubejs_version}")
+
+
+	modCompileOnly("mezz.jei:jei-${minecraft_version}:${rootProject.jei_version}:api")
+	modRuntimeOnly("mezz.jei:jei-${minecraft_version}:${rootProject.jei_version}")
 }
 
 processResources {
