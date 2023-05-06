@@ -14,9 +14,9 @@ dependencies {
     modApi "dev.architectury:architectury:${rootProject.architectury_version}"
 	modImplementation("dev.latvian.mods:kubejs:${kubejs_version}")
 	// compile against the JEI API but do not include it at runtime
-	compileOnly ("mezz.jei:jei-${minecraft_version}:${jei_version}:api")
+	compileOnly("mezz.jei:jei-${minecraft_version}-common-api:${jei_version}")
 	// at runtime, use the full JEI jar
-	runtimeOnly ("mezz.jei:jei-${minecraft_version}:${jei_version}")
+	runtimeOnly("mezz.jei:jei-${minecraft_version}-common:${jei_version}")
 }
 
 publishing {

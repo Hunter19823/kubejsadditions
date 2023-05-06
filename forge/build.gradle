@@ -28,18 +28,17 @@ configurations {
 }
 
 dependencies {
-    forge "net.minecraftforge:forge:${rootProject.forge_version}"
-    // Remove the next line if you don't want to depend on the API
-    modApi "dev.architectury:architectury-forge:${rootProject.architectury_version}"
+	forge "net.minecraftforge:forge:${rootProject.forge_version}"
+	// Remove the next line if you don't want to depend on the API
+	modApi "dev.architectury:architectury-forge:${rootProject.architectury_version}"
 
-    common(project(path: ":common", configuration: "namedElements")) { transitive false }
-    shadowCommon(project(path: ":common", configuration: "transformProductionForge")) { transitive = false }
+	common(project(path: ":common", configuration: "namedElements")) { transitive false }
+	shadowCommon(project(path: ":common", configuration: "transformProductionForge")) { transitive = false }
 
 	modImplementation("dev.latvian.mods:kubejs-forge:${rootProject.kubejs_version}")
 
-
-	modCompileOnly("mezz.jei:jei-${minecraft_version}:${rootProject.jei_version}:api")
-	modRuntimeOnly("mezz.jei:jei-${minecraft_version}:${rootProject.jei_version}")
+	modCompileOnly("mezz.jei:jei-${minecraft_version}-forge-api:${rootProject.jei_version}")
+	modRuntimeOnly("mezz.jei:jei-${minecraft_version}-forge:${rootProject.jei_version}")
 }
 
 processResources {
@@ -124,7 +123,7 @@ unifiedPublishing {
 				id = project.curseforge_id
 			}
 		}
-		var MT = System.getenv("MODRINTH_TOKEN")
+		var MT = System.getenv("MODRINTH_TOKEN_BROKEN")
 		if (MT != null) {
 			modrinth {
 				token = mt

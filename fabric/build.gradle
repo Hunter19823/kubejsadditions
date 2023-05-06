@@ -22,18 +22,18 @@ configurations {
 
 dependencies {
     modImplementation "net.fabricmc:fabric-loader:${rootProject.fabric_loader_version}"
-    modApi "net.fabricmc.fabric-api:fabric-api:${rootProject.fabric_api_version}"
-    // Remove the next line if you don't want to depend on the API
-    modApi "dev.architectury:architectury-fabric:${rootProject.architectury_version}"
+	modApi "net.fabricmc.fabric-api:fabric-api:${rootProject.fabric_api_version}"
+	// Remove the next line if you don't want to depend on the API
+	modApi "dev.architectury:architectury-fabric:${rootProject.architectury_version}"
 
-    common(project(path: ":common", configuration: "namedElements")) { transitive false }
-    shadowCommon(project(path: ":common", configuration: "transformProductionFabric")) { transitive false }
+	common(project(path: ":common", configuration: "namedElements")) { transitive false }
+	shadowCommon(project(path: ":common", configuration: "transformProductionFabric")) { transitive false }
 
 	modImplementation("dev.latvian.mods:kubejs-fabric:${rootProject.kubejs_version}")
 
 
-	modCompileOnly("mezz.jei:jei-${minecraft_version}:${rootProject.jei_version}:api")
-	modRuntimeOnly("mezz.jei:jei-${minecraft_version}:${rootProject.jei_version}")
+	modCompileOnly("mezz.jei:jei-${minecraft_version}-fabric-api:${rootProject.jei_version}")
+	modRuntimeOnly("mezz.jei:jei-${minecraft_version}-fabric:${rootProject.jei_version}")
 }
 
 processResources {
@@ -105,6 +105,9 @@ unifiedPublishing {
 			depends {
 				curseforge = modrinth = "rhino"
 			}
+			depends {
+				curseforge = modrinth = "kubejs"
+			}
 		}
 
 		var CF = System.getenv("CURSEFORGE_KEY")
@@ -114,12 +117,12 @@ unifiedPublishing {
 				id = project.curseforge_id
 			}
 		}
-		var MT = System.getenv("MODRINTH_TOKEN")
+		var MT = System.getenv("MODRINTH_TOKEN_BROKEN")
 		if (MT != null) {
 			modrinth {
-				token = mt
+				token = MT
 				id = project.modrinth_id
-				version = "$project.version+$project.name"
+				version = "$project.name+$project.version"
 			}
 		}
 	}
