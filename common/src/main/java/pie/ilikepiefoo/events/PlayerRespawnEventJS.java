@@ -1,8 +1,8 @@
 package pie.ilikepiefoo.events;
 
-import dev.latvian.mods.kubejs.entity.EntityJS;
 import dev.latvian.mods.kubejs.player.PlayerEventJS;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.player.Player;
 
 public class PlayerRespawnEventJS extends PlayerEventJS {
 	private final ServerPlayer player;
@@ -14,7 +14,7 @@ public class PlayerRespawnEventJS extends PlayerEventJS {
 	}
 
 	@Override
-	public EntityJS getEntity() {
+	public Player getEntity() {
 		return entityOf(player);
 	}
 

@@ -1,6 +1,5 @@
 package pie.ilikepiefoo;
 
-
 import dev.architectury.event.EventResult;
 import dev.architectury.event.events.common.EntityEvent;
 import dev.architectury.event.events.common.InteractionEvent;
@@ -22,7 +21,6 @@ import pie.ilikepiefoo.events.PlayerCloneEventJS;
 import pie.ilikepiefoo.events.PlayerRespawnEventJS;
 
 public class EventHandler {
-
 	public static void init() {
 		PlayerEvent.CHANGE_DIMENSION.register(EventHandler::onPlayerChangeDimension);
 		PlayerEvent.PLAYER_CLONE.register(EventHandler::onPlayerClone);
@@ -43,11 +41,11 @@ public class EventHandler {
 	 * the action may be cancelled by the result.
 	 */
 	private static EventResult onEntityTame(Animal animal, Player player) {
-		EntityTameEventJS event = EntityTameEventJS.of(animal,player);
+		EntityTameEventJS event = EntityTameEventJS.of(animal, player);
 		event.post(AdditionalEventsJS.ENTITY_TAME);
-		if(event.isCancelled()){
+		if (event.isCanceled()) {
 			return EventResult.interruptFalse();
-		}else {
+		} else {
 			return EventResult.pass();
 		}
 	}
@@ -80,9 +78,9 @@ public class EventHandler {
 	private static EventResult onFarmlandTrampled(Level world, BlockPos pos, BlockState state, float distance, Entity entity) {
 		FarmlandTrampleEventJS event = FarmlandTrampleEventJS.of(world, pos, state, distance, entity);
 		event.post(AdditionalEventsJS.BLOCK_TRAMPLE);
-		if(event.isCancelled()) {
+		if (event.isCanceled()) {
 			return EventResult.interruptFalse();
-		}else {
+		} else {
 			return EventResult.pass();
 		}
 	}
@@ -92,8 +90,8 @@ public class EventHandler {
 	 * Equivalent to Forge's {@code PlayerRespawnEvent} event.
 	 * To manipulate the player use {@link PlayerEvent.PlayerClone#clone(ServerPlayer, ServerPlayer, boolean)}.
 	 *
-	 * @param serverPlayer    The respawned player.
-	 * @param conqueredEnd    Whether the player has conquered the end. This is true when the player joined the end and now is leaving it. {@link ServerPlayer#wonGame}
+	 * @param serverPlayer The respawned player.
+	 * @param conqueredEnd Whether the player has conquered the end. This is true when the player joined the end and now is leaving it. {@link ServerPlayer#wonGame}
 	 */
 	private static void onPlayerRespawn(ServerPlayer serverPlayer, boolean conqueredEnd) {
 		PlayerRespawnEventJS.of(serverPlayer, conqueredEnd).post(ScriptType.SERVER, AdditionalEventsJS.PLAYER_RESPAWN);
@@ -104,9 +102,9 @@ public class EventHandler {
 	 * This can be used to manipulate the new player.
 	 * Equivalent to Forge's {@code PlayerEvent.Clone} event.
 	 *
-	 * @param oldPlayer      The old player.
-	 * @param newPlayer      The new player.
-	 * @param conqueredEnd   This is true when the player joined the end and now is leaving it. {@link ServerPlayer#wonGame}
+	 * @param oldPlayer    The old player.
+	 * @param newPlayer    The new player.
+	 * @param conqueredEnd This is true when the player joined the end and now is leaving it. {@link ServerPlayer#wonGame}
 	 */
 	private static void onPlayerClone(ServerPlayer oldPlayer, ServerPlayer newPlayer, boolean conqueredEnd) {
 		PlayerCloneEventJS.of(oldPlayer, newPlayer, conqueredEnd).post(ScriptType.SERVER, AdditionalEventsJS.PLAYER_CLONE);
@@ -120,7 +118,7 @@ public class EventHandler {
 	 * @param oldLevel The level the player comes from.
 	 * @param newLevel The level the player teleports into.
 	 */
-	public static void onPlayerChangeDimension(ServerPlayer player, ResourceKey<Level> oldLevel, ResourceKey<Level> newLevel){
+	public static void onPlayerChangeDimension(ServerPlayer player, ResourceKey<Level> oldLevel, ResourceKey<Level> newLevel) {
 		PlayerChangeDimensionEventJS.of(player, oldLevel, newLevel).post(ScriptType.SERVER, AdditionalEventsJS.PLAYER_CHANGE_DIMENSION);
 	}
 }

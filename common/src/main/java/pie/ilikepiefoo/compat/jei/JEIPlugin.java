@@ -49,8 +49,7 @@ public class JEIPlugin implements IModPlugin {
 	@Override
 	public void registerItemSubtypes(ISubtypeRegistration registration) {
 		// Create a new event and post it.
-		new RegisterItemSubtypeEventJS(registration)
-				.post(SCRIPT_TYPE, AdditionalEventsJS.JEI_REGISTER_ITEM_SUBTYPES);
+		new RegisterItemSubtypeEventJS(registration).post(SCRIPT_TYPE, AdditionalEventsJS.JEI_REGISTER_ITEM_SUBTYPES);
 	}
 
 	/**
@@ -61,8 +60,7 @@ public class JEIPlugin implements IModPlugin {
 	@Override
 	public void registerFluidSubtypes(ISubtypeRegistration registration) {
 		// Create a new event and post it.
-		new RegisterFluidSubtypeEventJS(registration)
-				.post(SCRIPT_TYPE, AdditionalEventsJS.JEI_REGISTER_FLUID_SUBTYPES);
+		new RegisterFluidSubtypeEventJS(registration).post(SCRIPT_TYPE, AdditionalEventsJS.JEI_REGISTER_FLUID_SUBTYPES);
 	}
 
 	/**
@@ -73,8 +71,7 @@ public class JEIPlugin implements IModPlugin {
 	@Override
 	public void registerIngredients(IModIngredientRegistration registration) {
 		// Create a new event and post it.
-		new RegisterIngredientsEventJS(registration)
-				.post(SCRIPT_TYPE, AdditionalEventsJS.JEI_REGISTER_INGREDIENTS);
+		new RegisterIngredientsEventJS(registration).post(SCRIPT_TYPE, AdditionalEventsJS.JEI_REGISTER_INGREDIENTS);
 	}
 
 	/**
@@ -86,8 +83,7 @@ public class JEIPlugin implements IModPlugin {
 	@Override
 	public void registerCategories(IRecipeCategoryRegistration registration) {
 		// Create a new event and post it.
-		new RegisterCategoriesEventJS(registration)
-				.post(SCRIPT_TYPE, AdditionalEventsJS.JEI_REGISTER_CATEGORIES);
+		new RegisterCategoriesEventJS(registration).post(SCRIPT_TYPE, AdditionalEventsJS.JEI_REGISTER_CATEGORIES);
 	}
 
 	/**
@@ -99,8 +95,7 @@ public class JEIPlugin implements IModPlugin {
 	@Override
 	public void registerVanillaCategoryExtensions(IVanillaCategoryExtensionRegistration registration) {
 		// Create a new event and post it.
-		new RegisterVanillaCategoryExtensionsEventJS(registration)
-				.post(SCRIPT_TYPE, AdditionalEventsJS.JEI_REGISTER_VANILLA_CATEGORY_EXTENSIONS);
+		new RegisterVanillaCategoryExtensionsEventJS(registration).post(SCRIPT_TYPE, AdditionalEventsJS.JEI_REGISTER_VANILLA_CATEGORY_EXTENSIONS);
 	}
 
 	/**
@@ -111,8 +106,7 @@ public class JEIPlugin implements IModPlugin {
 	@Override
 	public void registerRecipes(IRecipeRegistration registration) {
 		// Create a new event and post it.
-		new RegisterRecipesEventJS(registration)
-				.post(SCRIPT_TYPE, AdditionalEventsJS.JEI_REGISTER_RECIPES);
+		new RegisterRecipesEventJS(registration).post(SCRIPT_TYPE, AdditionalEventsJS.JEI_REGISTER_RECIPES);
 	}
 
 	/**
@@ -123,8 +117,7 @@ public class JEIPlugin implements IModPlugin {
 	@Override
 	public void registerRecipeTransferHandlers(IRecipeTransferRegistration registration) {
 		// Create a new event and post it.
-		new RegisterRecipeTransferHandlersEventJS(registration)
-				.post(SCRIPT_TYPE, AdditionalEventsJS.JEI_REGISTER_RECIPE_TRANSFER_HANDLERS);
+		new RegisterRecipeTransferHandlersEventJS(registration).post(SCRIPT_TYPE, AdditionalEventsJS.JEI_REGISTER_RECIPE_TRANSFER_HANDLERS);
 	}
 
 	/**
@@ -137,8 +130,7 @@ public class JEIPlugin implements IModPlugin {
 	@Override
 	public void registerRecipeCatalysts(IRecipeCatalystRegistration registration) {
 		// Create a new event and post it.
-		new RegisterRecipeCatalystsEventJS(registration)
-				.post(SCRIPT_TYPE, AdditionalEventsJS.JEI_REGISTER_RECIPE_CATALYSTS);
+		new RegisterRecipeCatalystsEventJS(registration).post(SCRIPT_TYPE, AdditionalEventsJS.JEI_REGISTER_RECIPE_CATALYSTS);
 	}
 
 	/**
@@ -151,8 +143,7 @@ public class JEIPlugin implements IModPlugin {
 	@Override
 	public void registerGuiHandlers(IGuiHandlerRegistration registration) {
 		// Create a new event and post it.
-		new RegisterGUIHandlersEventJS(registration)
-				.post(SCRIPT_TYPE, AdditionalEventsJS.JEI_REGISTER_GUI_HANDLERS);
+		new RegisterGUIHandlersEventJS(registration).post(SCRIPT_TYPE, AdditionalEventsJS.JEI_REGISTER_GUI_HANDLERS);
 	}
 
 	/**
@@ -163,8 +154,7 @@ public class JEIPlugin implements IModPlugin {
 	@Override
 	public void registerAdvanced(IAdvancedRegistration registration) {
 		// Create a new event and post it.
-		new RegisterAdvancedEventJS(registration)
-				.post(SCRIPT_TYPE, AdditionalEventsJS.JEI_REGISTER_ADVANCED);
+		new RegisterAdvancedEventJS(registration).post(SCRIPT_TYPE, AdditionalEventsJS.JEI_REGISTER_ADVANCED);
 	}
 
 	/**
@@ -175,7 +165,6 @@ public class JEIPlugin implements IModPlugin {
 	@Override
 	public void onRuntimeAvailable(IJeiRuntime jeiRuntime) {
 		// Create a new event and post it.
-		new OnRuntimeAvailableEventJSJS(jeiRuntime)
-				.post(SCRIPT_TYPE, AdditionalEventsJS.JEI_ON_RUNTIME_AVAILABLE);
+		new OnRuntimeAvailableEventJSJS(jeiRuntime).post(SCRIPT_TYPE, AdditionalEventsJS.JEI_ON_RUNTIME_AVAILABLE);
 	}
 }

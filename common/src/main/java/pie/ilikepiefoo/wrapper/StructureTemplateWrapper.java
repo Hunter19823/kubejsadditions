@@ -3,6 +3,7 @@ package pie.ilikepiefoo.wrapper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Vec3i;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.Block;
@@ -70,8 +71,8 @@ public class StructureTemplateWrapper {
 		return getData().calculateConnectedPosition(structurePlaceSettings, blockPos, structurePlaceSettings2, blockPos2);
 	}
 
-	public boolean placeInWorld(ServerLevelAccessor serverLevelAccessor, BlockPos blockPos, BlockPos blockPos2, StructurePlaceSettings structurePlaceSettings, Random random, int i) {
-		return getData().placeInWorld(serverLevelAccessor, blockPos, blockPos2, structurePlaceSettings, random, i);
+	public boolean placeInWorld(ServerLevelAccessor serverLevelAccessor, BlockPos blockPos, BlockPos blockPos2, StructurePlaceSettings structurePlaceSettings, RandomSource randomSource, int i) {
+		return getData().placeInWorld(serverLevelAccessor, blockPos, blockPos2, structurePlaceSettings, randomSource, i);
 	}
 
 	public BlockPos getZeroPositionWithTransform(BlockPos blockPos, Mirror mirror, Rotation rotation) {

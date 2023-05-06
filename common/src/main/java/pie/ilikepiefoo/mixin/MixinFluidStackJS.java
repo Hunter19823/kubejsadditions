@@ -1,6 +1,5 @@
 package pie.ilikepiefoo.mixin;
 
-
 import dev.latvian.mods.kubejs.fluid.FluidStackJS;
 import dev.latvian.mods.kubejs.util.MapJS;
 import dev.latvian.mods.rhino.mod.util.NBTUtils;
@@ -13,31 +12,30 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import pie.ilikepiefoo.fluid.FluidTagJS;
 
+import java.util.Map;
+
 @Mixin(value = FluidStackJS.class, remap = false)
 public class MixinFluidStackJS {
-	private static final Logger LOGGER = LogManager.getLogger();
-
 	@Inject(at = @At("HEAD"), method = "of(Ljava/lang/Object;)Ldev/latvian/mods/kubejs/fluid/FluidStackJS;", cancellable = true)
 	private static void ofString(Object o, CallbackInfoReturnable<FluidStackJS> cir) {
-		if(o instanceof CharSequence || o instanceof ResourceLocation) {
+		if (o instanceof CharSequence || o instanceof ResourceLocation) {
 			String s = o.toString().trim();
 
-			if(s.startsWith("#")) {
+			if (s.startsWith("#")) {
 				cir.setReturnValue(new FluidTagJS(new ResourceLocation(s.substring(1))));
 				cir.cancel();
 			}
 		}
 	}
 
-
 	@Inject(
 			at = @At(value = "RETURN", shift = At.Shift.BEFORE, ordinal = 8),
 			method = "of(Ljava/lang/Object;)Ldev/latvian/mods/kubejs/fluid/FluidStackJS;",
 			cancellable = true)
 	private static void ofMap(Object o, CallbackInfoReturnable<FluidStackJS> cir) {
-		MapJS map = MapJS.of(o);
+		Map<?, ?> map = MapJS.of(o);
 
-		if(map != null && map.containsKey("fluidTag")){
+		if (map != null && map.containsKey("fluidTag")) {
 			FluidTagJS tagJS = new FluidTagJS(new ResourceLocation(map.get("fluidTag").toString()));
 
 			if (map.get("amount") instanceof Number number) {
@@ -51,5 +49,4 @@ public class MixinFluidStackJS {
 			cir.cancel();
 		}
 	}
-
 }

@@ -20,5 +20,4 @@ public class AdditionalEventsJS {
 	public static final String JEI_REGISTER_RECIPES = "jei.register.recipes";
 	public static final String JEI_REGISTER_RECIPE_TRANSFER_HANDLERS = "jei.register.recipe_handler_transfer";
 	public static final String JEI_REGISTER_VANILLA_CATEGORY_EXTENSIONS = "jei.register.categories_vanilla";
-
 }

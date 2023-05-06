@@ -1,7 +1,6 @@
 package pie.ilikepiefoo.events;
 
 import dev.latvian.mods.kubejs.entity.EntityEventJS;
-import dev.latvian.mods.kubejs.entity.EntityJS;
 import net.minecraft.world.entity.Entity;
 
 public class EntityEnterChunkEventJS extends EntityEventJS {
@@ -24,8 +23,8 @@ public class EntityEnterChunkEventJS extends EntityEventJS {
 	}
 
 	@Override
-	public EntityJS getEntity() {
-		return entityOf(entity);
+	public Entity getEntity() {
+		return entity;
 	}
 
 	public int getChunkX() {

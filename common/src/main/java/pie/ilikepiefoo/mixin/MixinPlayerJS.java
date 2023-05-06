@@ -52,11 +52,11 @@ public class MixinPlayerJS {
 		minecraftPlayer.attack(entity);
 	}
 
-	public void disableShield(boolean forced){
+	public void disableShield(boolean forced) {
 		(minecraftPlayer).disableShield(forced);
 	}
 
-	public void remove(Entity.RemovalReason reason) { // I wonder if this will cause any issues...
+	public void remove(Entity.RemovalReason reason) {
 		minecraftPlayer.remove(reason);
 	}
 
@@ -77,7 +77,7 @@ public class MixinPlayerJS {
 	}
 
 	public void toggleElytra(boolean enabled) {
-		if(enabled) {
+		if (enabled) {
 			minecraftPlayer.startFallFlying();
 		} else {
 			minecraftPlayer.stopFallFlying();
@@ -148,7 +148,7 @@ public class MixinPlayerJS {
 		return minecraftPlayer.getLuck();
 	}
 
-	public ItemStackJS getAmmo(ItemStack stack) {
+	public ItemStack getAmmo(ItemStack stack) {
 		return ItemStackJS.of(minecraftPlayer.getProjectile(stack));
 	}
 
@@ -160,7 +160,7 @@ public class MixinPlayerJS {
 		return (minecraftPlayer.getMobType());
 	}
 
-	public void push(Entity entity){
+	public void push(Entity entity) {
 		minecraftPlayer.push(entity);
 	}
 
@@ -169,12 +169,11 @@ public class MixinPlayerJS {
 	}
 
 	public BlockContainerJS getBed() {
-		if(minecraftPlayer.getSleepingPos().isPresent()) {
-			return new BlockContainerJS(minecraftPlayer.level,minecraftPlayer.getSleepingPos().get());
+		if (minecraftPlayer.getSleepingPos().isPresent()) {
+			return new BlockContainerJS(minecraftPlayer.level, minecraftPlayer.getSleepingPos().get());
 		}
 		return null;
 	}
-
 
 
 }

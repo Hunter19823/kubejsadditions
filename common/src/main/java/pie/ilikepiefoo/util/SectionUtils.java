@@ -4,9 +4,8 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.ChunkPos;
 
 public class SectionUtils {
-
 	public static ChunkPos getChunkPos(Object o) {
-		if(o instanceof ChunkPos chunkPos){
+		if (o instanceof ChunkPos chunkPos) {
 			return chunkPos;
 		} else if (o instanceof BlockPos blockPos) {
 			return new ChunkPos(blockPos);

@@ -1,15 +1,15 @@
 {
-  "required": true,
-  "package": "pie.ilikepiefoo.mixin",
-  "compatibilityLevel": "JAVA_16",
-  "client": [],
-  "mixins": [
-    "MixinFluidStackJS",
-    "MixinPlayerJS",
-    "MixinWorldJS",
+	"required": true,
+	"package": "pie.ilikepiefoo.mixin",
+	"compatibilityLevel": "JAVA_17",
+	"client": [],
+	"mixins": [
+		"MixinFluidStackJS",
+		"MixinPlayerJS",
+		"MixinWorldJS",
 		"MixinServerLevelJS"
-  ],
-  "injectors": {
-    "defaultRequire": 1
-  }
+	],
+	"injectors": {
+		"defaultRequire": 1
+	}
 }

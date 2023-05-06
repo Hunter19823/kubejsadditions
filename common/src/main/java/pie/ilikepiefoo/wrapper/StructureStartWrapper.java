@@ -1,12 +1,13 @@
 package pie.ilikepiefoo.wrapper;
 
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.ChunkPos;
-import net.minecraft.world.level.StructureFeatureManager;
+import net.minecraft.world.level.StructureManager;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.chunk.ChunkGenerator;
-import net.minecraft.world.level.levelgen.feature.ConfiguredStructureFeature;
 import net.minecraft.world.level.levelgen.structure.BoundingBox;
+import net.minecraft.world.level.levelgen.structure.Structure;
 import net.minecraft.world.level.levelgen.structure.StructurePiece;
 import net.minecraft.world.level.levelgen.structure.StructureStart;
 import net.minecraft.world.level.levelgen.structure.pieces.StructurePieceSerializationContext;
@@ -48,8 +49,8 @@ public class StructureStartWrapper {
 		return data.getBoundingBox();
 	}
 
-	public void placeInChunk(WorldGenLevel worldGenLevel, StructureFeatureManager structureFeatureManager, ChunkGenerator chunkGenerator, Random random, BoundingBox boundingBox, ChunkPos chunkPos) {
-		data.placeInChunk(worldGenLevel, structureFeatureManager, chunkGenerator, random, boundingBox, chunkPos);
+	public void placeInChunk(WorldGenLevel worldGenLevel, StructureManager structureManager, ChunkGenerator chunkGenerator, RandomSource randomSource, BoundingBox boundingBox, ChunkPos chunkPos) {
+		data.placeInChunk(worldGenLevel, structureManager, chunkGenerator, randomSource, boundingBox, chunkPos);
 	}
 
 	public CompoundTag createTag(StructurePieceSerializationContext structurePieceSerializationContext, ChunkPos chunkPos) {
@@ -76,8 +77,8 @@ public class StructureStartWrapper {
 		return data.getReferences();
 	}
 
-	public ConfiguredStructureFeature<?, ?> getFeature() {
-		return data.getFeature();
+	public Structure getStructure() {
+		return data.getStructure();
 	}
 
 	public List<StructurePiece> getPieces() {
