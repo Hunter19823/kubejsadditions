@@ -1,7 +1,5 @@
 package pie.ilikepiefoo.fabric.events.worldrender;
 
-import com.mojang.blaze3d.vertex.VertexConsumer;
-import dev.latvian.mods.kubejs.script.ScriptType;
 import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderContext;
 import net.minecraft.client.renderer.LevelRenderer;
 import net.minecraft.core.BlockPos;
@@ -19,14 +17,6 @@ public class BlockOutlineRenderEventJS extends WorldRenderContextEventJS {
 
 	public WorldRenderContext.BlockOutlineContext getBlockOutlineContext() {
 		return blockOutlineContext;
-	}
-
-	/**
-	 * @deprecated Use {@link #consumers()} directly.
-	 */
-	@Deprecated
-	public VertexConsumer vertexConsumer() {
-		return blockOutlineContext.vertexConsumer();
 	}
 
 	public Entity entity() {
@@ -77,8 +67,8 @@ public class BlockOutlineRenderEventJS extends WorldRenderContextEventJS {
 	 */
 	public static boolean handle(WorldRenderContext context, WorldRenderContext.BlockOutlineContext blockOutlineContext) {
 		BlockOutlineRenderEventJS event = new BlockOutlineRenderEventJS(context, blockOutlineContext);
-		event.post(ScriptType.CLIENT, FabricEventsJS.CLIENT_BLOCK_OUTLINE);
-		return !event.isCancelled();
+		FabricEventsJS.BLOCK_OUTLINE.post(event);
+		return !event.isCanceled();
 	}
 
 }

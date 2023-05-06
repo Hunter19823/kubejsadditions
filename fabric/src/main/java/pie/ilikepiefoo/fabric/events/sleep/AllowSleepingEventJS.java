@@ -1,9 +1,7 @@
 package pie.ilikepiefoo.fabric.events.sleep;
 
-import dev.latvian.mods.kubejs.entity.EntityJS;
 import dev.latvian.mods.kubejs.level.BlockContainerJS;
 import dev.latvian.mods.kubejs.player.PlayerEventJS;
-import dev.latvian.mods.kubejs.script.ScriptType;
 import dev.latvian.mods.kubejs.server.ServerScriptManager;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.LivingEntity;
@@ -40,8 +38,8 @@ public class AllowSleepingEventJS extends PlayerEventJS {
 	}
 
 	@Override
-	public boolean canCancel() {
-		return true;
+	public Player getEntity() {
+		return player;
 	}
 
 	public BlockPos getSleepingPos() {
@@ -49,7 +47,7 @@ public class AllowSleepingEventJS extends PlayerEventJS {
 	}
 
 	public BlockContainerJS getPos() {
-		return getLevel().getBlock(sleepingPos);
+		return getLevel().kjs$getBlock(sleepingPos);
 	}
 
 	@Nullable
@@ -70,19 +68,15 @@ public class AllowSleepingEventJS extends PlayerEventJS {
 	 * @see Player#startSleepInBed(BlockPos)
 	 */
 	public static Player.BedSleepingProblem handler(Player player, BlockPos sleepingPos) {
-		if(ServerScriptManager.instance == null)
+		if (ServerScriptManager.instance == null) {
 			return null;
+		}
 		AllowSleepingEventJS event = new AllowSleepingEventJS(player, sleepingPos);
-		event.post(ScriptType.SERVER, FabricEventsJS.ALLOW_SLEEPING);
-		if(event.isCancelled() && event.getSleepingProblem() == null) {
+		FabricEventsJS.ALLOW_SLEEPING.post(event);
+		if (event.isCanceled() && event.getSleepingProblem() == null) {
 			return Player.BedSleepingProblem.OTHER_PROBLEM;
 		}
 		return event.sleepingProblem;
-	}
-
-	@Override
-	public EntityJS getEntity() {
-		return entityOf(player);
 	}
 }
 

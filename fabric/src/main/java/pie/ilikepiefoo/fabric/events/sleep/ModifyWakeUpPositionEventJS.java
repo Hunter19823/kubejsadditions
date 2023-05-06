@@ -1,9 +1,7 @@
 package pie.ilikepiefoo.fabric.events.sleep;
 
-import dev.latvian.mods.kubejs.entity.EntityJS;
 import dev.latvian.mods.kubejs.entity.LivingEntityEventJS;
 import dev.latvian.mods.kubejs.level.BlockContainerJS;
-import dev.latvian.mods.kubejs.script.ScriptType;
 import dev.latvian.mods.kubejs.server.ServerScriptManager;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.LivingEntity;
@@ -33,12 +31,17 @@ public class ModifyWakeUpPositionEventJS extends LivingEntityEventJS {
 		this.wakeUpPos = wakeUpPos;
 	}
 
+	@Override
+	public LivingEntity getEntity() {
+		return entity;
+	}
+
 	public BlockPos getSleepingPos() {
 		return sleepingPos;
 	}
 
 	public BlockContainerJS getSleepPos() {
-		return getLevel().getBlock(sleepingPos);
+		return getLevel().kjs$getBlock(sleepingPos);
 	}
 
 	public BlockState getBedState() {
@@ -55,14 +58,15 @@ public class ModifyWakeUpPositionEventJS extends LivingEntityEventJS {
 	}
 
 	public void setWakeUpPos(double x, double y, double z) {
-		this.wakeUpPos = new Vec3(x,y,z);
+		this.wakeUpPos = new Vec3(x, y, z);
 	}
 
 	public void setWakeUpPos(@Nullable BlockContainerJS block) {
-		if(block != null)
-			this.wakeUpPos = new Vec3(block.getX(),block.getY(),block.getZ());
-		else
+		if (block != null) {
+			this.wakeUpPos = new Vec3(block.getX(), block.getY(), block.getZ());
+		} else {
 			this.wakeUpPos = null;
+		}
 	}
 
 	/**
@@ -76,16 +80,12 @@ public class ModifyWakeUpPositionEventJS extends LivingEntityEventJS {
 	 */
 	@Nullable
 	public static Vec3 handler(LivingEntity entity, BlockPos sleepingPos, BlockState bedState, @Nullable Vec3 wakeUpPos) {
-		if(ServerScriptManager.instance == null)
+		if (ServerScriptManager.instance == null) {
 			return wakeUpPos;
+		}
 		ModifyWakeUpPositionEventJS event = new ModifyWakeUpPositionEventJS(entity, sleepingPos, bedState, wakeUpPos);
-		event.post(ScriptType.SERVER, FabricEventsJS.MODIFY_WAKE_UP_POSITION);
+		FabricEventsJS.MODIFY_WAKE_UP_POSITION.post(event);
 		return event.getWakeUpPos();
-	}
-
-	@Override
-	public EntityJS getEntity() {
-		return entityOf(entity);
 	}
 }
 

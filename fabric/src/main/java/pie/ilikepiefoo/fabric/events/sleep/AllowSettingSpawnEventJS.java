@@ -1,9 +1,7 @@
 package pie.ilikepiefoo.fabric.events.sleep;
 
-import dev.latvian.mods.kubejs.entity.EntityJS;
 import dev.latvian.mods.kubejs.level.BlockContainerJS;
 import dev.latvian.mods.kubejs.player.PlayerEventJS;
-import dev.latvian.mods.kubejs.script.ScriptType;
 import dev.latvian.mods.kubejs.server.ServerScriptManager;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.player.Player;
@@ -15,7 +13,6 @@ import pie.ilikepiefoo.fabric.FabricEventsJS;
  * <p>Vanilla always allows this operation.
  */
 public class AllowSettingSpawnEventJS extends PlayerEventJS {
-
 	private final Player player;
 	private final BlockPos sleepingPos;
 
@@ -24,22 +21,17 @@ public class AllowSettingSpawnEventJS extends PlayerEventJS {
 		this.sleepingPos = sleepingPos;
 	}
 
-	@Override
-	public boolean canCancel() {
-		return true;
-	}
-
 	public BlockPos getSleepingPos() {
 		return sleepingPos;
 	}
 
 	@Override
-	public EntityJS getEntity() {
-		return entityOf(player);
+	public Player getEntity() {
+		return player;
 	}
 
 	public BlockContainerJS getPos() {
-		return getLevel().getBlock(sleepingPos);
+		return getLevel().kjs$getBlock(sleepingPos);
 	}
 
 	/**
@@ -50,11 +42,12 @@ public class AllowSettingSpawnEventJS extends PlayerEventJS {
 	 * @return {@code true} if allowed, {@code false} otherwise
 	 */
 	public static boolean handler(Player player, BlockPos sleepingPos) {
-		if(ServerScriptManager.instance == null)
+		if (ServerScriptManager.instance == null) {
 			return true;
+		}
 		AllowSettingSpawnEventJS event = new AllowSettingSpawnEventJS(player, sleepingPos);
-		event.post(ScriptType.SERVER, FabricEventsJS.ALLOW_SETTING_SPAWN);
-		return event.isCancelled();
+		FabricEventsJS.ALLOW_SETTING_SPAWN.post(event);
+		return event.isCanceled();
 	}
 }
 

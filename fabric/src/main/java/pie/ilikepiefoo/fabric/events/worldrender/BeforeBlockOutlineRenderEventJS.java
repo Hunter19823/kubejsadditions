@@ -1,6 +1,5 @@
 package pie.ilikepiefoo.fabric.events.worldrender;
 
-import dev.latvian.mods.kubejs.script.ScriptType;
 import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderContext;
 import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderEvents;
 import net.minecraft.client.Minecraft;
@@ -16,11 +15,6 @@ public class BeforeBlockOutlineRenderEventJS extends WorldRenderContextEventJS {
 	public BeforeBlockOutlineRenderEventJS(WorldRenderContext context, @Nullable HitResult hitResult) {
 		super(context);
 		this.hitResult = hitResult;
-	}
-
-	@Override
-	public boolean canCancel() {
-		return true;
 	}
 
 	@Nullable
@@ -67,17 +61,17 @@ public class BeforeBlockOutlineRenderEventJS extends WorldRenderContextEventJS {
 	/**
 	 * Event signature for {@link WorldRenderEvents#BEFORE_BLOCK_OUTLINE}.
 	 *
-	 * @param context  Access to state and parameters available during world rendering.
+	 * @param context   Access to state and parameters available during world rendering.
 	 * @param hitResult The game object currently under the crosshair target.
-	 * Normally equivalent to {@link Minecraft#hitResult}. Provided for convenience.
+	 *                  Normally equivalent to {@link Minecraft#hitResult}. Provided for convenience.
 	 * @return true if vanilla block outline rendering should happen.
 	 * Returning false prevents {@link WorldRenderEvents#BLOCK_OUTLINE} from invoking
 	 * and also skips the vanilla block outline render, but has no effect on other subscribers to this event.
 	 */
 	public static boolean handle(WorldRenderContext context, @Nullable HitResult hitResult) {
 		BeforeBlockOutlineRenderEventJS event = new BeforeBlockOutlineRenderEventJS(context, hitResult);
-		event.post(ScriptType.CLIENT, FabricEventsJS.CLIENT_BEFORE_BLOCK_OUTLINE);
-		return !event.isCancelled();
+		FabricEventsJS.BEFORE_BLOCK_OUTLINE.post(event);
+		return !event.isCanceled();
 	}
 }
 

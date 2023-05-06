@@ -83,7 +83,6 @@ public class FabricEventHandler {
 	 * Events related to elytra flight for living entities. Elytra flight is also known as "fall flying".
 	 */
 	private static void registerElytraEvents() {
-
 		EntityElytraEvents.ALLOW.register(AllowElytraFlightEventJS::handler);
 		EntityElytraEvents.CUSTOM.register(CustomElytraFlightEventJS::handler);
 	}
