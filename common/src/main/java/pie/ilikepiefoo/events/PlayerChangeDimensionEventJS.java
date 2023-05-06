@@ -1,6 +1,5 @@
 package pie.ilikepiefoo.events;
 
-
 import dev.latvian.mods.kubejs.player.PlayerEventJS;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerPlayer;
