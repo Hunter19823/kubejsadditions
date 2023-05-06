@@ -15,7 +15,7 @@ public class PlayerRespawnEventJS extends PlayerEventJS {
 
 	@Override
 	public Player getEntity() {
-		return entityOf(player);
+		return player;
 	}
 
 	public boolean leavingEnd() {

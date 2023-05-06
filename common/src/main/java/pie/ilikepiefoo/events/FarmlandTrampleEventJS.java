@@ -1,10 +1,7 @@
 package pie.ilikepiefoo.events;
 
-
 import dev.latvian.mods.kubejs.entity.EntityEventJS;
-import dev.latvian.mods.kubejs.entity.EntityJS;
 import dev.latvian.mods.kubejs.level.BlockContainerJS;
-import dev.latvian.mods.kubejs.level.LevelJS;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.Level;
@@ -30,8 +27,8 @@ public class FarmlandTrampleEventJS extends EntityEventJS {
 	}
 
 	@Override
-	public LevelJS getLevel() {
-		return levelOf(level);
+	public Level getLevel() {
+		return level;
 	}
 
 	public BlockContainerJS getBlock() {
@@ -47,12 +44,7 @@ public class FarmlandTrampleEventJS extends EntityEventJS {
 	}
 
 	@Override
-	public EntityJS getEntity() {
-		return entityOf(entity);
-	}
-
-	@Override
-	public boolean canCancel() {
-		return true;
+	public Entity getEntity() {
+		return entity;
 	}
 }

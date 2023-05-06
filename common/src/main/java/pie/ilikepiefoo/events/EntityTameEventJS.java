@@ -26,9 +26,4 @@ public class EntityTameEventJS extends PlayerEventJS {
 	public static EntityTameEventJS of(Animal animal, Player player) {
 		return new EntityTameEventJS(animal, player);
 	}
-
-	@Override
-	public boolean canCancel() {
-		return true;
-	}
 }
