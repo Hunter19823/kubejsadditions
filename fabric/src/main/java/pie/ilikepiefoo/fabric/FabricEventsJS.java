@@ -37,7 +37,7 @@ public interface FabricEventsJS {
 	EventHandler ALLOW_SLEEP_TIME = GROUP.server("allowSleepTime", () -> AllowSleepTimeEventJS.class).cancelable();
 	EventHandler ALLOW_NEARBY_MONSTERS = GROUP.server("allowNearbyMonsters", () -> AllowNearbyMonstersEventJS.class).cancelable();
 	EventHandler ALLOW_RESETTING_TIME = GROUP.server("allowResettingTime", () -> AllowResettingTimeEventJS.class).cancelable();
-	EventHandler MODIFY_SLEEPING_DIRECTION = GROUP.server("ModifySleepingDirection", () -> ModifySleepingDirectionEventJS.class);
+	EventHandler MODIFY_SLEEPING_DIRECTION = GROUP.server("modifySleepingDirection", () -> ModifySleepingDirectionEventJS.class);
 	EventHandler ALLOW_SETTING_SPAWN = GROUP.server("allowSettingSpawn", () -> AllowSettingSpawnEventJS.class).cancelable();
 	EventHandler SET_BED_OCCUPATION_STATE = GROUP.server("setBedOccupationState", () -> SetBedOccupationStateEventJS.class).cancelable();
 	EventHandler MODIFY_WAKE_UP_POSITION = GROUP.server("modifyWakeUpPosition", () -> ModifyWakeUpPositionEventJS.class);
