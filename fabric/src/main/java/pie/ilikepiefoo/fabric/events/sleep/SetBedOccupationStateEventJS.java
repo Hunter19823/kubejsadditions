@@ -1,9 +1,7 @@
 package pie.ilikepiefoo.fabric.events.sleep;
 
-import dev.latvian.mods.kubejs.entity.EntityJS;
 import dev.latvian.mods.kubejs.entity.LivingEntityEventJS;
 import dev.latvian.mods.kubejs.level.BlockContainerJS;
-import dev.latvian.mods.kubejs.script.ScriptType;
 import dev.latvian.mods.kubejs.server.ServerScriptManager;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.LivingEntity;
@@ -17,7 +15,6 @@ import pie.ilikepiefoo.fabric.FabricEventsJS;
  * which are handled automatically.
  */
 public class SetBedOccupationStateEventJS extends LivingEntityEventJS {
-
 	private final LivingEntity entity;
 	private final BlockPos sleepingPos;
 	private final BlockState bedState;
@@ -31,8 +28,8 @@ public class SetBedOccupationStateEventJS extends LivingEntityEventJS {
 	}
 
 	@Override
-	public boolean canCancel() {
-		return true;
+	public LivingEntity getEntity() {
+		return entity;
 	}
 
 	public BlockPos getSleepingPos() {
@@ -40,7 +37,7 @@ public class SetBedOccupationStateEventJS extends LivingEntityEventJS {
 	}
 
 	public BlockContainerJS getPos() {
-		return getLevel().getBlock(sleepingPos);
+		return getLevel().kjs$getBlock(sleepingPos);
 	}
 
 	public BlockState getBedState() {
@@ -61,16 +58,12 @@ public class SetBedOccupationStateEventJS extends LivingEntityEventJS {
 	 * @return {@code true} if the occupation state was successfully modified, {@code false} to fall back to other callbacks
 	 */
 	public static boolean handler(LivingEntity entity, BlockPos sleepingPos, BlockState bedState, boolean occupied) {
-		if(ServerScriptManager.instance == null)
+		if (ServerScriptManager.instance == null) {
 			return false;
+		}
 		SetBedOccupationStateEventJS event = new SetBedOccupationStateEventJS(entity, sleepingPos, bedState, occupied);
-		event.post(ScriptType.SERVER, FabricEventsJS.SET_BED_OCCUPATION_STATE);
-		return !event.isCancelled();
-	}
-
-	@Override
-	public EntityJS getEntity() {
-		return entityOf(entity);
+		FabricEventsJS.SET_BED_OCCUPATION_STATE.post(event);
+		return !event.isCanceled();
 	}
 }
 

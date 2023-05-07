@@ -1,9 +1,7 @@
 package pie.ilikepiefoo.fabric.events.sleep;
 
-import dev.latvian.mods.kubejs.entity.EntityJS;
 import dev.latvian.mods.kubejs.level.BlockContainerJS;
 import dev.latvian.mods.kubejs.player.PlayerEventJS;
-import dev.latvian.mods.kubejs.script.ScriptType;
 import dev.latvian.mods.kubejs.server.ServerScriptManager;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionResult;
@@ -19,7 +17,6 @@ import javax.annotation.Nonnull;
  * <p>This event can also be used to force a failing result, meaning it can do custom monster checks.
  */
 public class AllowNearbyMonstersEventJS extends PlayerEventJS {
-
 	private final Player player;
 	private final BlockPos sleepingPos;
 	private final boolean vanillaResult;
@@ -33,22 +30,17 @@ public class AllowNearbyMonstersEventJS extends PlayerEventJS {
 		this.result = InteractionResult.PASS;
 	}
 
-	@Override
-	public boolean canCancel() {
-		return true;
-	}
-
 	public BlockPos getSleepingPos() {
 		return sleepingPos;
 	}
 
 	public BlockContainerJS getPos() {
-		return getLevel().getBlock(sleepingPos);
+		return getLevel().kjs$getBlock(sleepingPos);
 	}
 
 	@Override
-	public EntityJS getEntity() {
-		return entityOf(player);
+	public Player getEntity() {
+		return player;
 	}
 
 	public boolean getVanillaResult() {
@@ -73,14 +65,15 @@ public class AllowNearbyMonstersEventJS extends PlayerEventJS {
 	 * @param sleepingPos   the (possibly still unset) {@linkplain LivingEntity#getSleepingPos() sleeping position} of the player
 	 * @param vanillaResult {@code true} if vanilla's monster check succeeded (there were no monsters), {@code false} otherwise
 	 * @return {@link InteractionResult#SUCCESS} to allow sleeping, {@link InteractionResult#FAIL} to prevent sleeping,
-	 *         {@link InteractionResult#PASS} to fall back to other callbacks
+	 * {@link InteractionResult#PASS} to fall back to other callbacks
 	 */
 	public static InteractionResult handler(Player player, BlockPos sleepingPos, boolean vanillaResult) {
-		if(ServerScriptManager.instance == null)
+		if (ServerScriptManager.instance == null) {
 			return InteractionResult.PASS;
+		}
 		AllowNearbyMonstersEventJS event = new AllowNearbyMonstersEventJS(player, sleepingPos, vanillaResult);
-		event.post(ScriptType.SERVER, FabricEventsJS.ALLOW_NEARBY_MONSTERS);
-		if(event.isCancelled() && event.getResult() == InteractionResult.PASS) {
+		FabricEventsJS.ALLOW_NEARBY_MONSTERS.post(event);
+		if (event.isCanceled() && event.getResult() == InteractionResult.PASS) {
 			return InteractionResult.FAIL;
 		}
 		return event.getResult();

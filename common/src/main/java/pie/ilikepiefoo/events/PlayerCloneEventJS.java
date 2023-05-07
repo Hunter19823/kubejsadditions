@@ -1,8 +1,8 @@
 package pie.ilikepiefoo.events;
 
-import dev.latvian.mods.kubejs.entity.EntityJS;
 import dev.latvian.mods.kubejs.player.PlayerEventJS;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.player.Player;
 
 public class PlayerCloneEventJS extends PlayerEventJS {
 	private final ServerPlayer oldPlayer;
@@ -16,16 +16,16 @@ public class PlayerCloneEventJS extends PlayerEventJS {
 	}
 
 	@Override
-	public EntityJS getEntity() {
-		return entityOf(newPlayer);
+	public Player getEntity() {
+		return newPlayer;
 	}
 
-	public EntityJS getOldPlayer() {
-		return entityOf(newPlayer);
+	public Player getOldPlayer() {
+		return oldPlayer;
 	}
 
-	public EntityJS getNewPlayer() {
-		return entityOf(newPlayer);
+	public Player getNewPlayer() {
+		return newPlayer;
 	}
 
 	public boolean leavingEnd() {

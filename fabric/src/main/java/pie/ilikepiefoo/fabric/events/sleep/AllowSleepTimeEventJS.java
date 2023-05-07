@@ -1,9 +1,7 @@
 package pie.ilikepiefoo.fabric.events.sleep;
 
-import dev.latvian.mods.kubejs.entity.EntityJS;
 import dev.latvian.mods.kubejs.level.BlockContainerJS;
 import dev.latvian.mods.kubejs.player.PlayerEventJS;
-import dev.latvian.mods.kubejs.script.ScriptType;
 import dev.latvian.mods.kubejs.server.ServerScriptManager;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionResult;
@@ -20,7 +18,6 @@ import javax.annotation.Nonnull;
  * conditions are met, unless forbidden with {@link #ALLOW_RESETTING_TIME}.
  */
 public class AllowSleepTimeEventJS extends PlayerEventJS {
-
 	private final Player player;
 	private final BlockPos sleepingPos;
 	private final boolean vanillaResult;
@@ -35,8 +32,8 @@ public class AllowSleepTimeEventJS extends PlayerEventJS {
 	}
 
 	@Override
-	public boolean canCancel() {
-		return true;
+	public Player getEntity() {
+		return player;
 	}
 
 	public BlockPos getSleepingPos() {
@@ -44,7 +41,7 @@ public class AllowSleepTimeEventJS extends PlayerEventJS {
 	}
 
 	public BlockContainerJS getPos() {
-		return getLevel().getBlock(sleepingPos);
+		return getLevel().kjs$getBlock(sleepingPos);
 	}
 
 	public boolean getVanillaResult() {
@@ -69,22 +66,18 @@ public class AllowSleepTimeEventJS extends PlayerEventJS {
 	 * @param sleepingPos   the (possibly still unset) {@linkplain LivingEntity#getSleepingPos() sleeping position} of the player
 	 * @param vanillaResult {@code true} if vanilla allows the time, {@code false} otherwise
 	 * @return {@link InteractionResult#SUCCESS} if the time is valid, {@link InteractionResult#FAIL} if it's not,
-	 *         {@link InteractionResult#PASS} to fall back to other callbacks
+	 * {@link InteractionResult#PASS} to fall back to other callbacks
 	 */
 	public static InteractionResult handler(Player player, BlockPos sleepingPos, boolean vanillaResult) {
-		if(ServerScriptManager.instance == null)
+		if (ServerScriptManager.instance == null) {
 			return InteractionResult.PASS;
+		}
 		AllowSleepTimeEventJS event = new AllowSleepTimeEventJS(player, sleepingPos, vanillaResult);
-		event.post(ScriptType.SERVER, FabricEventsJS.ALLOW_SLEEP_TIME);
-		if(event.isCancelled() && event.getResult() == InteractionResult.PASS) {
+		FabricEventsJS.ALLOW_SLEEP_TIME.post(event);
+		if (event.isCanceled() && event.getResult() == InteractionResult.PASS) {
 			return InteractionResult.FAIL;
 		}
 		return event.getResult();
-	}
-
-	@Override
-	public EntityJS getEntity() {
-		return entityOf(player);
 	}
 }
 

@@ -1,12 +1,9 @@
 package pie.ilikepiefoo.events;
 
-
-import dev.latvian.mods.kubejs.entity.EntityJS;
-import dev.latvian.mods.kubejs.level.LevelJS;
 import dev.latvian.mods.kubejs.player.PlayerEventJS;
-import dev.latvian.mods.kubejs.util.UtilsJS;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 
 public class PlayerChangeDimensionEventJS extends PlayerEventJS {
@@ -21,20 +18,20 @@ public class PlayerChangeDimensionEventJS extends PlayerEventJS {
 	}
 
 	@Override
-	public EntityJS getEntity() {
-		return entityOf(player);
+	public Player getEntity() {
+		return player;
 	}
 
 	public ResourceKey<Level> getOldWorldKey() {
 		return oldWorld;
 	}
 
-	public LevelJS getOldLevel() {
-		return UtilsJS.getLevel(player.getServer().getLevel(oldWorld));
+	public Level getOldLevel() {
+		return player.getServer().getLevel(oldWorld);
 	}
 
-	public LevelJS getNewLevel() {
-		return UtilsJS.getLevel(player.getServer().getLevel(newWorld));
+	public Level getNewLevel() {
+		return player.getServer().getLevel(newWorld);
 	}
 
 	public ResourceKey<Level> getNewWorldKey() {

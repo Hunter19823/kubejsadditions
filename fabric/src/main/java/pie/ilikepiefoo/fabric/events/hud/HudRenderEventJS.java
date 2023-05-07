@@ -67,8 +67,7 @@ public class HudRenderEventJS extends EventJS {
 	 * @param tickDelta Progress for linearly interpolating between the previous and current game state
 	 */
 	public static void handle(PoseStack matrixStack, float tickDelta) {
-		HudRenderEventJS eventjs = new HudRenderEventJS(tickDelta, matrixStack);
-		eventjs.post(ScriptType.CLIENT, FabricEventsJS.CLIENT_RENDER_HUD);
+		FabricEventsJS.RENDER_HUD.post(new HudRenderEventJS(tickDelta, matrixStack));
 	}
 }
 

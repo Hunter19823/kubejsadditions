@@ -1,8 +1,6 @@
 package pie.ilikepiefoo.fabric.events.sleep;
 
-import dev.latvian.mods.kubejs.entity.EntityJS;
 import dev.latvian.mods.kubejs.player.PlayerEventJS;
-import dev.latvian.mods.kubejs.script.ScriptType;
 import dev.latvian.mods.kubejs.server.ServerScriptManager;
 import net.minecraft.world.entity.player.Player;
 import pie.ilikepiefoo.fabric.FabricEventsJS;
@@ -21,27 +19,23 @@ public class AllowResettingTimeEventJS extends PlayerEventJS {
 	}
 
 	@Override
-	public boolean canCancel() {
-		return true;
-	}
-
-	@Override
-	public EntityJS getEntity() {
-		return entityOf(player);
+	public Player getEntity() {
+		return player;
 	}
 
 	/**
 	 * Checks whether a sleeping player counts into skipping the current day and resetting the time to 0.
 	 *
-	 * @param player        the sleeping player
+	 * @param player the sleeping player
 	 * @return {@code true} if allowed, {@code false} otherwise
 	 */
 	public static boolean handler(Player player) {
-		if(ServerScriptManager.instance == null)
+		if (ServerScriptManager.instance == null) {
 			return true;
+		}
 		AllowResettingTimeEventJS event = new AllowResettingTimeEventJS(player);
-		event.post(ScriptType.SERVER, FabricEventsJS.ALLOW_RESETTING_TIME);
-		return !event.isCancelled();
+		FabricEventsJS.ALLOW_RESETTING_TIME.post(event);
+		return !event.isCanceled();
 	}
 }
 

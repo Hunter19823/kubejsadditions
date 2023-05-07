@@ -36,7 +36,7 @@ public class FluidTagJS extends FluidStackJS {
 
 	@Override
 	public FluidStack getFluidStack() {
-		if(cached == null) {
+		if (cached == null) {
 			cached = FluidStack.create(this::getFluid, amount, nbt);
 		}
 		return cached;
@@ -44,7 +44,7 @@ public class FluidTagJS extends FluidStackJS {
 
 	@Override
 	public Fluid getFluid() {
-		if(KubeJSRegistries.fluids().contains(tag)){
+		if (KubeJSRegistries.fluids().contains(tag)) {
 			return KubeJSRegistries.fluids().get(tag);
 		} else {
 			throw new UnsupportedOperationException("Using getFluid on FluidTags is not supported. This should only be used with recipes.");
@@ -83,7 +83,7 @@ public class FluidTagJS extends FluidStackJS {
 
 	@Override
 	public boolean equals(Object o) {
-		if (o instanceof CharSequence){
+		if (o instanceof CharSequence) {
 			return getId().equals(o.toString());
 		}
 
@@ -93,7 +93,7 @@ public class FluidTagJS extends FluidStackJS {
 			return false;
 		}
 
-		return stack.hasTag(tag) && getAmount() == stack.getAmount() && Objects.equals(getNbt(),stack.getNbt());
+		return stack.hasTag(tag) && getAmount() == stack.getAmount() && Objects.equals(getNbt(), stack.getNbt());
 	}
 
 	@Override
@@ -119,7 +119,6 @@ public class FluidTagJS extends FluidStackJS {
 		if (getAmount() != FluidStack.bucketAmount()) {
 			o.addProperty("amount", getAmount());
 		}
-
 		if (getNbt() != null) {
 			o.add("nbt", MapJS.json(getNbt()));
 		}

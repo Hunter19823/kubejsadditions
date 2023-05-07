@@ -1,9 +1,7 @@
 package pie.ilikepiefoo.fabric.events.sleep;
 
-import dev.latvian.mods.kubejs.entity.EntityJS;
 import dev.latvian.mods.kubejs.entity.LivingEntityEventJS;
 import dev.latvian.mods.kubejs.level.BlockContainerJS;
-import dev.latvian.mods.kubejs.script.ScriptType;
 import dev.latvian.mods.kubejs.server.ServerScriptManager;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.LivingEntity;
@@ -15,7 +13,6 @@ import pie.ilikepiefoo.fabric.FabricEventsJS;
  * An event that is called when an entity stops sleeping and wakes up.
  */
 public class SleepingEventJS extends LivingEntityEventJS {
-
 	private final LivingEntity entity;
 	private final BlockPos sleepingPos;
 
@@ -24,12 +21,17 @@ public class SleepingEventJS extends LivingEntityEventJS {
 		this.sleepingPos = sleepingPos;
 	}
 
+	@Override
+	public LivingEntity getEntity() {
+		return entity;
+	}
+
 	public BlockPos getSleepingPos() {
 		return sleepingPos;
 	}
 
 	public BlockContainerJS getPos() {
-		return getLevel().getBlock(sleepingPos);
+		return getLevel().kjs$getBlock(sleepingPos);
 	}
 
 	/**
@@ -39,10 +41,10 @@ public class SleepingEventJS extends LivingEntityEventJS {
 	 * @param sleepingPos the {@linkplain LivingEntity#getSleepingPos() sleeping position} of the entity
 	 */
 	public static void startHandler(LivingEntity entity, BlockPos sleepingPos) {
-		if(ServerScriptManager.instance == null)
+		if (ServerScriptManager.instance == null) {
 			return;
-		SleepingEventJS event = new SleepingEventJS(entity, sleepingPos);
-		event.post(ScriptType.SERVER, FabricEventsJS.START_SLEEPING);
+		}
+		FabricEventsJS.START_SLEEPING.post(new SleepingEventJS(entity, sleepingPos));
 	}
 
 	/**
@@ -52,15 +54,10 @@ public class SleepingEventJS extends LivingEntityEventJS {
 	 * @param sleepingPos the {@linkplain LivingEntity#getSleepingPos() sleeping position} of the entity
 	 */
 	public static void stopHandler(LivingEntity entity, BlockPos sleepingPos) {
-		if(ServerScriptManager.instance == null)
+		if (ServerScriptManager.instance == null) {
 			return;
-		SleepingEventJS event = new SleepingEventJS(entity, sleepingPos);
-		event.post(ScriptType.SERVER, FabricEventsJS.STOP_SLEEPING);
-	}
-
-	@Override
-	public EntityJS getEntity() {
-		return entityOf(entity);
+		}
+		FabricEventsJS.STOP_SLEEPING.post(new SleepingEventJS(entity, sleepingPos));
 	}
 }
 

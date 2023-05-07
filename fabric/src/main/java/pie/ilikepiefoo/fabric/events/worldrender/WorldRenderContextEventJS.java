@@ -151,8 +151,7 @@ public class WorldRenderContextEventJS extends EventJS {
 	 * <p>This event fires before entities and block entities are rendered and may be useful to prepare them.
 	 */
 	public static void beforeEntitiesHandle(WorldRenderContext context) {
-		WorldRenderContextEventJS eventJS = new WorldRenderContextEventJS(context);
-		eventJS.post(ScriptType.CLIENT, FabricEventsJS.CLIENT_BEFORE_ENTITIES);
+		FabricEventsJS.BEFORE_ENTITIES.post(new WorldRenderContextEventJS(context));
 	}
 
 	/**
@@ -171,8 +170,7 @@ public class WorldRenderContextEventJS extends EventJS {
 	 * camera transformation, so {@link #LAST} may be preferable if that is wanted.
 	 */
 	public static void afterTranslucentHandle(WorldRenderContext context) {
-		WorldRenderContextEventJS eventJS = new WorldRenderContextEventJS(context);
-		eventJS.post(ScriptType.CLIENT, FabricEventsJS.CLIENT_AFTER_TRANSLUCENT);
+		FabricEventsJS.AFTER_TRANSLUCENT.post(new WorldRenderContextEventJS(context));
 	}
 
 	/**
@@ -187,8 +185,7 @@ public class WorldRenderContextEventJS extends EventJS {
 	 * for non-terrain translucency vs. drawing directly later on.
 	 */
 	public static void afterEntitiesHandle(WorldRenderContext context) {
-		WorldRenderContextEventJS eventJS = new WorldRenderContextEventJS(context);
-		eventJS.post(ScriptType.CLIENT, FabricEventsJS.CLIENT_AFTER_ENTITIES);
+		FabricEventsJS.AFTER_ENTITIES.post(new WorldRenderContextEventJS(context));
 	}
 
 	/**
@@ -200,8 +197,7 @@ public class WorldRenderContextEventJS extends EventJS {
 	 * does not depend on the view frustum.
 	 */
 	public static void startHandle(WorldRenderContext context) {
-		WorldRenderContextEventJS eventJS = new WorldRenderContextEventJS(context);
-		eventJS.post(ScriptType.CLIENT, FabricEventsJS.CLIENT_START_RENDER);
+		FabricEventsJS.START_RENDER.post(new WorldRenderContextEventJS(context));
 	}
 
 	/**
@@ -215,8 +211,7 @@ public class WorldRenderContextEventJS extends EventJS {
 	 * <p>Use to draw content that should appear on top of the world before hand and GUI rendering occur.
 	 */
 	public static void lastHandle(WorldRenderContext context) {
-		WorldRenderContextEventJS eventJS = new WorldRenderContextEventJS(context);
-		eventJS.post(ScriptType.CLIENT, FabricEventsJS.CLIENT_LAST_RENDER);
+		FabricEventsJS.LAST_RENDER.post(new WorldRenderContextEventJS(context));
 	}
 
 	/**
@@ -227,8 +222,7 @@ public class WorldRenderContextEventJS extends EventJS {
 	 * and GUI rendering.
 	 */
 	public static void endHandle(WorldRenderContext context) {
-		WorldRenderContextEventJS eventJS = new WorldRenderContextEventJS(context);
-		eventJS.post(ScriptType.CLIENT, FabricEventsJS.CLIENT_END_RENDER);
+		FabricEventsJS.END_RENDER.post(new WorldRenderContextEventJS(context));
 	}
 
 	/**
@@ -238,8 +232,7 @@ public class WorldRenderContextEventJS extends EventJS {
 	 * <p>Use for setup of state that depends on view frustum.
 	 */
 	public static void afterSetupHandle(WorldRenderContext context) {
-		WorldRenderContextEventJS eventJS = new WorldRenderContextEventJS(context);
-		eventJS.post(ScriptType.CLIENT, FabricEventsJS.CLIENT_AFTER_SETUP);
+		FabricEventsJS.AFTER_SETUP.post(new WorldRenderContextEventJS(context));
 	}
 }
 

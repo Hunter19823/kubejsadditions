@@ -1,5 +1,5 @@
 modLoader = "javafml"
-loaderVersion = "[36,)"
+loaderVersion = "[43,)"
 #issueTrackerURL = ""
 license = "Insert License Here"
 
@@ -16,20 +16,20 @@ A mod that serves as a bunch of additional features to KubeJS.
 [[dependencies.kubejsadditions]]
 modId = "forge"
 mandatory = true
-versionRange = "[36,)"
+versionRange = "[43,)"
 ordering = "NONE"
 side = "BOTH"
 
 [[dependencies.kubejsadditions]]
 modId = "minecraft"
 mandatory = true
-versionRange = "[1.16.5,)"
+versionRange = "[1.19.2,1.19.3)"
 ordering = "NONE"
 side = "BOTH"
 
 [[dependencies.kubejsadditions]]
 modId = "architectury"
 mandatory = true
-versionRange = "[1.32.63,)"
+versionRange = "[6.5.82,)"
 ordering = "AFTER"
 side = "BOTH"

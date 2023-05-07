@@ -1,9 +1,7 @@
 package pie.ilikepiefoo.fabric.events.sleep;
 
-import dev.latvian.mods.kubejs.entity.EntityJS;
 import dev.latvian.mods.kubejs.entity.LivingEntityEventJS;
 import dev.latvian.mods.kubejs.level.BlockContainerJS;
-import dev.latvian.mods.kubejs.script.ScriptType;
 import dev.latvian.mods.kubejs.server.ServerScriptManager;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -19,7 +17,6 @@ import pie.ilikepiefoo.fabric.FabricEventsJS;
  * with this event.
  */
 public class ModifySleepingDirectionEventJS extends LivingEntityEventJS {
-
 	private final LivingEntity entity;
 	private final BlockPos sleepingPos;
 	@Nullable
@@ -31,12 +28,17 @@ public class ModifySleepingDirectionEventJS extends LivingEntityEventJS {
 		this.sleepingDirection = sleepingDirection;
 	}
 
+	@Override
+	public LivingEntity getEntity() {
+		return entity;
+	}
+
 	public BlockPos getSleepingPos() {
 		return sleepingPos;
 	}
 
 	public BlockContainerJS getPos() {
-		return getLevel().getBlock(sleepingPos);
+		return getLevel().kjs$getBlock(sleepingPos);
 	}
 
 	@Nullable
@@ -68,16 +70,12 @@ public class ModifySleepingDirectionEventJS extends LivingEntityEventJS {
 	 */
 	@Nullable
 	public static Direction handler(LivingEntity entity, BlockPos sleepingPos, @Nullable Direction sleepingDirection) {
-		if(ServerScriptManager.instance == null)
+		if (ServerScriptManager.instance == null) {
 			return sleepingDirection;
+		}
 		ModifySleepingDirectionEventJS event = new ModifySleepingDirectionEventJS(entity, sleepingPos, sleepingDirection);
-		event.post(ScriptType.SERVER, FabricEventsJS.MODIFY_SLEEPING_DIRECTION);
+		FabricEventsJS.MODIFY_SLEEPING_DIRECTION.post(event);
 		return event.getSleepingDirection();
-	}
-
-	@Override
-	public EntityJS getEntity() {
-		return entityOf(entity);
 	}
 }
 

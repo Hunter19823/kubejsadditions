@@ -1,9 +1,7 @@
 package pie.ilikepiefoo.fabric.events.sleep;
 
 import dev.latvian.mods.kubejs.entity.LivingEntityEventJS;
-import dev.latvian.mods.kubejs.entity.LivingEntityJS;
 import dev.latvian.mods.kubejs.level.BlockContainerJS;
-import dev.latvian.mods.kubejs.script.ScriptType;
 import dev.latvian.mods.kubejs.server.ServerScriptManager;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionResult;
@@ -27,7 +25,6 @@ import javax.annotation.Nonnull;
  * @see LivingEntity#checkBedExists()
  */
 public class AllowBedEventJS extends LivingEntityEventJS {
-
 	private final LivingEntity entity;
 	private final BlockPos sleepingPos;
 	private final BlockState state;
@@ -43,17 +40,12 @@ public class AllowBedEventJS extends LivingEntityEventJS {
 		this.result = InteractionResult.PASS;
 	}
 
-	@Override
-	public boolean canCancel() {
-		return true;
-	}
-
-	public LivingEntityJS getEntity() {
-		return (LivingEntityJS) entityOf(entity);
+	public LivingEntity getEntity() {
+		return entity;
 	}
 
 	public BlockContainerJS getPos() {
-		return getLevel().getBlock(sleepingPos);
+		return getLevel().kjs$getBlock(sleepingPos);
 	}
 
 	public BlockPos getSleepingPos() {
@@ -86,14 +78,16 @@ public class AllowBedEventJS extends LivingEntityEventJS {
 	 * @param state         the block state to check
 	 * @param vanillaResult {@code true} if vanilla allows the block, {@code false} otherwise
 	 * @return {@link InteractionResult#SUCCESS} if the bed is valid, {@link InteractionResult#FAIL} if it's not,
-	 *         {@link InteractionResult#PASS} to fall back to other callbacks
+	 * {@link InteractionResult#PASS} to fall back to other callbacks
 	 */
 	public static InteractionResult handler(LivingEntity entity, BlockPos sleepingPos, BlockState state, boolean vanillaResult) {
-		if(ServerScriptManager.instance == null)
+		if (ServerScriptManager.instance == null) {
 			return InteractionResult.PASS;
+		}
+
 		AllowBedEventJS event = new AllowBedEventJS(entity, sleepingPos, state, vanillaResult);
-		event.post(ScriptType.SERVER, FabricEventsJS.ALLOW_BED);
-		if(event.isCancelled() && event.getResult() == InteractionResult.PASS) {
+		FabricEventsJS.ALLOW_BED.post(event);
+		if (event.isCanceled() && event.getResult() == InteractionResult.PASS) {
 			return InteractionResult.FAIL;
 		}
 		return event.result;
