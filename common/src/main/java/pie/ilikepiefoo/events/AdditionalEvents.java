@@ -4,7 +4,7 @@ import dev.latvian.mods.kubejs.event.EventGroup;
 import dev.latvian.mods.kubejs.event.EventHandler;
 
 public interface AdditionalEvents {
-	EventGroup GROUP = EventGroup.of("AdditionalEvents"); //TODO: Rename to something more appropriate?
+	EventGroup GROUP = EventGroup.of("CommonAddedEvents");
 
 	EventHandler ENTITY_ENTER_CHUNK = GROUP.server("entityEnterChunk", () -> EntityEnterChunkEventJS.class);
 	EventHandler ENTITY_TAME = GROUP.server("entityTame", () -> EntityTameEventJS.class).cancelable();
