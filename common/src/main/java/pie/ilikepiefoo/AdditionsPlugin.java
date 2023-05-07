@@ -16,37 +16,16 @@ import pie.ilikepiefoo.wrapper.StructureTemplateWrapper;
 public class AdditionsPlugin extends KubeJSPlugin {
 	@Override
 	public void registerTypeWrappers(ScriptType type, TypeWrappers typeWrappers) {
-		//TODO: uncommenting will result in a lot of red...
-//		typeWrappers.register(ChunkPos.class, o -> {
-//			if (o instanceof ChunkPos chunkPos) {
-//				return chunkPos;
-//			} else if (o instanceof BlockPos blockPos) {
-//				return new ChunkPos(blockPos);
-//			} else if (o instanceof Long pos) {
-//				return new ChunkPos(pos);
-//			}
-//			return ChunkPos.ZERO;
-//		});
-
-//		typeWrappers.register(StructureStart.class, o -> {
-//		    if (o instanceof StructureStart) {
-//		        return (StructureStart) o;
-//		    } else if (o instanceof StructureStartWrapper){
-//		        return ((StructureStartWrapper) o).getData();
-//		    }
-//
-//		    return null;
-//		});
-//
-//		typeWrappers.register(StructureTemplate.class, o -> {
-//		    if (o instanceof StructureTemplate) {
-//		        return (StructureTemplate) o;
-//		    } else if (o instanceof StructureTemplateWrapper){
-//		        return ((StructureTemplateWrapper) o).getData();
-//		    }
-//
-//		    return null;
-//		});
+		typeWrappers.registerSimple(ChunkPos.class, o -> {
+			if (o instanceof ChunkPos chunkPos) {
+				return chunkPos;
+			} else if (o instanceof BlockPos blockPos) {
+				return new ChunkPos(blockPos);
+			} else if (o instanceof Long pos) {
+				return new ChunkPos(pos);
+			}
+			return ChunkPos.ZERO;
+		});
 	}
 
 	@Override

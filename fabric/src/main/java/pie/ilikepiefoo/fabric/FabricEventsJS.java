@@ -20,7 +20,7 @@ import pie.ilikepiefoo.fabric.events.worldrender.BlockOutlineRenderEventJS;
 import pie.ilikepiefoo.fabric.events.worldrender.WorldRenderContextEventJS;
 
 public interface FabricEventsJS {
-	EventGroup GROUP = EventGroup.of("FabricEvents");
+	EventGroup GROUP = EventGroup.of("FabricAddedEvents");
 
 	// Elytra Events
 	EventHandler ALLOW_ELYTRA_FLIGHT = GROUP.server("allowElytraFlight", () -> AllowElytraFlightEventJS.class).cancelable();
