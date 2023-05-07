@@ -2,11 +2,13 @@ package pie.ilikepiefoo;
 
 import dev.latvian.mods.kubejs.KubeJSPlugin;
 import dev.latvian.mods.kubejs.event.EventGroup;
+import dev.latvian.mods.kubejs.level.BlockContainerJS;
 import dev.latvian.mods.kubejs.script.BindingsEvent;
 import dev.latvian.mods.kubejs.script.ScriptType;
 import dev.latvian.mods.rhino.util.wrap.TypeWrappers;
 import net.minecraft.core.BlockPos;
 import net.minecraft.data.worldgen.Structures;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import pie.ilikepiefoo.compat.jei.JEIEvents;
@@ -40,6 +42,10 @@ public class AdditionsPlugin extends KubeJSPlugin {
 				return new ChunkPos(blockPos);
 			} else if (o instanceof Long pos) {
 				return new ChunkPos(pos);
+			} else if (o instanceof BlockContainerJS containerJS) {
+				return new ChunkPos(containerJS.getPos());
+			} else if (o instanceof Entity entity) {
+				return entity.chunkPosition();
 			}
 			return ChunkPos.ZERO;
 		});
