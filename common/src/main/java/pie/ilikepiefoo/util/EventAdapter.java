@@ -1,40 +1,39 @@
-package pie.ilikepiefoo.compat.arch;
+package pie.ilikepiefoo.util;
 
-import dev.architectury.event.Event;
+import dev.latvian.mods.kubejs.event.EventHandler;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import pie.ilikepiefoo.events.AdditionalEvents;
 import pie.ilikepiefoo.events.ProxyEventJS;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
 import java.lang.reflect.Proxy;
 import java.lang.reflect.UndeclaredThrowableException;
 import java.util.Arrays;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-public class ArchEventAdapter<T> implements InvocationHandler {
+public class EventAdapter<T> implements InvocationHandler {
 	public static final Logger LOG = LogManager.getLogger();
-	public final Event<T> event;
-	private final String name;
-	private final T handler;
-	private final Class<T> eventClass;
-	private final Set<Method> customMethods;
-	private Object[] args;
-	private Object result;
+	public final String name;
+	public final T handler;
+	public final Class<T> eventClass;
+	public final Set<Method> customMethods;
+	public final EventHandler[] handlers;
 
-	public ArchEventAdapter(Event<T> event, Class<T> eventClass, String eventName) {
-		this.event = event;
+	public EventAdapter(Class<T> eventClass, String eventName, EventHandler... handlers) {
 		this.name = eventName;
 		this.eventClass = eventClass;
-		LOG.info("ArchEventAdapter type: " + eventClass.getName());
+		this.handlers = handlers;
 		if (!this.eventClass.isInterface()) {
 			throw new IllegalArgumentException("Event must be an interface!");
 		}
 		this.handler = eventClass.cast(Proxy.newProxyInstance(Thread.currentThread().getContextClassLoader(), new Class<?>[]{eventClass}, this));
-		this.customMethods = Arrays.stream(this.eventClass.getMethods()).filter(method -> !method.getDeclaringClass().equals(Object.class)).collect(Collectors.toSet());
-		this.event.register(this.handler);
+		this.customMethods = Arrays.stream(this.eventClass.getMethods())
+				.filter(method -> !Modifier.isStatic(method.getModifiers()))
+				.filter(method -> !method.getDeclaringClass().equals(Object.class))
+				.collect(Collectors.toSet());
 	}
 
 	/**
@@ -86,7 +85,11 @@ public class ArchEventAdapter<T> implements InvocationHandler {
 	public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
 		if (this.customMethods.contains(method)) {
 			ProxyEventJS event = new ProxyEventJS(method, args);
-			AdditionalEvents.ARCH_EVENT_HANDLER.post(this.name, event, true);
+			for (EventHandler handler : this.handlers) {
+				if (!event.isCanceled()) {
+					handler.post(this.name, event, true);
+				}
+			}
 			if (event.requiresResult()) {
 				if (!event.hasResult()) {
 					throw new IllegalArgumentException("Arch Event requires a result but was provided none!");
@@ -99,15 +102,5 @@ public class ArchEventAdapter<T> implements InvocationHandler {
 			return InvocationHandler.invokeDefault(proxy, method, args);
 		}
 	}
-
-	public Object[] getArgs() {
-		return args;
-	}
-
-	public void setResult(Object result) {
-		this.result = result;
-	}
-
-
 }
 

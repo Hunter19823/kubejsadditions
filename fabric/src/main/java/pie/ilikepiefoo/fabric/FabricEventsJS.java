@@ -2,6 +2,9 @@ package pie.ilikepiefoo.fabric;
 
 import dev.latvian.mods.kubejs.event.EventGroup;
 import dev.latvian.mods.kubejs.event.EventHandler;
+import dev.latvian.mods.kubejs.event.Extra;
+import pie.ilikepiefoo.events.ProxyEventJS;
+import pie.ilikepiefoo.fabric.events.custom.FabricEventRegisterEventJS;
 import pie.ilikepiefoo.fabric.events.elytra.AllowElytraFlightEventJS;
 import pie.ilikepiefoo.fabric.events.elytra.CustomElytraFlightEventJS;
 import pie.ilikepiefoo.fabric.events.hud.HudRenderEventJS;
@@ -53,8 +56,16 @@ public interface FabricEventsJS {
 	EventHandler BEFORE_BLOCK_OUTLINE = GROUP.client("beforeBlockOutline", () -> BeforeBlockOutlineRenderEventJS.class).cancelable();
 	EventHandler BLOCK_OUTLINE = GROUP.client("blockOutline", () -> BlockOutlineRenderEventJS.class);
 
+	// Custom Events
+	EventGroup CUSTOM = EventGroup.of("FabricEvents");
+	EventHandler FABRIC_STARTUP_EVENT_HANDLER = CUSTOM.startup("handle", () -> ProxyEventJS.class).extra(Extra.REQUIRES_STRING);
+	EventHandler FABRIC_CLIENT_EVENT_HANDLER = CUSTOM.client("handle", () -> ProxyEventJS.class).extra(Extra.REQUIRES_STRING);
+	EventHandler FABRIC_SERVER_EVENT_HANDLER = CUSTOM.server("handle", () -> ProxyEventJS.class).extra(Extra.REQUIRES_STRING);
+	EventHandler FABRIC_EVENT_REGISTER = CUSTOM.startup("registry", () -> FabricEventRegisterEventJS.class);
+
 	static void register() {
 		GROUP.register();
+		CUSTOM.register();
 	}
 
 }

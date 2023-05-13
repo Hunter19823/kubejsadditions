@@ -1,23 +1,12 @@
-package pie.ilikepiefoo.events;
-
-import dev.architectury.event.Event;
-import dev.latvian.mods.kubejs.event.EventJS;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import pie.ilikepiefoo.compat.arch.ArchEventAdapter;
+package pie.ilikepiefoo.util;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.lang.reflect.ParameterizedType;
 
-public class ArchEventRegisterEventJS extends EventJS {
-	public static final Logger LOG = LogManager.getLogger();
+public class ReflectionUtils {
 
-	public ArchEventRegisterEventJS() {
-
-	}
-
-	public String register(String name, Class<?> eventProvider, String fieldName) {
+	public static <T> Pair<Class<?>, T> retrieveEventClass(Class<?> eventProvider, String fieldName, Class<T> eventType) throws IllegalArgumentException {
 		if (eventProvider == null) {
 			throw new IllegalArgumentException("Event Provider cannot be null!");
 		}
@@ -30,15 +19,15 @@ public class ArchEventRegisterEventJS extends EventJS {
 		} catch (NoSuchFieldException e) {
 			throw new IllegalArgumentException("Field Name must be a valid field!");
 		}
-		if (!Event.class.isAssignableFrom(field.getType())) {
+		if (!eventType.isAssignableFrom(field.getType())) {
 			throw new IllegalArgumentException("Field must be of type Event!");
 		}
 		if (!(Modifier.isPublic(field.getModifiers()) || Modifier.isStatic(field.getModifiers()))) {
 			throw new IllegalArgumentException("Event Field must be public static!");
 		}
-		Event event = null;
+		T event = null;
 		try {
-			event = (Event) field.get(null);
+			event = (T) field.get(null);
 		} catch (IllegalAccessException e) {
 			throw new IllegalArgumentException("Event Field must be public static!");
 		}
@@ -51,9 +40,26 @@ public class ArchEventRegisterEventJS extends EventJS {
 		if (!eventClass.isInterface()) {
 			throw new IllegalArgumentException("Event must be an interface!");
 		}
-		ArchEventAdapter<?> adapter = new ArchEventAdapter<>(event, eventClass, name);
-		LOG.info("Created ArchEventAdapter for event '{}' with handler name '{}'", adapter.event.getClass().getName(), name);
-		return name;
+		return new Pair<>(eventClass, event);
 	}
+
+	public static class Pair<A, B> {
+		public A a;
+		public B b;
+
+		public Pair(A a, B b) {
+			this.a = a;
+			this.b = b;
+		}
+
+		public A getA() {
+			return a;
+		}
+
+		public B getB() {
+			return b;
+		}
+	}
+
 }
 

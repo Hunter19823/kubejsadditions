@@ -5,17 +5,24 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.lang.reflect.Method;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 
 public class ProxyEventJS extends EventJS {
 	public static final Logger LOG = LogManager.getLogger();
 	private final Method method;
 	private final Object[] args;
+	private final Map<String, Object> parameterMap;
 	private Optional<Object> result;
 	private boolean hasResult = false;
 
 	public ProxyEventJS(final Method method, final Object[] args) {
 		this.method = method;
+		this.parameterMap = new HashMap<>();
+		for (int i = 0; i < method.getParameters().length; i++) {
+			this.parameterMap.put(method.getParameters()[i].getName(), args[i]);
+		}
 		this.args = args;
 		this.result = Optional.empty();
 	}
@@ -26,6 +33,10 @@ public class ProxyEventJS extends EventJS {
 
 	public Object[] getArgs() {
 		return args;
+	}
+
+	public Map<String, Object> getParameters() {
+		return parameterMap;
 	}
 
 	public Optional<Object> getResultOptional() {
