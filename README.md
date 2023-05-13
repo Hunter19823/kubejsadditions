@@ -104,7 +104,7 @@ See the below example for how to listen to the event.
 
 ```js
 // See above for the first part of this example.
-FabricEvents.handle('server starting', event => {
+FabricEvents.handle('chat messages', event => {
 	console.log('Custom Arch Event handler has fired!');
 	console.log("Event Class: " + event); // Returns the class of the event. (It's always a ProxyClass)
 	console.log("Method Name: " + event.getMethodName()); // Returns the name of the method that fired the event.
