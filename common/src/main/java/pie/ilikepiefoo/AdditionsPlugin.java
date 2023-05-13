@@ -13,6 +13,7 @@ import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import pie.ilikepiefoo.compat.jei.JEIEvents;
 import pie.ilikepiefoo.events.AdditionalEvents;
+import pie.ilikepiefoo.events.ArchEventRegisterEventJS;
 import pie.ilikepiefoo.player.CustomDamageSourceJS;
 
 public class AdditionsPlugin extends KubeJSPlugin {
@@ -49,5 +50,11 @@ public class AdditionsPlugin extends KubeJSPlugin {
 			}
 			return ChunkPos.ZERO;
 		});
+	}
+
+	@Override
+	public void initStartup() {
+		ArchEventRegisterEventJS event = new ArchEventRegisterEventJS();
+		AdditionalEvents.ARCH_EVENT_REGISTER.post(event);
 	}
 }

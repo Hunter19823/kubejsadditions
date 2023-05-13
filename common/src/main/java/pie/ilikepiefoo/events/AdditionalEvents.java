@@ -2,6 +2,7 @@ package pie.ilikepiefoo.events;
 
 import dev.latvian.mods.kubejs.event.EventGroup;
 import dev.latvian.mods.kubejs.event.EventHandler;
+import dev.latvian.mods.kubejs.event.Extra;
 
 public interface AdditionalEvents {
 	EventGroup GROUP = EventGroup.of("CommonAddedEvents");
@@ -12,7 +13,12 @@ public interface AdditionalEvents {
 	EventHandler PLAYER_CLONE = GROUP.server("playerClone", () -> PlayerCloneEventJS.class);
 	EventHandler PLAYER_RESPAWN = GROUP.server("playerRespawn", () -> PlayerRespawnEventJS.class);
 
+	EventGroup ARCH_EVENTS = EventGroup.of("ArchEvents");
+	EventHandler ARCH_EVENT_HANDLER = ARCH_EVENTS.startup("handle", () -> ProxyEventJS.class).extra(Extra.REQUIRES_STRING);
+	EventHandler ARCH_EVENT_REGISTER = ARCH_EVENTS.startup("registry", () -> ArchEventRegisterEventJS.class);
+
 	static void register() {
 		GROUP.register();
+		ARCH_EVENTS.register();
 	}
 }
