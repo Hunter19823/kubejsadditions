@@ -31,6 +31,14 @@ public class ProxyEventJS extends EventJS {
 		return method.getName();
 	}
 
+	public String getReturnType() {
+		return method.getReturnType().getName();
+	}
+
+	public String getGenericReturnType() {
+		return method.getGenericReturnType().getTypeName();
+	}
+
 	public Object[] getArgs() {
 		return args;
 	}
