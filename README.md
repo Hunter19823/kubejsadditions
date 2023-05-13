@@ -33,7 +33,7 @@ and bindings as well.
 
 ### Using the power of Proxy classes, this mod adds the ability to listen to any Architectury or Fabric event.
 
-#### Architectury Event Register (Startup)
+#### Architectury Event Register (Startup) (Cannot be reloaded without a restart)
 
 The Architectury Registry Event is a special event that allows you to register events to the Architectury Event Bus.
 This is useful for registering events that are not supported by KubeJS or addon mods.
@@ -53,7 +53,7 @@ The third part is to register the event under an arbitrary name.
 In this example, that is `server starting`.
 See the below example for how to listen to the event.
 
-#### Architectury Event Listen (Startup/Client/Server)
+#### Architectury Event Listen (Startup/Client/Server) (Reloadable)
 
 ```js
 // See above for the first part of this example.
@@ -80,7 +80,7 @@ You can listen to any event from any script context (Startup, Client, Server) wi
 
 ## [Custom Fabric Event Listeners](https://github.com/Hunter19823/kubejsadditions/blob/3d489ddef363573218f68a8a7e34f924729fe1c2/fabric/src/main/java/pie/ilikepiefoo/fabric/FabricEventsJS.java#L60)
 
-#### Fabric Event Register (Startup)
+#### Fabric Event Register (Startup) (Cannot be reloaded without a restart)
 
 The FabricEvents Registry Event is a special event that allows you to register events to the Fabric Event Bus.
 This is useful for registering events that are not supported by KubeJS or addon mods.
@@ -100,7 +100,7 @@ The third part is to register the event under an arbitrary name.
 In this example, that is `chat messages`.
 See the below example for how to listen to the event.
 
-#### Fabric Events Event Listen (Startup/Client/Server)
+#### Fabric Events Event Listen (Startup/Client/Server) (Reloadable)
 
 ```js
 // See above for the first part of this example.
