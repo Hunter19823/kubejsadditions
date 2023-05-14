@@ -1,6 +1,9 @@
 package pie.ilikepiefoo.fabric;
 
 public class FabricEventsJS {
+	// Custom Fabric Event
+	public static final String FABRIC_EVENT_REGISTER = "fabric.event.register";
+
 	// World Render Events
 	public static final String CLIENT_BEFORE_ENTITIES = "fabric.client.before_entities";
 	public static final String CLIENT_AFTER_TRANSLUCENT = "fabric.client.after_translucent";

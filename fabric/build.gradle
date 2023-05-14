@@ -114,7 +114,7 @@ unifiedPublishing {
 				id = project.curseforge_id
 			}
 		}
-		var MT = System.getenv("MODRINTH_TOKEN")
+		var MT = System.getenv("MODRINTH_TOKEN_BROKEN")
 		if (MT != null) {
 			modrinth {
 				token = mt
