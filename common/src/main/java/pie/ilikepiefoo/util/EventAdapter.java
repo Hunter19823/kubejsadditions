@@ -87,7 +87,14 @@ public class EventAdapter<T> implements InvocationHandler {
 		if (this.customMethods.contains(method)) {
 			ProxyEventJS event = new ProxyEventJS(method, args);
 			for (ScriptType scriptType : scriptTypes) {
-				event.post(scriptType, this.name);
+				try {
+					if (scriptType.manager != null) {
+						event.post(scriptType, this.name);
+					}
+				} catch (NullPointerException e) {
+					// This happens when the script type is not loaded.
+					// This is just a patch for the issue.
+				}
 			}
 			if (event.requiresResult()) {
 				if (!event.hasResult()) {

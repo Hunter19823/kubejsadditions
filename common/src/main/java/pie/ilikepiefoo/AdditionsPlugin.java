@@ -22,6 +22,15 @@ import java.util.List;
 public class AdditionsPlugin extends KubeJSPlugin {
 	public static final List<EmptyHandler> STARTUP_HANDLERS = Collections.synchronizedList(new ArrayList<>());
 
+	static {
+		// Force the mod classes to load so that the static blocks are executed.
+		try {
+			Class.forName("pie.ilikepiefoo.KubeJSAdditions");
+			Class.forName("pie.ilikepiefoo.fabric.KubeJSAdditionsFabric");
+		} catch (Throwable ignored) {
+		}
+	}
+
 	@Override
 	public void initStartup() {
 		STARTUP_HANDLERS.forEach(EmptyHandler::handle);
