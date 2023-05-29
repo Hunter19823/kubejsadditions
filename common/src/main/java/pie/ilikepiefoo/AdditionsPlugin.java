@@ -11,19 +11,16 @@ import net.minecraft.data.worldgen.Structures;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.levelgen.feature.Feature;
+import pie.ilikepiefoo.compat.jei.JEIEvents;
+import pie.ilikepiefoo.events.AdditionalEvents;
+import pie.ilikepiefoo.events.custom.ArchEventRegisterEventJS;
 import pie.ilikepiefoo.player.CustomDamageSourceJS;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
 public class AdditionsPlugin extends KubeJSPlugin {
-	public static final List<EmptyHandler> STARTUP_HANDLERS = Collections.synchronizedList(new ArrayList<>());
-	public static final List<EmptyHandler> REGISTER_EVENT_HANDLER = Collections.synchronizedList(new ArrayList<>());
 
 	@Override
 	public void initStartup() {
-		STARTUP_HANDLERS.forEach(EmptyHandler::handle);
+		AdditionalEvents.ARCH_EVENT_REGISTER.post(new ArchEventRegisterEventJS());
 	}
 
 	/**
@@ -31,7 +28,8 @@ public class AdditionsPlugin extends KubeJSPlugin {
 	 */
 	@Override
 	public void registerEvents() {
-		REGISTER_EVENT_HANDLER.forEach(EmptyHandler::handle);
+		AdditionalEvents.register();
+		JEIEvents.register();
 	}
 
 	@Override

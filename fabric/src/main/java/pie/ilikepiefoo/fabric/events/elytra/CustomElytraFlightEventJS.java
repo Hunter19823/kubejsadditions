@@ -27,23 +27,10 @@ public class CustomElytraFlightEventJS extends LivingEntityEventJS {
 	}
 
 	/**
-	 * Try to use a custom elytra for an entity.
-	 * A custom elytra is anything that allows an entity to enter and continue elytra flight when some condition is met.
-	 * Listeners should follow the following pattern:
-	 * <pre>{@code
-	 * EntityElytraEvents.CUSTOM.register((entity, tickElytra) -> {
-	 *     if (check if condition for custom elytra is met) {
-	 *         if (tickElytra) {
-	 *             // Optionally consume some resources that are being used up in order to fly, for example damaging an item.
-	 *             // Optionally perform other side effects of elytra flight, for example playing a sound.
-	 *         }
-	 *         // Allow entering/continuing elytra flight with this custom elytra
-	 *         return true;
-	 *     }
-	 *     // Condition for the custom elytra is not met: don't let players enter or continue elytra flight (unless another elytra is available).
-	 *     return false;
-	 * });
-	 * }</pre>
+	 * An event to grant elytra flight to living entities when some condition is met.
+	 * Will be called when players try to start elytra flight by pressing space in mid-air, and every tick for all flying living entities to check if elytra flight is still allowed.
+	 *
+	 * <p>Items that wish to enable custom elytra flight when worn in the chest equipment slot can simply implement {@link FabricElytraItem} instead of registering a listener.
 	 *
 	 * @param entity     the entity
 	 * @param tickElytra false if this is just to check if the custom elytra can be used, true if the custom elytra should also be ticked, i.e. perform side-effects of flying such as using resources.
@@ -53,6 +40,10 @@ public class CustomElytraFlightEventJS extends LivingEntityEventJS {
 		if (ServerScriptManager.instance == null) {
 			return false;
 		}
+		// Canceling this event will result in Elytra flight being allowed and canceling subsequent handlers.
+		// (Returning true to handler).
+		// Not canceling this event will result in Custom Elytra flight event being passed to subsequent listeners.
+		// (Returning false to handler).
 		return FabricEventsJS.CUSTOM_ELYTRA_FLIGHT.post(new CustomElytraFlightEventJS(entity, tickElytra));
 	}
 
