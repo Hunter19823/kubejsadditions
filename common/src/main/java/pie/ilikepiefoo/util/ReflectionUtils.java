@@ -3,6 +3,7 @@ package pie.ilikepiefoo.util;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 
 public class ReflectionUtils {
 
@@ -34,11 +35,19 @@ public class ReflectionUtils {
 		if (!(field.getGenericType() instanceof ParameterizedType parameterizedType)) {
 			throw new IllegalArgumentException("Event Field must contain a be parameterized type!");
 		}
-		if (!(parameterizedType.getActualTypeArguments()[0] instanceof Class<?> eventClass)) {
-			throw new IllegalArgumentException("Event Field must contain a be parameterized type!");
+		Type type = parameterizedType.getActualTypeArguments()[0];
+		Class<?> eventClass = null;
+		if (type instanceof Class<?> clazz) {
+			eventClass = clazz;
+		}
+		if (eventClass == null && type instanceof ParameterizedType parameterizedType2) {
+			eventClass = (Class<?>) parameterizedType2.getRawType();
+		}
+		if (eventClass == null) {
+			throw new IllegalArgumentException("Event Field must contain a either a parameterized type or a class!");
 		}
 		if (!eventClass.isInterface()) {
-			throw new IllegalArgumentException("Event must be an interface!");
+			throw new IllegalArgumentException("Event Type must be an interface!");
 		}
 		return new Pair<>(eventClass, event);
 	}
