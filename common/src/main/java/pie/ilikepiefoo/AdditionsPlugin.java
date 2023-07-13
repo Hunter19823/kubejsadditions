@@ -11,7 +11,7 @@ import net.minecraft.data.worldgen.Structures;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.levelgen.feature.Feature;
-import pie.ilikepiefoo.compat.jei.JEIEvents;
+import pie.ilikepiefoo.bindings.NetJSWrapper;
 import pie.ilikepiefoo.events.AdditionalEvents;
 import pie.ilikepiefoo.events.custom.ArchEventRegisterEventJS;
 import pie.ilikepiefoo.player.CustomDamageSourceJS;
@@ -29,7 +29,6 @@ public class AdditionsPlugin extends KubeJSPlugin {
 	@Override
 	public void registerEvents() {
 		AdditionalEvents.register();
-		JEIEvents.register();
 	}
 
 	@Override
@@ -37,6 +36,7 @@ public class AdditionsPlugin extends KubeJSPlugin {
 		event.add("DamageSource", CustomDamageSourceJS.class);
 		event.add("Structures", Structures.class);
 		event.add("Feature", Feature.class);
+		event.add("NetJS", NetJSWrapper.class);
 	}
 
 	@Override
