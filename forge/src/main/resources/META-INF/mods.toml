@@ -1,33 +1,33 @@
 modLoader = "javafml"
 loaderVersion = "[43,)"
 #issueTrackerURL = ""
-license = "Insert License Here"
+license = "MIT"
 
 [[mods]]
-modId = "kubejsadditions"
+modId = "netjs"
 version = "${version}"
-displayName = "KubeJS Additons (Forge)"
-authors = "ILIKEPIEFOO2"
+displayName = "NetJS (Forge)"
+authors = "KostromDan"
 description = '''
-A mod that serves as a bunch of additional features to KubeJS.
+Addon for KubeJS for very limited safe network interaction.
 '''
 #logoFile = ""
 
-[[dependencies.kubejsadditions]]
+[[dependencies.netjs]]
 modId = "forge"
 mandatory = true
 versionRange = "[43,)"
 ordering = "NONE"
 side = "BOTH"
 
-[[dependencies.kubejsadditions]]
+[[dependencies.netjs]]
 modId = "minecraft"
 mandatory = true
 versionRange = "[1.19.2,1.19.3)"
 ordering = "NONE"
 side = "BOTH"
 
-[[dependencies.kubejsadditions]]
+[[dependencies.netjs]]
 modId = "architectury"
 mandatory = true
 versionRange = "[6.5.82,)"

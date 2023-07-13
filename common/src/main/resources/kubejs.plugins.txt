@@ -1,2 +1,1 @@
-pie.ilikepiefoo.AdditionsPlugin
-pie.ilikepiefoo.fabric.FabricPlugin
+dev.kostromdan.mods.netjs.NetJSPlugin

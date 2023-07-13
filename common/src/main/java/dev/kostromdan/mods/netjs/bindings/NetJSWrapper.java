@@ -1,4 +1,4 @@
-package pie.ilikepiefoo.bindings;
+package dev.kostromdan.mods.netjs.bindings;
 
 import java.io.BufferedReader;
 import java.io.IOException;

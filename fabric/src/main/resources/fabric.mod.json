@@ -1,17 +1,17 @@
 {
   "schemaVersion": 1,
-  "id": "kubejsadditions",
+  "id": "netjs",
   "version": "${version}",
-  "name": "KubeJS Additions (Fabric)",
-  "description": "A mod that serves as a bunch of additional features to KubeJS.",
+  "name": "NetJS (Fabric)",
+  "description": "Addon for KubeJS for very limited safe network interaction.",
   "authors": [
-    "ILIKEPIEFOO2"
+    "KostromDan"
   ],
   "contact": {
     "homepage": "https://fabricmc.net/",
     "sources": "https://github.com/FabricMC/fabric-example-mod"
   },
-  "license": "All Rights Reserved",
+  "license": "MIT",
   "environment": "*",
   "depends": {
     "fabric": "*",

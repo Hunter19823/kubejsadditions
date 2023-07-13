@@ -1,10 +1,10 @@
-package pie.ilikepiefoo;
+package dev.kostromdan.mods.netjs;
 
 import dev.latvian.mods.kubejs.KubeJSPlugin;
 import dev.latvian.mods.kubejs.script.BindingsEvent;
-import pie.ilikepiefoo.bindings.NetJSWrapper;
+import dev.kostromdan.mods.netjs.bindings.NetJSWrapper;
 
-public class AdditionsPlugin extends KubeJSPlugin {
+public class NetJSPlugin extends KubeJSPlugin {
 	@Override
 	public void registerBindings(BindingsEvent event) {
 		event.add("NetJS", NetJSWrapper.class);
