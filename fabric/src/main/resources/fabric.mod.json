@@ -12,17 +12,7 @@
     "sources": "https://github.com/FabricMC/fabric-example-mod"
   },
   "license": "All Rights Reserved",
-  "icon": "assets/kubejsadditions/kubejs_logo.png",
   "environment": "*",
-  "entrypoints": {
-    "main": [
-      "pie.ilikepiefoo.fabric.KubeJSAdditionsFabric"
-    ]
-  },
-  "mixins": [
-    "kubejsadditions.mixins.json",
-    "kubejsadditions-common.mixins.json"
-  ],
   "depends": {
     "fabric": "*",
     "minecraft": ">=1.19.2",

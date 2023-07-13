@@ -10,6 +10,5 @@ public class KubeJSAdditionsForge {
     public KubeJSAdditionsForge() {
         // Submit our event bus to let architectury register our content on the right time
         EventBuses.registerModEventBus(KubeJSAdditions.MOD_ID, FMLJavaModLoadingContext.get().getModEventBus());
-        KubeJSAdditions.init();
     }
 }
