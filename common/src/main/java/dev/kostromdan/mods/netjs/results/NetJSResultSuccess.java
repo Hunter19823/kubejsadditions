@@ -1,5 +1,7 @@
 package dev.kostromdan.mods.netjs.results;
 
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import org.jsoup.nodes.Element;
 
 public class NetJSResultSuccess extends NetJSResult {
@@ -16,8 +18,9 @@ public class NetJSResultSuccess extends NetJSResult {
 	public int dislikes = 0;
 	public boolean edited;
 
-	public String toString() {
-		return raw;
+	public JsonObject getAsJsonObject() {
+		JsonParser parser = new JsonParser();
+		return parser.parse(this.raw).getAsJsonObject();
 	}
 
 	public NetJSResultSuccess(String id, Element raw, Element post_name, Element author_username, Element date, Element expire, Element visits, Element stars, Element lang, Element size, Element category, Element likes, Element dislikes) {
@@ -33,7 +36,7 @@ public class NetJSResultSuccess extends NetJSResult {
 		this.stars = Integer.parseInt(stars.text());
 		this.lang = lang.text();
 		this.category = category.text().replace("| ", "");
-		this.size = size.text().replace(this.lang+" ","").split(this.category)[0].replace("|", "").strip();
+		this.size = size.text().replace(this.lang + " ", "").split(this.category)[0].replace("|", "").strip();
 		this.likes = Integer.parseInt(likes.text());
 		this.dislikes = Integer.parseInt(dislikes.text());
 	}

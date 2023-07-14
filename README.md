@@ -32,6 +32,7 @@ BlockEvents.rightClicked(event => {
         } else {
             event.player.tell(result.exception)
         }
+        //You can use result.getAsJsonObject() to deserialize paste to Json object
     }
 })
 ```
