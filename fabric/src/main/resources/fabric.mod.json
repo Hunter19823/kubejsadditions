@@ -1,21 +1,21 @@
 {
-  "schemaVersion": 1,
-  "id": "netjs",
-  "version": "${version}",
-  "name": "NetJS (Fabric)",
-  "description": "Addon for KubeJS for very limited safe network interaction.",
-  "authors": [
-    "KostromDan"
-  ],
-  "contact": {
-    "homepage": "https://fabricmc.net/",
-    "sources": "https://github.com/FabricMC/fabric-example-mod"
-  },
-  "license": "MIT",
-  "environment": "*",
-  "depends": {
-    "fabric": "*",
-    "minecraft": ">=1.19.2",
-    "architectury": ">=6.5.82"
-  }
+	"schemaVersion": 1,
+	"id": "netjs",
+	"version": "${version}",
+	"name": "NetJS (Fabric)",
+	"description": "Addon for KubeJS for very limited safe network interaction.",
+	"authors": [
+		"KostromDan"
+	],
+	"contact": {
+		"homepage": "https://fabricmc.net/",
+		"sources": "https://github.com/FabricMC/fabric-example-mod"
+	},
+	"license": "MIT",
+	"environment": "*",
+	"depends": {
+		"fabric": "*",
+		"minecraft": ">=1.19.2",
+		"architectury": ">=6.5.82"
+	}
 }

@@ -1,11 +1,14 @@
 package dev.kostromdan.mods.netjs.bindings;
 
-import java.io.BufferedReader;
+import dev.kostromdan.mods.netjs.results.NetJSResult;
+import dev.kostromdan.mods.netjs.results.NetJSResultExeption;
+import dev.kostromdan.mods.netjs.results.NetJSResultSuccess;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
+
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
 
 public interface NetJSWrapper {
 
@@ -25,38 +28,34 @@ public interface NetJSWrapper {
 		return true;
 	}
 
-	static String getPasteBinString(String paste_id) {
+	static NetJSResult getPasteBinString(String paste_id) {
 		if (!isValidPasteBinId(paste_id)) {
-			throw new RuntimeException(
-					"Non valid PasteBin id. It looks like you're doing something that this mod doesn't want to do.");
+			return new NetJSResultExeption(paste_id, new RuntimeException("Non valid PasteBin id. It looks like you're doing something that this mod doesn't want to do."));
 		}
+		Document doc;
 		try {
-			HttpURLConnection connection = (HttpURLConnection) new URL(
-					"https://pastebin.com/raw/" + paste_id).openConnection();
-			int responseCode = connection.getResponseCode();
-			InputStream inputStream;
-			if (200 <= responseCode && responseCode <= 299) {
-				inputStream = connection.getInputStream();
-			} else {
-				inputStream = connection.getErrorStream();
-			}
-
-			BufferedReader in = new BufferedReader(
-					new InputStreamReader(
-							inputStream));
-
-			StringBuilder response = new StringBuilder();
-			String currentLine;
-
-			while ((currentLine = in.readLine()) != null) {
-				response.append(currentLine);
-			}
-
-			in.close();
-
-			return response.toString();
+			doc = Jsoup.connect("https://pastebin.com/" + paste_id).get();
 		} catch (IOException ioe) {
-			return null;
+			return new NetJSResultExeption(paste_id, ioe);
 		}
+		Element elems = doc.getElementsByClass("post-view js-post-view").first();
+		if (elems == null) {
+			return new NetJSResultExeption(paste_id, new RuntimeException("Can't parse pastebin page. PasteBin site changed? You using wrong pastebin id?"));
+		}
+		Element raw = elems.getElementsByClass("source").first();
+		Element post_name = elems.getElementsByClass("info-top").first();
+		Element author_username = elems.getElementsByClass("username").first();
+		Element date = elems.getElementsByClass("date").first();
+		Element visits = elems.getElementsByClass("visits").first();
+		Element stars = elems.getElementsByClass("rating js-post-rating").first();
+		Element expire = elems.getElementsByClass("expire").first();
+		Element left = elems.getElementsByClass("left").first();
+		Elements left_elems = left.children();
+		Element lang = left_elems.get(0);
+		Element category = left_elems.get(1);
+		Element size = left;
+		Element likes = elems.getElementsByClass("btn -small -like").first();
+		Element dislikes = elems.getElementsByClass("btn -small -dislike").first();
+		return new NetJSResultSuccess(paste_id, raw, post_name, author_username, date, expire, visits, stars, lang, size, category, likes, dislikes);
 	}
 }
