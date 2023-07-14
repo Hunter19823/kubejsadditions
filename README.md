@@ -36,4 +36,4 @@ BlockEvents.rightClicked(event => {
 })
 ```
 
-This will return content of <https://pastebin.com/raw/JxQAj6Xd>
+This will return content of <https://pastebin.com/raw/3zCF8MM6>
