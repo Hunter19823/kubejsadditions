@@ -32,6 +32,7 @@ function print_all_params(player, result) {
         `dislikes = "${result.dislikes}"\n` +
         `size = "${result.size}"\n` +
         `paste = "${result}"\n`) //This will return content of <https://pastebin.com/raw/3zCF8MM6>
+        // result is equivalent of result.raw
 }
 
 BlockEvents.rightClicked(event => {
