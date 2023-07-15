@@ -14,7 +14,7 @@ Addon for KubeJS for very limited safe network interaction.
 ```js
 BlockEvents.rightClicked(event => {
     if (event.hand == 'main_hand') {
-        let result = NetJS.getPasteBinString('3zCF8MM6')
+        let result = NetJS.getPasteBin('3zCF8MM6')
         if (result.success) {
             event.player.tell(`id = "${result.id}"\n` +
                 `post_name = "${result.post_name}"\n` +

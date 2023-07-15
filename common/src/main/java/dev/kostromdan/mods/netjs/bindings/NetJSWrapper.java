@@ -1,5 +1,6 @@
 package dev.kostromdan.mods.netjs.bindings;
 
+import dev.kostromdan.mods.netjs.async.NetJSIAsyncCallback;
 import dev.kostromdan.mods.netjs.results.NetJSResult;
 import dev.kostromdan.mods.netjs.results.NetJSResultExeption;
 import dev.kostromdan.mods.netjs.results.NetJSResultSuccess;
@@ -28,7 +29,7 @@ public interface NetJSWrapper {
 		return true;
 	}
 
-	static NetJSResult getPasteBinString(String paste_id) {
+	static NetJSResult getPasteBinResult(String paste_id) {
 		if (!isValidPasteBinId(paste_id)) {
 			return new NetJSResultExeption(paste_id, new RuntimeException("Non valid PasteBin id. It looks like you're doing something that this mod doesn't want to do."));
 		}
@@ -57,5 +58,17 @@ public interface NetJSWrapper {
 		Element likes = elems.getElementsByClass("btn -small -like").first();
 		Element dislikes = elems.getElementsByClass("btn -small -dislike").first();
 		return new NetJSResultSuccess(paste_id, raw, post_name, author_username, date, expire, visits, stars, lang, size, category, likes, dislikes);
+	}
+
+	static void getPasteBin(String paste_id, NetJSIAsyncCallback c) {
+		NetJSResult result = getPasteBinResult(paste_id);
+		c.onCallback(result);
+	}
+
+	static void getPasteBinAsync(String paste_id, NetJSIAsyncCallback c) {
+		Thread thread = new Thread(() -> {
+			getPasteBin(paste_id, c);
+		});
+		thread.start();
 	}
 }
