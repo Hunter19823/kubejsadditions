@@ -1,4 +1,4 @@
-![637830420779583100 (1)](https://github.com/KostromDan/NetJS/assets/90044015/5ff2e169-bc09-4d0d-8176-78671884a70e)
+[![637830420779583100 (1)](https://github.com/KostromDan/NetJS/assets/90044015/5ff2e169-bc09-4d0d-8176-78671884a70e)](https://legacy.curseforge.com/minecraft/mc-mods/netjs-kubejs-addon)
 # NetJS
 
 ## About
