@@ -27,6 +27,9 @@ dependencies {
 
 	modImplementation("dev.latvian.mods:kubejs-fabric:${rootProject.kubejs_version}")
 	implementation("org.jsoup:jsoup:1.16.1")
+	loom {
+		include("org.jsoup:jsoup:1.16.1")
+	}
 }
 
 processResources {

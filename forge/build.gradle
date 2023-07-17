@@ -26,6 +26,9 @@ dependencies {
 
 	modImplementation("dev.latvian.mods:kubejs-forge:${rootProject.kubejs_version}")
 	forgeRuntimeLibrary("org.jsoup:jsoup:1.16.1")
+	loom {
+		include("org.jsoup:jsoup:1.16.1")
+	}
 }
 
 processResources {
