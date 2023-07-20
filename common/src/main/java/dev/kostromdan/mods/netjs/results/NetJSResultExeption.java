@@ -1,12 +1,14 @@
 package dev.kostromdan.mods.netjs.results;
 
+import com.google.gson.JsonObject;
+
 public class NetJSResultExeption extends NetJSResult {
 	public Exception exception;
 
-	public NetJSResultExeption(String id, Exception exeption, String raw) {
+	public NetJSResultExeption(String id, Exception exeption, JsonObject result) {
 		this.id = id;
 		this.exception = exeption;
-		this.raw = raw;
+		this.result = result;
 		this.success = false;
 	}
 
