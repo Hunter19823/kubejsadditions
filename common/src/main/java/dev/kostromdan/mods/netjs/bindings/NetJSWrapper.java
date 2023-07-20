@@ -2,11 +2,14 @@ package dev.kostromdan.mods.netjs.bindings;
 
 import com.google.gson.JsonObject;
 import dev.kostromdan.mods.netjs.async.NetJSIAsyncCallback;
+import dev.kostromdan.mods.netjs.results.NetJSGistsResultSuccess;
+import dev.kostromdan.mods.netjs.results.NetJSPasteBinResultSuccess;
 import dev.kostromdan.mods.netjs.results.NetJSResult;
 import dev.kostromdan.mods.netjs.results.NetJSResultExeption;
-import dev.kostromdan.mods.netjs.results.NetJSResultSuccess;
 import dev.latvian.mods.kubejs.util.ConsoleJS;
+import dev.latvian.mods.kubejs.util.JsonIO;
 import dev.latvian.mods.rhino.RhinoException;
+import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -16,39 +19,49 @@ import java.io.IOException;
 
 public interface NetJSWrapper {
 
-	private static boolean validPasteBinIdChar(char c) {
+	private static boolean validIdChar(char c) {
 		return c >= 'a' && c <= 'z' || c >= 'A' && c <= 'Z' || c >= '0' && c <= '9';
 	}
 
-	private static boolean isValidPasteBinId(String s) {
-		if (s.length() >= 10) {
+	private static boolean isValidId(String s, int max_len) {
+		if (s.length() > max_len) {
 			return false;
 		}
 		for (int i = 0; i < s.length(); ++i) {
-			if (!validPasteBinIdChar(s.charAt(i))) {
+			if (!validIdChar(s.charAt(i))) {
 				return false;
 			}
 		}
 		return true;
 	}
 
-	static NetJSResult getPasteBinResult(String paste_id) {
-		if (!isValidPasteBinId(paste_id)) {
-			return new NetJSResultExeption(paste_id, new RuntimeException("Non valid PasteBin id. It looks like you're doing something that this mod doesn't want to do."));
+	static NetJSResult getPasteBinResult(String id) {
+		if (!isValidId(id, 8)) {
+			return new NetJSResultExeption(id, new RuntimeException("Non valid PasteBin id. It looks like you're doing something that this mod doesn't want to do."));
 		}
+		Connection.Response response;
 		Document doc;
 		try {
-			doc = Jsoup.connect("https://pastebin.com/" + paste_id).get();
+			response = Jsoup.connect("https://pastebin.com/" + id).execute();
+			doc = response.parse();
 		} catch (IOException ioe) {
-			return new NetJSResultExeption(paste_id, ioe);
-		}
-		Element elems = doc.getElementsByClass("post-view js-post-view").first();
-		if (elems == null) {
-			return new NetJSResultExeption(paste_id, new RuntimeException("Can't parse pastebin page. PasteBin site changed? You using wrong pastebin id?"));
+			return new NetJSResultExeption(id, ioe);
 		}
 
 		JsonObject result = new JsonObject();
-//		result.addProperty("raw_html_text", doc.text());
+		int response_code = response.statusCode();
+		result.addProperty("response_code", response_code);
+		if (response_code != 200) {
+			result.addProperty("raw_response_text", doc.text());
+			return new NetJSResultExeption(id, new RuntimeException("Response code " + response_code + " != 200! raw_response_text can contain more info."), result);
+		}
+
+		Element elems = doc.getElementsByClass("post-view js-post-view").first();
+		if (elems == null) {
+			result.addProperty("raw_response_text", doc.text());
+			return new NetJSResultExeption(id, new RuntimeException("Can't parse pastebin page. PasteBin site changed? You using wrong pastebin id? raw_response_text can contain more info."), result);
+		}
+
 
 		Element raw = elems.getElementsByClass("source").first();
 		result.addProperty("raw_text", raw != null ? raw.text() : null);
@@ -90,18 +103,62 @@ public interface NetJSWrapper {
 		Element dislikes = elems.getElementsByClass("btn -small -dislike").first();
 		result.addProperty("dislikes_count", dislikes != null ? Integer.parseInt(dislikes.text()) : null);
 
-		return new NetJSResultSuccess(paste_id, result);
+		return new NetJSPasteBinResultSuccess(id, result);
 	}
 
-	static void getPasteBin(String paste_id, NetJSIAsyncCallback c) {
-		NetJSResult result = getPasteBinResult(paste_id);
+	static NetJSResult getGistsResult(String id) {
+		if (!isValidId(id, 32)) {
+			return new NetJSResultExeption(id, new RuntimeException("Non valid Gists id. It looks like you're doing something that this mod doesn't want to do."));
+		}
+		Connection.Response response;
+		Document doc;
+		try {
+			response = Jsoup.connect("https://api.github.com/gists/" + id).ignoreContentType(true).execute();
+			doc = response.parse();
+		} catch (IOException ioe) {
+			return new NetJSResultExeption(id, ioe);
+		}
+
+		JsonObject result = new JsonObject();
+		int response_code = response.statusCode();
+		result.addProperty("response_code", response_code);
+		if (response_code != 200) {
+			result.addProperty("raw_response_text", doc.text());
+			return new NetJSResultExeption(id, new RuntimeException("Response code " + response_code + " != 200! raw_response_text can contain more info."), result);
+		}
+		JsonObject gists_answer = (JsonObject) JsonIO.parseRaw(doc.text());
+		result.add("gists_answer", gists_answer);
+
+		return new NetJSGistsResultSuccess(id, result);
+	}
+
+	static void getPasteBin(String id, NetJSIAsyncCallback c) {
+		NetJSResult result = getPasteBinResult(id);
 		c.onCallback(result);
 	}
 
-	static void getPasteBinAsync(String paste_id, NetJSIAsyncCallback c) {
+	static void getGists(String id, NetJSIAsyncCallback c) {
+		NetJSResult result = getGistsResult(id);
+		c.onCallback(result);
+	}
+
+	static void getPasteBinAsync(String id, NetJSIAsyncCallback c) {
 		Thread thread = new Thread(() -> {
 			try {
-				getPasteBin(paste_id, c);
+				getPasteBin(id, c);
+			} catch (RhinoException ex) {
+				ConsoleJS.SERVER.error("Error occurred while handling async NetJS callback: " + ex.getMessage());
+			} catch (Throwable ex) {
+				ex.printStackTrace();
+			}
+		});
+		thread.start();
+	}
+
+	static void getGistsAsync(String id, NetJSIAsyncCallback c) {
+		Thread thread = new Thread(() -> {
+			try {
+				getGists(id, c);
 			} catch (RhinoException ex) {
 				ConsoleJS.SERVER.error("Error occurred while handling async NetJS callback: " + ex.getMessage());
 			} catch (Throwable ex) {
