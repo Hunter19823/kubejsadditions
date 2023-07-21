@@ -59,7 +59,6 @@ BlockEvents.rightClicked(event => { // Gists example
 })
 
 BlockEvents.leftClicked(event => { // PasteBin example
-    event.cancel()
     NetJS.getPasteBinAsync(pastebin_id, result => { // pastebin_id must be only id, not url!
         if (result.success) {
             // Be sure to check that the request is successful.
@@ -87,6 +86,7 @@ BlockEvents.leftClicked(event => { // PasteBin example
             event.player.tell(result.exception)
         }
     })
+    event.cancel()
 })
 
 function print_all_params(player, result) {
