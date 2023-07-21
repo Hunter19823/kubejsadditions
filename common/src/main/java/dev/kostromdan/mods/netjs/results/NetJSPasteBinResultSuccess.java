@@ -1,9 +1,9 @@
 package dev.kostromdan.mods.netjs.results;
 
-import com.google.gson.JsonObject;
+import java.util.Map;
 
 public class NetJSPasteBinResultSuccess extends NetJSResultSuccess {
-	public NetJSPasteBinResultSuccess(String id, JsonObject result) {
+	public NetJSPasteBinResultSuccess(String id, Map<String, Object> result) {
 		super(id, result);
 	}
 

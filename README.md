@@ -8,60 +8,90 @@ Addon for KubeJS for very limited safe network interaction.
 
 ## Features
 
-### PasteBin
+At the current stage of development, it makes it possible to interact with Pastebin and github Gists.
 
 ```js
-NetJS.getPasteBin('3zCF8MM6', result => {}) // linear
-NetJS.getPasteBinAsync('3zCF8MM6', result => {}) // async
+// linear, not recomended, because will stop main client/server thread utill result is received. 
+NetJS.getPasteBin('3zCF8MM6', result => {})
+NetJS.getGists('3f1cd831af032e52238ef161bdd715b3', result => {})
+// async, accessing the network will be a separate thread, the game will continue to run, and the callback will be called when the result is received.
+NetJS.getPasteBinAsync('3zCF8MM6', result => {})
+NetJS.getGistsAsync('3f1cd831af032e52238ef161bdd715b3', result => {})
 ```
 
 #### Usage example:
 
 ```js
-function print_all_params(player, result) {
-    player.tell(`id = "${result.id}"\n` +
-        `post_name = "${result.post_name}"\n` +
-        `author_username = "${result.author_username}"\n` +
-        `date = "${result.date}"\n` +
-        `expire = "${result.expire}"\n` +
-        `lang = "${result.lang}"\n` +
-        `category = "${result.category}"\n` +
-        `edited = "${result.edited}"\n` +
-        `visits = "${result.visits}"\n` +
-        `stars = "${result.stars}"\n` +
-        `likes = "${result.likes}"\n` +
-        `dislikes = "${result.dislikes}"\n` +
-        `size = "${result.size}"\n` +
-        `paste = "${result}"\n`) //This will return content of <https://pastebin.com/raw/3zCF8MM6>
-        // result is equivalent of result.raw
-}
+let pastebin_id = '5fZP6aeu'
+let gists_id = 'f16d2ee987a35d8930b35971c2d47d72'
 
-BlockEvents.rightClicked(event => {
+BlockEvents.rightClicked(event => { // Gists example
     if (event.hand == 'main_hand') {
-        event.player.tell('started not async test') //first print
-        NetJS.getPasteBin('3zCF8MM6', result => {
+        NetJS.getGistsAsync(gists_id, result => { // gists_id must be only id, not url!
             if (result.success) {
-                print_all_params(event.player, result) //second print
+                // Be sure to check that the request is successful.
+                // Since the user may not have the Internet, the post has been deleted, a failure on the GitHub server.
+                // And an infinite number of other cases. If this is not done, it will lead to errors.
+
+                // Use result.raw to get the untouched text uploaded via Gists.
+                event.player.tell(`text = "${result.raw}"`)
+
+                // result has many additional parameters.
+                // You can see all of them by visiting https://api.github.com/gists/<gists_id> Or by:
+                // print_all_params(event.player, result) // uncomment this line to print them
+
+                // Gists transmits all data in json format.
+                // To get a specific parameter, work with result as a json object.
+                // For example:
+                event.player.tell(`Owner login = "${result["owner"]["login"]}"`)
+                // result["files"]["<filename of uploaded file>"]["content"] is equivalent of result.raw
+
+                // If uploaded data was in Json format, you can easily deserialize it to Json object.
+                let json_result = result.parseRawToJson()
+                event.player.tell(`test_value = "${json_result["test_key"]}"`)
+
             } else {
+                //If the request was not successful, the result.exception will store information about the exception.
                 event.player.tell(result.exception)
             }
         })
-        event.player.tell('finished not async test') //third print
     }
 })
 
-BlockEvents.leftClicked(event => {
+BlockEvents.leftClicked(event => { // PasteBin example
     event.cancel()
-    event.player.tell('started async test') //first print
-    NetJS.getPasteBinAsync('3zCF8MM6', result => {
+    NetJS.getPasteBinAsync(pastebin_id, result => { // pastebin_id must be only id, not url!
         if (result.success) {
-            print_all_params(event.player, result)
+            // Be sure to check that the request is successful.
+            // Since the user may not have the Internet, the post has been deleted, a failure on the PasteBin server.
+            // And an infinite number of other cases. If this is not done, it will lead to errors.
+
+            // Use result.raw to get the untouched text uploaded via PasteBin.
+            event.player.tell(`text = "${result.raw}"`)
+
+            // result has many additional parameters.
+            // You can see all of them by:
+            // print_all_params(event.player, result) // uncomment this line to print them
+
+            // To get a specific parameter, work with result as a json object.
+            // For example:
+            event.player.tell(`Author Username = "${result["author_username"]}"`)
+            // result["raw_text"] is equivalent of result.raw
+
+            // If uploaded data was in Json format, you can easily deserialize it to Json object.
+            let json_result = result.parseRawToJson()
+            event.player.tell(`test_value = "${json_result["test_key"]}"`)
+
         } else {
-            event.player.tell(result.exception) //third print
+            //If the request was not successful, the result.exception will store information about the exception.
+            event.player.tell(result.exception)
         }
     })
-    event.player.tell('finished async test') //second print
 })
 
-//You can use result.getAsJsonObject() to deserialize paste to Json object
+function print_all_params(player, result) {
+    result.forEach((key, value) => {
+        player.tell(`${key} = "${value}"`)
+    })
+}
 ```

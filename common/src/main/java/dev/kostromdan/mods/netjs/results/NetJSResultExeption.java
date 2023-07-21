@@ -1,11 +1,11 @@
 package dev.kostromdan.mods.netjs.results;
 
-import com.google.gson.JsonObject;
+import java.util.Map;
 
 public class NetJSResultExeption extends NetJSResult {
 	public Exception exception;
 
-	public NetJSResultExeption(String id, Exception exeption, JsonObject result) {
+	public NetJSResultExeption(String id, Exception exeption, Map<String, Object> result) {
 		this.id = id;
 		this.exception = exeption;
 		this.result = result;

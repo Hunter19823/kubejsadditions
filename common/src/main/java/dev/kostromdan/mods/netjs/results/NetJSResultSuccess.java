@@ -1,14 +1,12 @@
 package dev.kostromdan.mods.netjs.results;
 
-import com.google.gson.JsonObject;
 import dev.latvian.mods.kubejs.util.JsonIO;
 import dev.latvian.mods.kubejs.util.MapJS;
 
 import java.util.Map;
 
-public abstract class NetJSResultSuccess extends NetJSResult {
-
-	public NetJSResultSuccess(String id, JsonObject result) {
+public class NetJSResultSuccess extends NetJSResult {
+	public NetJSResultSuccess(String id, Map<String, Object> result) {
 		this.success = true;
 		this.id = id;
 		this.result = result;
@@ -19,9 +17,8 @@ public abstract class NetJSResultSuccess extends NetJSResult {
 			return result.get("raw_text").toString();
 		}
 		if (this instanceof NetJSGistsResultSuccess) {
-			JsonObject gists_result = (JsonObject) result.get("gists_answer");
-			JsonObject files = (JsonObject) gists_result.get("files");
-			JsonObject first = (JsonObject) files.get(files.keySet().iterator().next());
+			var files = (Map) result.get("files");
+			var first = (Map) files.get(files.keySet().iterator().next());
 			return first.get("content").toString();
 		}
 		return null;

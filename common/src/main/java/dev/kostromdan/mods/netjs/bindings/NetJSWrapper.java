@@ -1,5 +1,6 @@
 package dev.kostromdan.mods.netjs.bindings;
 
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import dev.kostromdan.mods.netjs.async.NetJSIAsyncCallback;
 import dev.kostromdan.mods.netjs.results.NetJSGistsResultSuccess;
@@ -8,6 +9,7 @@ import dev.kostromdan.mods.netjs.results.NetJSResult;
 import dev.kostromdan.mods.netjs.results.NetJSResultExeption;
 import dev.latvian.mods.kubejs.util.ConsoleJS;
 import dev.latvian.mods.kubejs.util.JsonIO;
+import dev.latvian.mods.kubejs.util.MapJS;
 import dev.latvian.mods.rhino.RhinoException;
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
@@ -16,6 +18,7 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import java.io.IOException;
+import java.util.Map;
 
 public interface NetJSWrapper {
 
@@ -53,13 +56,13 @@ public interface NetJSWrapper {
 		result.addProperty("response_code", response_code);
 		if (response_code != 200) {
 			result.addProperty("raw_response_text", doc.text());
-			return new NetJSResultExeption(id, new RuntimeException("Response code " + response_code + " != 200! raw_response_text can contain more info."), result);
+			return new NetJSResultExeption(id, new RuntimeException("Response code " + response_code + " != 200! raw_response_text can contain more info."), (Map<String, Object>) MapJS.of(result));
 		}
 
 		Element elems = doc.getElementsByClass("post-view js-post-view").first();
 		if (elems == null) {
 			result.addProperty("raw_response_text", doc.text());
-			return new NetJSResultExeption(id, new RuntimeException("Can't parse pastebin page. PasteBin site changed? You using wrong pastebin id? raw_response_text can contain more info."), result);
+			return new NetJSResultExeption(id, new RuntimeException("Can't parse pastebin page. PasteBin site changed? You using wrong pastebin id? raw_response_text can contain more info."), (Map<String, Object>) MapJS.of(result));
 		}
 
 
@@ -103,7 +106,7 @@ public interface NetJSWrapper {
 		Element dislikes = elems.getElementsByClass("btn -small -dislike").first();
 		result.addProperty("dislikes_count", dislikes != null ? Integer.parseInt(dislikes.text()) : null);
 
-		return new NetJSPasteBinResultSuccess(id, result);
+		return new NetJSPasteBinResultSuccess(id, (Map<String, Object>) MapJS.of(result));
 	}
 
 	static NetJSResult getGistsResult(String id) {
@@ -118,18 +121,20 @@ public interface NetJSWrapper {
 		} catch (IOException ioe) {
 			return new NetJSResultExeption(id, ioe);
 		}
-
 		JsonObject result = new JsonObject();
+
 		int response_code = response.statusCode();
 		result.addProperty("response_code", response_code);
 		if (response_code != 200) {
 			result.addProperty("raw_response_text", doc.text());
-			return new NetJSResultExeption(id, new RuntimeException("Response code " + response_code + " != 200! raw_response_text can contain more info."), result);
+			return new NetJSResultExeption(id, new RuntimeException("Response code " + response_code + " != 200! raw_response_text can contain more info."), (Map<String, Object>) MapJS.of(result));
 		}
-		JsonObject gists_answer = (JsonObject) JsonIO.parseRaw(doc.text());
-		result.add("gists_answer", gists_answer);
 
-		return new NetJSGistsResultSuccess(id, result);
+		MapJS.of(JsonIO.parse(doc.text())).forEach((key, value) -> {
+			result.add((String) key, (JsonElement) value);
+		});
+
+		return new NetJSGistsResultSuccess(id, (Map<String, Object>) MapJS.of(result));
 	}
 
 	static void getPasteBin(String id, NetJSIAsyncCallback c) {
