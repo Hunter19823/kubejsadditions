@@ -6,9 +6,8 @@ import dev.latvian.mods.kubejs.util.MapJS;
 import java.util.Map;
 
 public class NetJSResultSuccess extends NetJSResult {
-	public NetJSResultSuccess(String id, Map<String, Object> result) {
+	public NetJSResultSuccess(Map<String, Object> result) {
 		this.success = true;
-		this.id = id;
 		this.result = result;
 	}
 

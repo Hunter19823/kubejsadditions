@@ -5,7 +5,6 @@ import java.util.Map;
 import java.util.Set;
 
 public class NetJSResult implements Map<String, Object> {
-	public String id = null;
 	public boolean success;
 	protected Map<String, Object> result = null;
 

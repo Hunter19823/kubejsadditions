@@ -5,14 +5,13 @@ import java.util.Map;
 public class NetJSResultExeption extends NetJSResult {
 	public Exception exception;
 
-	public NetJSResultExeption(String id, Exception exeption, Map<String, Object> result) {
-		this.id = id;
+	public NetJSResultExeption(Exception exeption, Map<String, Object> result) {
 		this.exception = exeption;
 		this.result = result;
 		this.success = false;
 	}
 
-	public NetJSResultExeption(String id, Exception exception) {
-		this(id, exception, null);
+	public NetJSResultExeption(Exception exception) {
+		this(exception, null);
 	}
 }

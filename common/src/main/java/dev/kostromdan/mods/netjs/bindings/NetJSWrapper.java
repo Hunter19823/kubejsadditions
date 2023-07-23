@@ -40,7 +40,7 @@ public interface NetJSWrapper {
 
 	static NetJSResult getPasteBinResult(String id) {
 		if (!isValidId(id, 8)) {
-			return new NetJSResultExeption(id, new RuntimeException("Non valid PasteBin id. It looks like you're doing something that this mod doesn't want to do."));
+			return new NetJSResultExeption(new RuntimeException("Non valid PasteBin id. It looks like you're doing something that this mod doesn't want to do."));
 		}
 		Connection.Response response;
 		Document doc;
@@ -48,7 +48,7 @@ public interface NetJSWrapper {
 			response = Jsoup.connect("https://pastebin.com/" + id).execute();
 			doc = response.parse();
 		} catch (IOException ioe) {
-			return new NetJSResultExeption(id, ioe);
+			return new NetJSResultExeption(ioe);
 		}
 
 		JsonObject result = new JsonObject();
@@ -56,13 +56,13 @@ public interface NetJSWrapper {
 		result.addProperty("response_code", response_code);
 		if (response_code != 200) {
 			result.addProperty("raw_response_text", doc.text());
-			return new NetJSResultExeption(id, new RuntimeException("Response code " + response_code + " != 200! raw_response_text can contain more info."), (Map<String, Object>) MapJS.of(result));
+			return new NetJSResultExeption(new RuntimeException("Response code " + response_code + " != 200! raw_response_text can contain more info."), (Map<String, Object>) MapJS.of(result));
 		}
 
 		Element elems = doc.getElementsByClass("post-view js-post-view").first();
 		if (elems == null) {
 			result.addProperty("raw_response_text", doc.text());
-			return new NetJSResultExeption(id, new RuntimeException("Can't parse pastebin page. PasteBin site changed? You using wrong pastebin id? raw_response_text can contain more info."), (Map<String, Object>) MapJS.of(result));
+			return new NetJSResultExeption(new RuntimeException("Can't parse pastebin page. PasteBin site changed? You using wrong pastebin id? raw_response_text can contain more info."), (Map<String, Object>) MapJS.of(result));
 		}
 
 
@@ -106,12 +106,12 @@ public interface NetJSWrapper {
 		Element dislikes = elems.getElementsByClass("btn -small -dislike").first();
 		result.addProperty("dislikes_count", dislikes != null ? Integer.parseInt(dislikes.text()) : null);
 
-		return new NetJSPasteBinResultSuccess(id, (Map<String, Object>) MapJS.of(result));
+		return new NetJSPasteBinResultSuccess((Map<String, Object>) MapJS.of(result));
 	}
 
 	static NetJSResult getGistsResult(String id) {
 		if (!isValidId(id, 32)) {
-			return new NetJSResultExeption(id, new RuntimeException("Non valid Gists id. It looks like you're doing something that this mod doesn't want to do."));
+			return new NetJSResultExeption(new RuntimeException("Non valid Gists id. It looks like you're doing something that this mod doesn't want to do."));
 		}
 		Connection.Response response;
 		Document doc;
@@ -119,7 +119,7 @@ public interface NetJSWrapper {
 			response = Jsoup.connect("https://api.github.com/gists/" + id).ignoreContentType(true).execute();
 			doc = response.parse();
 		} catch (IOException ioe) {
-			return new NetJSResultExeption(id, ioe);
+			return new NetJSResultExeption(ioe);
 		}
 		JsonObject result = new JsonObject();
 
@@ -127,14 +127,14 @@ public interface NetJSWrapper {
 		result.addProperty("response_code", response_code);
 		if (response_code != 200) {
 			result.addProperty("raw_response_text", doc.text());
-			return new NetJSResultExeption(id, new RuntimeException("Response code " + response_code + " != 200! raw_response_text can contain more info."), (Map<String, Object>) MapJS.of(result));
+			return new NetJSResultExeption(new RuntimeException("Response code " + response_code + " != 200! raw_response_text can contain more info."), (Map<String, Object>) MapJS.of(result));
 		}
 
 		MapJS.of(JsonIO.parse(doc.text())).forEach((key, value) -> {
 			result.add((String) key, (JsonElement) value);
 		});
 
-		return new NetJSGistsResultSuccess(id, (Map<String, Object>) MapJS.of(result));
+		return new NetJSGistsResultSuccess((Map<String, Object>) MapJS.of(result));
 	}
 
 	static void getPasteBin(String id, NetJSIAsyncCallback c) {
