@@ -48,7 +48,8 @@ BlockEvents.rightClicked(event => { // Gists example
 
                 // If uploaded data was in Json format, you can easily deserialize it to Json object.
                 let json_result = result.parseRawToJson()
-                event.player.tell(`test_value = "${json_result["test_key"]}"`)
+                event.player.tell(`test : "${json_result["test_key"]}"`)
+                event.player.tell(`recursive_test = "${json_result["recursive_test"]["test_key"]}"`)
 
             } else {
                 //If the request was not successful, the result.exception will store information about the exception.
@@ -74,12 +75,13 @@ BlockEvents.leftClicked(event => { // PasteBin example
 
             // To get a specific parameter, work with result as a json object.
             // For example:
-            event.player.tell(`Author Username = "${result["author_username"]}"`)
+            event.player.tell(`Author username = "${result["author_username"]}"`)
             // result["raw_text"] is equivalent of result.raw
 
             // If uploaded data was in Json format, you can easily deserialize it to Json object.
             let json_result = result.parseRawToJson()
-            event.player.tell(`test_value = "${json_result["test_key"]}"`)
+            event.player.tell(`test : "${json_result["test_key"]}"`)
+            event.player.tell(`recursive_test = "${json_result["recursive_test"]["test_key"]}"`)
 
         } else {
             //If the request was not successful, the result.exception will store information about the exception.

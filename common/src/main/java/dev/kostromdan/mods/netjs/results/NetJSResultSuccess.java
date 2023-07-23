@@ -1,12 +1,14 @@
 package dev.kostromdan.mods.netjs.results;
 
+import dev.kostromdan.mods.netjs.utils.NetJSUtils;
 import dev.latvian.mods.kubejs.util.JsonIO;
 import dev.latvian.mods.kubejs.util.MapJS;
 
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 public class NetJSResultSuccess extends NetJSResult {
-	public NetJSResultSuccess(Map<String, Object> result) {
+	public NetJSResultSuccess(LinkedHashMap<String, Object> result) {
 		this.success = true;
 		this.result = result;
 	}
@@ -24,6 +26,6 @@ public class NetJSResultSuccess extends NetJSResult {
 	}
 
 	public Map<?, ?> parseRawToJson() {
-		return MapJS.of(JsonIO.parse(getRaw()));
+		return NetJSUtils.parseRawJsonToMap(getRaw());
 	}
 }

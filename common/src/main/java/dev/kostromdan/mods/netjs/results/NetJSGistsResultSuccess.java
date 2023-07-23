@@ -1,9 +1,9 @@
 package dev.kostromdan.mods.netjs.results;
 
-import java.util.Map;
+import java.util.LinkedHashMap;
 
 public class NetJSGistsResultSuccess extends NetJSResultSuccess {
-	public NetJSGistsResultSuccess(Map<String, Object> result) {
+	public NetJSGistsResultSuccess(LinkedHashMap<String, Object> result) {
 		super(result);
 	}
 

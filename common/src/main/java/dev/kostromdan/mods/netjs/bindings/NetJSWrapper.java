@@ -1,15 +1,12 @@
 package dev.kostromdan.mods.netjs.bindings;
 
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
 import dev.kostromdan.mods.netjs.async.NetJSIAsyncCallback;
 import dev.kostromdan.mods.netjs.results.NetJSGistsResultSuccess;
 import dev.kostromdan.mods.netjs.results.NetJSPasteBinResultSuccess;
 import dev.kostromdan.mods.netjs.results.NetJSResult;
 import dev.kostromdan.mods.netjs.results.NetJSResultExeption;
+import dev.kostromdan.mods.netjs.utils.NetJSUtils;
 import dev.latvian.mods.kubejs.util.ConsoleJS;
-import dev.latvian.mods.kubejs.util.JsonIO;
-import dev.latvian.mods.kubejs.util.MapJS;
 import dev.latvian.mods.rhino.RhinoException;
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
@@ -18,28 +15,13 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import java.io.IOException;
-import java.util.Map;
+import java.util.LinkedHashMap;
 
 public interface NetJSWrapper {
 
-	private static boolean validIdChar(char c) {
-		return c >= 'a' && c <= 'z' || c >= 'A' && c <= 'Z' || c >= '0' && c <= '9';
-	}
-
-	private static boolean isValidId(String s, int max_len) {
-		if (s.length() > max_len) {
-			return false;
-		}
-		for (int i = 0; i < s.length(); ++i) {
-			if (!validIdChar(s.charAt(i))) {
-				return false;
-			}
-		}
-		return true;
-	}
 
 	static NetJSResult getPasteBinResult(String id) {
-		if (!isValidId(id, 8)) {
+		if (!NetJSUtils.isValidId(id, 8)) {
 			return new NetJSResultExeption(new RuntimeException("Non valid PasteBin id. It looks like you're doing something that this mod doesn't want to do."));
 		}
 		Connection.Response response;
@@ -51,41 +33,41 @@ public interface NetJSWrapper {
 			return new NetJSResultExeption(ioe);
 		}
 
-		JsonObject result = new JsonObject();
+		LinkedHashMap<String, Object> result = new LinkedHashMap<String, Object>();
 		int response_code = response.statusCode();
-		result.addProperty("response_code", response_code);
+		result.put("response_code", response_code);
 		if (response_code != 200) {
-			result.addProperty("raw_response_text", doc.text());
-			return new NetJSResultExeption(new RuntimeException("Response code " + response_code + " != 200! raw_response_text can contain more info."), (Map<String, Object>) MapJS.of(result));
+			result.put("raw_response_text", doc.text());
+			return new NetJSResultExeption(new RuntimeException("Response code " + response_code + " != 200! raw_response_text can contain more info."), result);
 		}
 
 		Element elems = doc.getElementsByClass("post-view js-post-view").first();
 		if (elems == null) {
-			result.addProperty("raw_response_text", doc.text());
-			return new NetJSResultExeption(new RuntimeException("Can't parse pastebin page. PasteBin site changed? You using wrong pastebin id? raw_response_text can contain more info."), (Map<String, Object>) MapJS.of(result));
+			result.put("raw_response_text", doc.text());
+			return new NetJSResultExeption(new RuntimeException("Can't parse pastebin page. PasteBin site changed? You using wrong pastebin id? raw_response_text can contain more info."), result);
 		}
 
 
 		Element raw = elems.getElementsByClass("source").first();
-		result.addProperty("raw_text", raw != null ? raw.text() : null);
+		result.put("raw_text", raw != null ? raw.text() : null);
 
 		Element post_name = elems.getElementsByClass("info-top").first();
-		result.addProperty("post_name", post_name != null ? post_name.text() : null);
+		result.put("post_name", post_name != null ? post_name.text() : null);
 		Element author_username = elems.getElementsByClass("username").first();
-		result.addProperty("author_username", author_username != null ? author_username.text() : null);
+		result.put("author_username", author_username != null ? author_username.text() : null);
 
 		Element date = elems.getElementsByClass("date").first();
 		if (date != null) {
-			result.addProperty("is_edited", date.text().contains(" (edited)"));
-			result.addProperty("date_created", date.text().replace(" (edited)", ""));
+			result.put("is_edited", date.text().contains(" (edited)"));
+			result.put("date_created", date.text().replace(" (edited)", ""));
 		}
 		Element expire = elems.getElementsByClass("expire").first();
-		result.addProperty("date_expire", expire != null ? expire.text() : null);
+		result.put("date_expire", expire != null ? expire.text() : null);
 
 		Element visits = elems.getElementsByClass("visits").first();
-		result.addProperty("visits_count", visits != null ? Integer.parseInt(visits.text()) : null);
+		result.put("visits_count", visits != null ? Integer.parseInt(visits.text()) : null);
 		Element stars = elems.getElementsByClass("rating js-post-rating").first();
-		result.addProperty("stars_count", stars != null ? Integer.parseInt(stars.text()) : null);
+		result.put("stars_count", stars != null ? Integer.parseInt(stars.text()) : null);
 
 		Element left = elems.getElementsByClass("left").first();
 		Elements left_elems;
@@ -97,20 +79,20 @@ public interface NetJSWrapper {
 			category = left_elems.get(1).text().replace("| ", "");
 			size = left.text().replace(lang, "").split("\\|")[0].strip();
 		}
-		result.addProperty("lang", lang);
-		result.addProperty("category", category);
-		result.addProperty("size", size);
+		result.put("lang", lang);
+		result.put("category", category);
+		result.put("size", size);
 
 		Element likes = elems.getElementsByClass("btn -small -like").first();
-		result.addProperty("likes_count", likes != null ? Integer.parseInt(likes.text()) : null);
+		result.put("likes_count", likes != null ? Integer.parseInt(likes.text()) : null);
 		Element dislikes = elems.getElementsByClass("btn -small -dislike").first();
-		result.addProperty("dislikes_count", dislikes != null ? Integer.parseInt(dislikes.text()) : null);
+		result.put("dislikes_count", dislikes != null ? Integer.parseInt(dislikes.text()) : null);
 
-		return new NetJSPasteBinResultSuccess((Map<String, Object>) MapJS.of(result));
+		return new NetJSPasteBinResultSuccess(result);
 	}
 
 	static NetJSResult getGistsResult(String id) {
-		if (!isValidId(id, 32)) {
+		if (!NetJSUtils.isValidId(id, 32)) {
 			return new NetJSResultExeption(new RuntimeException("Non valid Gists id. It looks like you're doing something that this mod doesn't want to do."));
 		}
 		Connection.Response response;
@@ -121,20 +103,18 @@ public interface NetJSWrapper {
 		} catch (IOException ioe) {
 			return new NetJSResultExeption(ioe);
 		}
-		JsonObject result = new JsonObject();
+		LinkedHashMap<String, Object> result = new LinkedHashMap<String, Object>();
 
 		int response_code = response.statusCode();
-		result.addProperty("response_code", response_code);
+		result.put("response_code", response_code);
 		if (response_code != 200) {
-			result.addProperty("raw_response_text", doc.text());
-			return new NetJSResultExeption(new RuntimeException("Response code " + response_code + " != 200! raw_response_text can contain more info."), (Map<String, Object>) MapJS.of(result));
+			result.put("raw_response_text", doc.text());
+			return new NetJSResultExeption(new RuntimeException("Response code " + response_code + " != 200! raw_response_text can contain more info."), result);
 		}
 
-		MapJS.of(JsonIO.parse(doc.text())).forEach((key, value) -> {
-			result.add((String) key, (JsonElement) value);
-		});
+		result.putAll(NetJSUtils.parseRawJsonToMap(doc.text()));
 
-		return new NetJSGistsResultSuccess((Map<String, Object>) MapJS.of(result));
+		return new NetJSGistsResultSuccess(result);
 	}
 
 	static void getPasteBin(String id, NetJSIAsyncCallback c) {
