@@ -1,8 +1,8 @@
-package dev.kostromdan.mods.netjs.async;
+package dev.kostromdan.mods.netjs.callbacks;
 
 import dev.kostromdan.mods.netjs.results.NetJSResult;
 
 @FunctionalInterface
-public interface NetJSIAsyncCallback {
+public interface NetJSICallback {
 	void onCallback(NetJSResult callback);
 }
