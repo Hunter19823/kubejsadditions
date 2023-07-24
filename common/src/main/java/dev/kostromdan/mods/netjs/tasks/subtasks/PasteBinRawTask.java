@@ -1,18 +1,17 @@
-package dev.kostromdan.mods.netjs.pastebin;
+package dev.kostromdan.mods.netjs.tasks.subtasks;
 
+import dev.kostromdan.mods.netjs.tasks.AbstractNetJSTask;
 import dev.kostromdan.mods.netjs.utils.NetJSUtils;
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
 import java.io.IOException;
-import java.util.LinkedHashMap;
 
-public class PasteBinRawTask extends PasteBinTask implements Runnable {
+public class PasteBinRawTask extends AbstractNetJSTask implements Runnable {
 
 	public PasteBinRawTask(String id) {
-		super();
-		this.id = id;
+		super(id);
 	}
 
 	@Override
@@ -23,10 +22,10 @@ public class PasteBinRawTask extends PasteBinTask implements Runnable {
 			return;
 		}
 		Connection.Response response;
-		Document doc;
+		String doc;
 		try {
 			response = Jsoup.connect("https://pastebin.com/raw/" + id).ignoreContentType(true).execute();
-			doc = response.parse();
+			doc = response.body();
 		} catch (IOException ioe) {
 			this.exception = ioe;
 			this.success = false;
@@ -36,13 +35,13 @@ public class PasteBinRawTask extends PasteBinTask implements Runnable {
 		int response_code = response.statusCode();
 		result.put("response_code", response_code);
 		if (response_code != 200) {
-			result.put("raw_response_text", doc.text());
+			result.put("raw_response_text", doc);
 			this.exception = new RuntimeException("Response code " + response_code + " != 200! raw_response_text can contain more info.");
 			this.success = false;
 			return;
 		}
 
-		result.put("raw_text", doc.text());
+		result.put("raw_text", doc);
 		this.success = true;
 	}
 }

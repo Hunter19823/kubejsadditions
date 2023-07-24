@@ -12,11 +12,15 @@ At the current stage of development, it makes it possible to interact with Paste
 
 ```js
 // linear, not recomended, because will stop main client/server thread utill result is received. 
-NetJS.getPasteBin('3zCF8MM6', result => {})
-NetJS.getGists('3f1cd831af032e52238ef161bdd715b3', result => {})
+NetJS.getPasteBin('3zCF8MM6', result => {
+})
+NetJS.getGists('3f1cd831af032e52238ef161bdd715b3', result => {
+})
 // async, accessing the network will be a separate thread, the game will continue to run, and the callback will be called when the result is received.
-NetJS.getPasteBinAsync('3zCF8MM6', result => {})
-NetJS.getGistsAsync('3f1cd831af032e52238ef161bdd715b3', result => {})
+NetJS.getPasteBinAsync('3zCF8MM6', result => {
+})
+NetJS.getGistsAsync('3f1cd831af032e52238ef161bdd715b3', result => {
+})
 ```
 
 #### Usage example:

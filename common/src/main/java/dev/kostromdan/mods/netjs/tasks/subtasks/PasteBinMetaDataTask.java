@@ -1,5 +1,6 @@
-package dev.kostromdan.mods.netjs.pastebin;
+package dev.kostromdan.mods.netjs.tasks.subtasks;
 
+import dev.kostromdan.mods.netjs.tasks.AbstractNetJSTask;
 import dev.kostromdan.mods.netjs.utils.NetJSUtils;
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
@@ -9,11 +10,10 @@ import org.jsoup.select.Elements;
 
 import java.io.IOException;
 
-public class PasteBinMetaDataTask extends PasteBinTask implements Runnable {
+public class PasteBinMetaDataTask extends AbstractNetJSTask implements Runnable {
 
 	public PasteBinMetaDataTask(String id) {
-		super();
-		this.id=id;
+		super(id);
 	}
 
 	@Override
@@ -46,7 +46,7 @@ public class PasteBinMetaDataTask extends PasteBinTask implements Runnable {
 		Element elems = doc.getElementsByClass("post-view js-post-view").first();
 		if (elems == null) {
 			result.put("raw_response_text", doc.text());
-			this.exception= new RuntimeException("Can't parse pastebin page. PasteBin site changed? You using wrong pastebin id? raw_response_text can contain more info.");
+			this.exception = new RuntimeException("Can't parse pastebin page. PasteBin site changed? You using wrong pastebin id? raw_response_text can contain more info.");
 			this.success = false;
 			return;
 		}
