@@ -10,13 +10,10 @@ import java.util.Map;
 import java.util.Set;
 
 public abstract class AbstractNetJSTask implements Runnable, Map<String, Object> {
-
-
 	public String id;
-	public LinkedHashMap<String, Object> result = null;
+	public LinkedHashMap<String, Object> result;
 	public boolean success;
 	public Exception exception;
-
 	public NetJSICallback callback;
 
 	public AbstractNetJSTask(String id) {
@@ -40,7 +37,7 @@ public abstract class AbstractNetJSTask implements Runnable, Map<String, Object>
 		try {
 			callback.onCallback(this);
 		} catch (Throwable ex) {
-			ConsoleJS.SERVER.error("Error occurred while handling async NetJS callback: " + ex.getMessage());
+			ConsoleJS.SERVER.error("Error occurred while handling NetJS callback: " + ex.getMessage());
 			ex.printStackTrace();
 		}
 	}

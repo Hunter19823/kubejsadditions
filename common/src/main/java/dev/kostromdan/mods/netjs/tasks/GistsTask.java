@@ -4,11 +4,10 @@ import dev.kostromdan.mods.netjs.callbacks.NetJSICallback;
 import dev.kostromdan.mods.netjs.utils.NetJSUtils;
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
 
 import java.io.IOException;
 
-public class GistsTask extends AbstractNetJSTask implements Runnable {
+public class GistsTask extends AbstractNetJSTask {
 
 	public GistsTask(String id, NetJSICallback c) {
 		super(id);

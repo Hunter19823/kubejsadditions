@@ -4,11 +4,10 @@ import dev.kostromdan.mods.netjs.tasks.AbstractNetJSTask;
 import dev.kostromdan.mods.netjs.utils.NetJSUtils;
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
 
 import java.io.IOException;
 
-public class PasteBinRawTask extends AbstractNetJSTask implements Runnable {
+public class PasteBinRawTask extends AbstractNetJSTask {
 
 	public PasteBinRawTask(String id) {
 		super(id);

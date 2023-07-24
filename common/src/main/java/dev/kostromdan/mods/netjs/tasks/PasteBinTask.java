@@ -4,7 +4,7 @@ import dev.kostromdan.mods.netjs.callbacks.NetJSICallback;
 import dev.kostromdan.mods.netjs.tasks.subtasks.PasteBinMetaDataTask;
 import dev.kostromdan.mods.netjs.tasks.subtasks.PasteBinRawTask;
 
-public class PasteBinTask extends AbstractNetJSTask implements Runnable {
+public class PasteBinTask extends AbstractNetJSTask {
 
 	public PasteBinTask(String id, NetJSICallback c) {
 		super(id);

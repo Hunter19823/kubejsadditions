@@ -10,7 +10,7 @@ import org.jsoup.select.Elements;
 
 import java.io.IOException;
 
-public class PasteBinMetaDataTask extends AbstractNetJSTask implements Runnable {
+public class PasteBinMetaDataTask extends AbstractNetJSTask {
 
 	public PasteBinMetaDataTask(String id) {
 		super(id);

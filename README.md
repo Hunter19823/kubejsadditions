@@ -11,16 +11,12 @@ Addon for KubeJS for very limited safe network interaction.
 At the current stage of development, it makes it possible to interact with Pastebin and github Gists.
 
 ```js
-// linear, not recomended, because will stop main client/server thread utill result is received. 
-NetJS.getPasteBin('3zCF8MM6', result => {
-})
-NetJS.getGists('3f1cd831af032e52238ef161bdd715b3', result => {
-})
 // async, accessing the network will be a separate thread, the game will continue to run, and the callback will be called when the result is received.
-NetJS.getPasteBinAsync('3zCF8MM6', result => {
-})
-NetJS.getGistsAsync('3f1cd831af032e52238ef161bdd715b3', result => {
-})
+NetJS.getPasteBin('3zCF8MM6', result => {})
+NetJS.getGists('3f1cd831af032e52238ef161bdd715b3', result => {})
+// linear, not recomended, because will stop main client/server thread utill result is received.
+NetJS.getPasteBin('3zCF8MM6', false, result => {})
+NetJS.getGists('3f1cd831af032e52238ef161bdd715b3', false, result => {})
 ```
 
 #### Usage example:
@@ -31,7 +27,7 @@ let gists_id = 'f16d2ee987a35d8930b35971c2d47d72'
 
 BlockEvents.rightClicked(event => { // Gists example
     if (event.hand == 'main_hand') {
-        NetJS.getGistsAsync(gists_id, result => { // gists_id must be only id, not url!
+        NetJS.getGists(gists_id, result => { // gists_id must be only id, not url!
             if (result.success) {
                 // Be sure to check that the request is successful.
                 // Since the user may not have the Internet, the post has been deleted, a failure on the GitHub server.
@@ -64,7 +60,7 @@ BlockEvents.rightClicked(event => { // Gists example
 })
 
 BlockEvents.leftClicked(event => { // PasteBin example
-    NetJS.getPasteBinAsync(pastebin_id, result => { // pastebin_id must be only id, not url!
+    NetJS.getPasteBin(pastebin_id, result => { // pastebin_id must be only id, not url!
         if (result.success) {
             // Be sure to check that the request is successful.
             // Since the user may not have the Internet, the post has been deleted, a failure on the PasteBin server.

@@ -1,9 +1,9 @@
 package dev.kostromdan.mods.netjs.bindings;
 
 import dev.kostromdan.mods.netjs.callbacks.NetJSICallback;
+import dev.kostromdan.mods.netjs.tasks.AbstractNetJSTask;
 import dev.kostromdan.mods.netjs.tasks.GistsTask;
 import dev.kostromdan.mods.netjs.tasks.PasteBinTask;
-import dev.kostromdan.mods.netjs.tasks.AbstractNetJSTask;
 import dev.latvian.mods.kubejs.util.ConsoleJS;
 
 public interface NetJSWrapper {
@@ -17,7 +17,8 @@ public interface NetJSWrapper {
 			try {
 				thread.join();
 			} catch (InterruptedException ie) {
-				ConsoleJS.SERVER.log("interrupted");
+				ConsoleJS.SERVER.error("Error occurred while handling NetJS callback: " + ie.getMessage());
+				ie.printStackTrace();
 			}
 		}
 	}
