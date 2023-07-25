@@ -15,39 +15,33 @@ public class PasteBinTask extends AbstractNetJSTask {
 	public void run() {
 		PasteBinRawTask raw_task = new PasteBinRawTask(id);
 		Thread raw_thread = new Thread(raw_task);
-		raw_thread.start();
 
 		PasteBinMetaDataTask metadata_task = new PasteBinMetaDataTask(id);
 		Thread metadata_thread = new Thread(metadata_task);
+
+		raw_thread.start();
 		metadata_thread.start();
 
 		try {
 			raw_thread.join();
 			metadata_thread.join();
 		} catch (InterruptedException ie) {
-			exception = ie;
-			success = false;
-			callback();
+			exception(ie);
 			return;
 		}
 		if (!metadata_task.success) {
-			exception = metadata_task.exception;
 			result = metadata_task.result;
-			success = false;
-			callback();
+			exception(metadata_task.exception);
 			return;
 		}
 		if (!raw_task.success) {
-			exception = raw_task.exception;
 			result = raw_task.result;
-			success = false;
-			callback();
+			exception(raw_task.exception);
 			return;
 		}
 
 		result.putAll(metadata_task.result);
 		result.putAll(raw_task.result);
-		success = true;
-		callback();
+		success();
 	}
 }

@@ -14,7 +14,9 @@ public abstract class AbstractNetJSTask implements Runnable, Map<String, Object>
 	public LinkedHashMap<String, Object> result;
 	public boolean success;
 	public Exception exception;
-	public NetJSICallback callback;
+	protected NetJSICallback callback;
+
+	private final boolean is_subtask = false;
 
 	public AbstractNetJSTask(String id) {
 		result = new LinkedHashMap<String, Object>();
@@ -34,12 +36,26 @@ public abstract class AbstractNetJSTask implements Runnable, Map<String, Object>
 	}
 
 	public void callback() {
+		if (this.is_subtask) {
+			return;
+		}
 		try {
 			callback.onCallback(this);
 		} catch (Throwable ex) {
 			ConsoleJS.SERVER.error("Error occurred while handling NetJS callback: " + ex.getMessage());
 			ex.printStackTrace();
 		}
+	}
+
+	public void success() {
+		this.success = true;
+		callback();
+	}
+
+	public void exception(Exception err) {
+		this.success = false;
+		this.exception = err;
+		callback();
 	}
 
 

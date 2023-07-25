@@ -17,9 +17,7 @@ public class GistsTask extends AbstractNetJSTask {
 	@Override
 	public void run() {
 		if (!NetJSUtils.isValidId(id, 32)) {
-			this.exception = new RuntimeException("Non valid Gists id. It looks like you're doing something that this mod doesn't want to do.");
-			this.success = false;
-			callback();
+			exception(new RuntimeException("Non valid Gists id. It looks like you're doing something that this mod doesn't want to do."));
 			return;
 		}
 		Connection.Response response;
@@ -28,9 +26,7 @@ public class GistsTask extends AbstractNetJSTask {
 			response = Jsoup.connect("https://api.github.com/gists/" + id).ignoreContentType(true).execute();
 			doc = response.body();
 		} catch (IOException ioe) {
-			this.exception = ioe;
-			this.success = false;
-			callback();
+			exception(ioe);
 			return;
 		}
 
@@ -39,14 +35,11 @@ public class GistsTask extends AbstractNetJSTask {
 		result.put("response_code", response_code);
 		if (response_code != 200) {
 			result.put("raw_response_text", doc);
-			this.exception = new RuntimeException("Response code " + response_code + " != 200! raw_response_text can contain more info.");
-			this.success = false;
-			callback();
+			exception(new RuntimeException("Response code " + response_code + " != 200! raw_response_text can contain more info."));
 			return;
 		}
 
 		result.putAll(NetJSUtils.parseRawJsonToMap(doc));
-		this.success = true;
-		callback();
+		success();
 	}
 }

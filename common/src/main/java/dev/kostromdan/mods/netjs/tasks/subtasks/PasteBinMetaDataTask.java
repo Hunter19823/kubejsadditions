@@ -12,6 +12,8 @@ import java.io.IOException;
 
 public class PasteBinMetaDataTask extends AbstractNetJSTask {
 
+	private final boolean is_subtask = true;
+
 	public PasteBinMetaDataTask(String id) {
 		super(id);
 	}
@@ -19,8 +21,7 @@ public class PasteBinMetaDataTask extends AbstractNetJSTask {
 	@Override
 	public void run() {
 		if (!NetJSUtils.isValidId(id, 8)) {
-			this.exception = new RuntimeException("Non valid PasteBin id. It looks like you're doing something that this mod doesn't want to do.");
-			this.success = false;
+			exception( new RuntimeException("Non valid PasteBin id. It looks like you're doing something that this mod doesn't want to do."));
 			return;
 		}
 		Connection.Response response;
@@ -29,25 +30,22 @@ public class PasteBinMetaDataTask extends AbstractNetJSTask {
 			response = Jsoup.connect("https://pastebin.com/" + id).execute();
 			doc = response.parse();
 		} catch (IOException ioe) {
-			this.exception = ioe;
-			this.success = false;
+			exception( ioe);
 			return;
 		}
 
 		int response_code = response.statusCode();
 		result.put("response_code", response_code);
 		if (response_code != 200) {
-			result.put("raw_response_text", doc.text());
-			this.exception = new RuntimeException("Response code " + response_code + " != 200! raw_response_text can contain more info.");
-			this.success = false;
+			result.put("raw_response_text", doc.body());
+			exception( new RuntimeException("Response code " + response_code + " != 200! raw_response_text can contain more info."));
 			return;
 		}
 
 		Element elems = doc.getElementsByClass("post-view js-post-view").first();
 		if (elems == null) {
-			result.put("raw_response_text", doc.text());
-			this.exception = new RuntimeException("Can't parse pastebin page. PasteBin site changed? You using wrong pastebin id? raw_response_text can contain more info.");
-			this.success = false;
+			result.put("raw_response_text", doc.body());
+			exception( new RuntimeException("Can't parse pastebin page. PasteBin site changed? You using wrong pastebin id? raw_response_text can contain more info."));
 			return;
 		}
 
@@ -89,6 +87,6 @@ public class PasteBinMetaDataTask extends AbstractNetJSTask {
 		Element dislikes = elems.getElementsByClass("btn -small -dislike").first();
 		result.put("dislikes_count", dislikes != null ? Integer.parseInt(dislikes.text()) : null);
 
-		this.success = true;
+		success();
 	}
 }
