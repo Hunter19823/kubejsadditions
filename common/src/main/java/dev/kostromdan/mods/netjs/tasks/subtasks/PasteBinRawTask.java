@@ -9,8 +9,6 @@ import java.io.IOException;
 
 public class PasteBinRawTask extends AbstractNetJSTask {
 
-	private final boolean is_subtask = true;
-
 	public PasteBinRawTask(String id) {
 		super(id);
 	}
@@ -18,28 +16,28 @@ public class PasteBinRawTask extends AbstractNetJSTask {
 	@Override
 	public void run() {
 		if (!NetJSUtils.isValidId(id, 8)) {
-			exception( new RuntimeException("Non valid PasteBin id. It looks like you're doing something that this mod doesn't want to do."));
+			exception(new RuntimeException("Non valid PasteBin id. It looks like you're doing something that this mod doesn't want to do."));
 			return;
 		}
 		Connection.Response response;
-		String doc;
+		String raw_text;
 		try {
 			response = Jsoup.connect("https://pastebin.com/raw/" + id).ignoreContentType(true).execute();
-			doc = response.body();
+			raw_text = response.body();
 		} catch (IOException ioe) {
-			exception( ioe);
+			exception(ioe);
 			return;
 		}
 
 		int response_code = response.statusCode();
 		result.put("response_code", response_code);
 		if (response_code != 200) {
-			result.put("raw_response_text", doc);
-			exception( new RuntimeException("Response code " + response_code + " != 200! raw_response_text can contain more info."));
+			result.put("raw_response_text", raw_text);
+			exception(new RuntimeException("Response code " + response_code + " != 200! raw_response_text can contain more info."));
 			return;
 		}
 
-		result.put("raw_text", doc);
+		result.put("raw_text", raw_text);
 		success();
 	}
 }

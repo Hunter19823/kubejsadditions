@@ -21,10 +21,10 @@ public class GistsTask extends AbstractNetJSTask {
 			return;
 		}
 		Connection.Response response;
-		String doc;
+		String raw_text;
 		try {
 			response = Jsoup.connect("https://api.github.com/gists/" + id).ignoreContentType(true).execute();
-			doc = response.body();
+			raw_text = response.body();
 		} catch (IOException ioe) {
 			exception(ioe);
 			return;
@@ -34,12 +34,12 @@ public class GistsTask extends AbstractNetJSTask {
 		int response_code = response.statusCode();
 		result.put("response_code", response_code);
 		if (response_code != 200) {
-			result.put("raw_response_text", doc);
+			result.put("raw_response_text", raw_text);
 			exception(new RuntimeException("Response code " + response_code + " != 200! raw_response_text can contain more info."));
 			return;
 		}
 
-		result.putAll(NetJSUtils.parseRawJsonToMap(doc));
+		result.putAll(NetJSUtils.parseRawJsonToMap(raw_text));
 		success();
 	}
 }

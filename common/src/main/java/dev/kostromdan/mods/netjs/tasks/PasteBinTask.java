@@ -29,14 +29,14 @@ public class PasteBinTask extends AbstractNetJSTask {
 			exception(ie);
 			return;
 		}
-		if (!metadata_task.success) {
+		if (!metadata_task.isSuccess()) {
 			result = metadata_task.result;
-			exception(metadata_task.exception);
+			exception(metadata_task.getException());
 			return;
 		}
-		if (!raw_task.success) {
+		if (!raw_task.isSuccess()) {
 			result = raw_task.result;
-			exception(raw_task.exception);
+			exception(raw_task.getException());
 			return;
 		}
 

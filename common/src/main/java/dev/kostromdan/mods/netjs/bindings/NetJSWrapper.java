@@ -8,7 +8,6 @@ import dev.latvian.mods.kubejs.util.ConsoleJS;
 
 public interface NetJSWrapper {
 
-
 	static void getResult(AbstractNetJSTask task, String id, boolean is_async) {
 		Thread thread = new Thread(task);
 		thread.start();

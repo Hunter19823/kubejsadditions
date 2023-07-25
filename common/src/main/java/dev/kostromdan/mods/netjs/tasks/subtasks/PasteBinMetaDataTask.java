@@ -12,7 +12,6 @@ import java.io.IOException;
 
 public class PasteBinMetaDataTask extends AbstractNetJSTask {
 
-	private final boolean is_subtask = true;
 
 	public PasteBinMetaDataTask(String id) {
 		super(id);
@@ -21,7 +20,7 @@ public class PasteBinMetaDataTask extends AbstractNetJSTask {
 	@Override
 	public void run() {
 		if (!NetJSUtils.isValidId(id, 8)) {
-			exception( new RuntimeException("Non valid PasteBin id. It looks like you're doing something that this mod doesn't want to do."));
+			exception(new RuntimeException("Non valid PasteBin id. It looks like you're doing something that this mod doesn't want to do."));
 			return;
 		}
 		Connection.Response response;
@@ -30,7 +29,7 @@ public class PasteBinMetaDataTask extends AbstractNetJSTask {
 			response = Jsoup.connect("https://pastebin.com/" + id).execute();
 			doc = response.parse();
 		} catch (IOException ioe) {
-			exception( ioe);
+			exception(ioe);
 			return;
 		}
 
@@ -38,14 +37,14 @@ public class PasteBinMetaDataTask extends AbstractNetJSTask {
 		result.put("response_code", response_code);
 		if (response_code != 200) {
 			result.put("raw_response_text", doc.body());
-			exception( new RuntimeException("Response code " + response_code + " != 200! raw_response_text can contain more info."));
+			exception(new RuntimeException("Response code " + response_code + " != 200! raw_response_text can contain more info."));
 			return;
 		}
 
 		Element elems = doc.getElementsByClass("post-view js-post-view").first();
 		if (elems == null) {
 			result.put("raw_response_text", doc.body());
-			exception( new RuntimeException("Can't parse pastebin page. PasteBin site changed? You using wrong pastebin id? raw_response_text can contain more info."));
+			exception(new RuntimeException("Can't parse pastebin page. PasteBin site changed? You using wrong pastebin id? raw_response_text can contain more info."));
 			return;
 		}
 
@@ -56,10 +55,20 @@ public class PasteBinMetaDataTask extends AbstractNetJSTask {
 		result.put("author_username", author_username != null ? author_username.text() : null);
 
 		Element date = elems.getElementsByClass("date").first();
+		boolean is_edited = false;
 		if (date != null) {
-			result.put("is_edited", date.text().contains(" (edited)"));
-			result.put("date_created", date.text().replace(" (edited)", ""));
+			Elements date_elems = date.select("span[title]");
+			if (date_elems.size() >= 1) {
+				Element date_created = date_elems.first();
+				result.put("date_created", date_created != null ? date_created.attr("title") : null);
+			}
+			if (date_elems.size() >= 2) {
+				is_edited = true;
+				Element date_edited = date.select("span[title]").get(1);
+				result.put("date_edited", date_edited != null ? date_edited.attr("title").replace("Last edit on: ", "") : null);
+			}
 		}
+		result.put("is_edited", is_edited);
 		Element expire = elems.getElementsByClass("expire").first();
 		result.put("date_expire", expire != null ? expire.text() : null);
 

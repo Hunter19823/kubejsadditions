@@ -1,8 +1,8 @@
 package dev.kostromdan.mods.netjs.callbacks;
 
-import dev.kostromdan.mods.netjs.tasks.AbstractNetJSTask;
+import dev.kostromdan.mods.netjs.results.NetJSResultMap;
 
 @FunctionalInterface
 public interface NetJSICallback {
-	void onCallback(AbstractNetJSTask callback);
+	void onCallback(NetJSResultMap<String, Object> callback);
 }
