@@ -19,6 +19,9 @@ NetJS.getPasteBin('3zCF8MM6', false, result => {})
 NetJS.getGists('3f1cd831af032e52238ef161bdd715b3', false, result => {})
 ```
 
+#### Real project with NetJS:
+https://github.com/KostromDan/Update-Notifier/
+
 #### Usage example:
 
 ```js
