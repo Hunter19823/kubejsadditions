@@ -120,7 +120,7 @@ unifiedPublishing {
 			modrinth {
 				token = ENV.MODRINTH_TOKEN
 				id = project.modrinth_id
-				version = "$project.name+$project.version"
+				version = "${mod_id}-${loader}-${mod_version}"
 			}
 		}
 	}
