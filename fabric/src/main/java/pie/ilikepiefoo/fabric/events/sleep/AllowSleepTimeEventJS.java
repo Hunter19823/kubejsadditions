@@ -3,6 +3,7 @@ package pie.ilikepiefoo.fabric.events.sleep;
 import dev.latvian.mods.kubejs.level.BlockContainerJS;
 import dev.latvian.mods.kubejs.player.PlayerEventJS;
 import dev.latvian.mods.kubejs.server.ServerScriptManager;
+import net.fabricmc.fabric.api.entity.event.v1.EntitySleepEvents;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.LivingEntity;
@@ -14,7 +15,7 @@ import pie.ilikepiefoo.fabric.FabricEventsJS;
  * An event that checks whether the current time of day is valid for sleeping.
  *
  * <p>Note that if sleeping during day time is allowed, the game will still reset the time to 0 if the usual
- * conditions are met, unless forbidden with {@link #ALLOW_RESETTING_TIME}.
+ * conditions are met, unless forbidden with {@link EntitySleepEvents#ALLOW_RESETTING_TIME}.
  */
 public class AllowSleepTimeEventJS extends PlayerEventJS {
     private final Player player;

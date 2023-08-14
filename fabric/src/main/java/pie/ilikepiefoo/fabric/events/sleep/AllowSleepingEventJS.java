@@ -3,6 +3,7 @@ package pie.ilikepiefoo.fabric.events.sleep;
 import dev.latvian.mods.kubejs.level.BlockContainerJS;
 import dev.latvian.mods.kubejs.player.PlayerEventJS;
 import dev.latvian.mods.kubejs.server.ServerScriptManager;
+import net.fabricmc.fabric.api.entity.event.v1.EntitySleepEvents;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -13,7 +14,7 @@ import pie.ilikepiefoo.fabric.FabricEventsJS;
  * An event that checks whether a player can start to sleep in a bed-like block.
  * This event only applies to sleeping using {@link Player#startSleepInBed(BlockPos)}.
  *
- * <p><b>Note:</b> Please use the more detailed events {@link #ALLOW_SLEEP_TIME} and {@link #ALLOW_NEARBY_MONSTERS}
+ * <p><b>Note:</b> Please use the more detailed events {@link EntitySleepEvents#ALLOW_SLEEP_TIME} and {@link EntitySleepEvents#ALLOW_NEARBY_MONSTERS}
  * if they match your use case! This helps with mod compatibility.
  *
  * <p>If this event returns a {@link net.minecraft.world.entity.player.Player.BedSleepingProblem}, it is used
@@ -21,7 +22,7 @@ import pie.ilikepiefoo.fabric.FabricEventsJS;
  * means that the player will start sleeping.
  *
  * <p>When this event is called, all vanilla sleeping checks have already succeeded, i.e. this event
- * is used in addition to vanilla checks. The more detailed events {@link #ALLOW_SLEEP_TIME} and {@link #ALLOW_NEARBY_MONSTERS}
+ * is used in addition to vanilla checks. The more detailed events {@link EntitySleepEvents#ALLOW_SLEEP_TIME} and {@link EntitySleepEvents#ALLOW_NEARBY_MONSTERS}
  * are also checked before this event.
  */
 public class AllowSleepingEventJS extends PlayerEventJS {

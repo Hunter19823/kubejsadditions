@@ -1,6 +1,7 @@
 package pie.ilikepiefoo.fabric.events.worldrender;
 
 import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderContext;
+import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderEvents;
 import net.minecraft.client.renderer.LevelRenderer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.Entity;
@@ -18,7 +19,7 @@ public class BlockOutlineRenderEventJS extends WorldRenderContextEventJS {
     /**
      * Called after block outline render checks are made and before the
      * default block outline render runs.  Will NOT be called if the default outline
-     * render was cancelled in {@link #BEFORE_BLOCK_OUTLINE}.
+	 * render was cancelled in {@link WorldRenderEvents#BEFORE_BLOCK_OUTLINE}.
      *
      * <p>Use this to replace the default block outline rendering for specific blocks that
      * need special outline rendering or to add information that doesn't replace the block outline.

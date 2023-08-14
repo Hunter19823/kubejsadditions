@@ -68,7 +68,7 @@ public class BeforeBlockOutlineRenderEventJS extends WorldRenderContextEventJS {
      * <p>This event should NOT be used for general-purpose replacement of
      * the default block outline rendering because it will interfere with mod-specific
      * renders.  Mods that replace the default block outline for specific blocks
-     * should instead subscribe to {@link #BLOCK_OUTLINE}.
+	 * should instead subscribe to {@link WorldRenderEvents#BLOCK_OUTLINE}.
      */
 
     public Vec3 getLocation() {

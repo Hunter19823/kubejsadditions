@@ -74,7 +74,7 @@ public class WorldRenderContextEventJS extends EventJS {
      *
      * <p>Use for global block entity render setup, or
      * to append block-related quads to the entity consumers using the
-     * {@VertexConsumerProvider} from the provided context. This
+	 * VertexConsumerProvider from the provided context. This
      * will generally give better (if not perfect) results
      * for non-terrain translucency vs. drawing directly later on.
      */
