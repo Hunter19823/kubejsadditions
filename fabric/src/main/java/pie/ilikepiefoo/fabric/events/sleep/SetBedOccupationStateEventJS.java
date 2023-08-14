@@ -15,53 +15,56 @@ import pie.ilikepiefoo.fabric.FabricEventsJS;
  * which are handled automatically.
  */
 public class SetBedOccupationStateEventJS extends LivingEntityEventJS {
-	private final LivingEntity entity;
-	private final BlockPos sleepingPos;
-	private final BlockState bedState;
-	private final boolean occupied;
+    private final LivingEntity entity;
+    private final BlockPos sleepingPos;
+    private final BlockState bedState;
+    private final boolean occupied;
 
-	public SetBedOccupationStateEventJS(LivingEntity entity, BlockPos sleepingPos, BlockState bedState, boolean occupied) {
-		this.entity = entity;
-		this.sleepingPos = sleepingPos;
-		this.bedState = bedState;
-		this.occupied = occupied;
-	}
+    public SetBedOccupationStateEventJS( LivingEntity entity, BlockPos sleepingPos, BlockState bedState, boolean occupied ) {
+        this.entity = entity;
+        this.sleepingPos = sleepingPos;
+        this.bedState = bedState;
+        this.occupied = occupied;
+    }
 
-	@Override
-	public LivingEntity getEntity() {
-		return entity;
-	}
+    /**
+     * Sets the occupation state of a bed block.
+     *
+     * @param entity      the sleeping entity
+     * @param sleepingPos the sleeping position
+     * @param bedState    the block state of the bed
+     * @param occupied    {@code true} if occupied, {@code false} if free
+     * @return {@code true} if the occupation state was successfully modified, {@code false} to fall back to other callbacks
+     */
+    public static boolean handler( LivingEntity entity, BlockPos sleepingPos, BlockState bedState, boolean occupied ) {
+        if (ServerScriptManager.instance == null) {
+            return false;
+        }
+        return FabricEventsJS.SET_BED_OCCUPATION_STATE.post(new SetBedOccupationStateEventJS(entity, sleepingPos, bedState, occupied))
+                                                      .arch()
+                                                      .isTrue();
+    }
 
-	public BlockPos getSleepingPos() {
-		return sleepingPos;
-	}
+    @Override
+    public LivingEntity getEntity() {
+        return entity;
+    }
 
-	public BlockContainerJS getPos() {
-		return getLevel().kjs$getBlock(sleepingPos);
-	}
+    public BlockPos getSleepingPos() {
+        return sleepingPos;
+    }
 
-	public BlockState getBedState() {
-		return bedState;
-	}
+    public BlockContainerJS getPos() {
+        return getLevel().kjs$getBlock(sleepingPos);
+    }
 
-	public boolean isOccupied() {
-		return occupied;
-	}
+    public BlockState getBedState() {
+        return bedState;
+    }
 
-	/**
-	 * Sets the occupation state of a bed block.
-	 *
-	 * @param entity      the sleeping entity
-	 * @param sleepingPos the sleeping position
-	 * @param bedState    the block state of the bed
-	 * @param occupied    {@code true} if occupied, {@code false} if free
-	 * @return {@code true} if the occupation state was successfully modified, {@code false} to fall back to other callbacks
-	 */
-	public static boolean handler(LivingEntity entity, BlockPos sleepingPos, BlockState bedState, boolean occupied) {
-		if (ServerScriptManager.instance == null) {
-			return false;
-		}
-		return FabricEventsJS.SET_BED_OCCUPATION_STATE.post(new SetBedOccupationStateEventJS(entity, sleepingPos, bedState, occupied)).arch().isTrue();
-	}
+    public boolean isOccupied() {
+        return occupied;
+    }
+
 }
 

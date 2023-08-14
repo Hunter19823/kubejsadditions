@@ -18,74 +18,76 @@ import pie.ilikepiefoo.fabric.FabricEventsJS;
  * with this event.
  */
 public class ModifyWakeUpPositionEventJS extends LivingEntityEventJS {
-	private final LivingEntity entity;
-	private final BlockPos sleepingPos;
-	private final BlockState bedState;
-	@Nullable
-	private Vec3 wakeUpPos;
+    private final LivingEntity entity;
+    private final BlockPos sleepingPos;
+    private final BlockState bedState;
+    @Nullable
+    private Vec3 wakeUpPos;
 
-	public ModifyWakeUpPositionEventJS(LivingEntity entity, BlockPos sleepingPos, BlockState bedState, @Nullable Vec3 wakeUpPos) {
-		this.entity = entity;
-		this.sleepingPos = sleepingPos;
-		this.bedState = bedState;
-		this.wakeUpPos = wakeUpPos;
-	}
+    public ModifyWakeUpPositionEventJS( LivingEntity entity, BlockPos sleepingPos, BlockState bedState, @Nullable Vec3 wakeUpPos ) {
+        this.entity = entity;
+        this.sleepingPos = sleepingPos;
+        this.bedState = bedState;
+        this.wakeUpPos = wakeUpPos;
+    }
 
-	@Override
-	public LivingEntity getEntity() {
-		return entity;
-	}
+    /**
+     * Modifies or provides a wake-up position for an entity waking up.
+     *
+     * @param entity      the sleeping entity
+     * @param sleepingPos the position of the block slept on
+     * @param bedState    the block slept on
+     * @param wakeUpPos   the old wake-up position, or {@code null} if not determined by vanilla or previous callbacks
+     * @return the new wake-up position
+     */
+    @Nullable
+    public static Vec3 handler( LivingEntity entity, BlockPos sleepingPos, BlockState bedState, @Nullable Vec3 wakeUpPos ) {
+        if (ServerScriptManager.instance == null) {
+            return wakeUpPos;
+        }
+        ModifyWakeUpPositionEventJS event = new ModifyWakeUpPositionEventJS(entity, sleepingPos, bedState, wakeUpPos);
+        FabricEventsJS.MODIFY_WAKE_UP_POSITION.post(event);
+        return event.getWakeUpPos();
+    }
 
-	public BlockPos getSleepingPos() {
-		return sleepingPos;
-	}
+    @Nullable
+    public Vec3 getWakeUpPos() {
+        return wakeUpPos;
+    }
 
-	public BlockContainerJS getSleepPos() {
-		return getLevel().kjs$getBlock(sleepingPos);
-	}
+    public void setWakeUpPos( @Nullable Vec3 wakeUpPos ) {
+        this.wakeUpPos = wakeUpPos;
+    }
 
-	public BlockState getBedState() {
-		return bedState;
-	}
+    public void setWakeUpPos( @Nullable BlockContainerJS block ) {
+        if (block != null) {
+            this.wakeUpPos = new Vec3(block.getX(), block.getY(), block.getZ());
+        }
+        else {
+            this.wakeUpPos = null;
+        }
+    }
 
-	@Nullable
-	public Vec3 getWakeUpPos() {
-		return wakeUpPos;
-	}
+    @Override
+    public LivingEntity getEntity() {
+        return entity;
+    }
 
-	public void setWakeUpPos(@Nullable Vec3 wakeUpPos) {
-		this.wakeUpPos = wakeUpPos;
-	}
+    public BlockPos getSleepingPos() {
+        return sleepingPos;
+    }
 
-	public void setWakeUpPos(double x, double y, double z) {
-		this.wakeUpPos = new Vec3(x, y, z);
-	}
+    public BlockContainerJS getSleepPos() {
+        return getLevel().kjs$getBlock(sleepingPos);
+    }
 
-	public void setWakeUpPos(@Nullable BlockContainerJS block) {
-		if (block != null) {
-			this.wakeUpPos = new Vec3(block.getX(), block.getY(), block.getZ());
-		} else {
-			this.wakeUpPos = null;
-		}
-	}
+    public BlockState getBedState() {
+        return bedState;
+    }
 
-	/**
-	 * Modifies or provides a wake-up position for an entity waking up.
-	 *
-	 * @param entity      the sleeping entity
-	 * @param sleepingPos the position of the block slept on
-	 * @param bedState    the block slept on
-	 * @param wakeUpPos   the old wake-up position, or {@code null} if not determined by vanilla or previous callbacks
-	 * @return the new wake-up position
-	 */
-	@Nullable
-	public static Vec3 handler(LivingEntity entity, BlockPos sleepingPos, BlockState bedState, @Nullable Vec3 wakeUpPos) {
-		if (ServerScriptManager.instance == null) {
-			return wakeUpPos;
-		}
-		ModifyWakeUpPositionEventJS event = new ModifyWakeUpPositionEventJS(entity, sleepingPos, bedState, wakeUpPos);
-		FabricEventsJS.MODIFY_WAKE_UP_POSITION.post(event);
-		return event.getWakeUpPos();
-	}
+    public void setWakeUpPos( double x, double y, double z ) {
+        this.wakeUpPos = new Vec3(x, y, z);
+    }
+
 }
 

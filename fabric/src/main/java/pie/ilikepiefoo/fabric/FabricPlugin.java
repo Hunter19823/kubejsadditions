@@ -7,15 +7,16 @@ import static pie.ilikepiefoo.fabric.FabricEventsJS.FABRIC_EVENT_REGISTER;
 
 public class FabricPlugin extends KubeJSPlugin {
 
-	@Override
-	public void initStartup() {
-		FABRIC_EVENT_REGISTER.post(new FabricEventRegisterEventJS());
-	}
+    @Override
+    public void initStartup() {
+        FABRIC_EVENT_REGISTER.post(new FabricEventRegisterEventJS());
+    }
 
 
-	@Override
-	public void registerEvents() {
-		FabricEventsJS.register();
-	}
+    @Override
+    public void registerEvents() {
+        FabricEventsJS.register();
+    }
+
 }
 

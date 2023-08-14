@@ -1,14 +1,12 @@
 package pie.ilikepiefoo.fabric.events.sleep;
 
 import dev.latvian.mods.kubejs.entity.LivingEntityEventJS;
-import dev.latvian.mods.kubejs.event.EventExit;
 import dev.latvian.mods.kubejs.level.BlockContainerJS;
 import dev.latvian.mods.kubejs.server.ServerScriptManager;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import org.jetbrains.annotations.NotNull;
 import pie.ilikepiefoo.fabric.FabricEventsJS;
 
 /**
@@ -29,11 +27,31 @@ public class AllowBedEventJS extends LivingEntityEventJS {
 	private final BlockState state;
 	private final boolean vanillaResult;
 
-	public AllowBedEventJS(LivingEntity entity, BlockPos sleepingPos, BlockState state, boolean vanillaResult) {
+	public AllowBedEventJS( LivingEntity entity, BlockPos sleepingPos, BlockState state, boolean vanillaResult ) {
 		this.entity = entity;
 		this.sleepingPos = sleepingPos;
 		this.state = state;
 		this.vanillaResult = vanillaResult;
+	}
+
+	/**
+	 * Checks whether a block is a valid bed for the entity.
+	 *
+	 * <p>Non-{@linkplain InteractionResult#PASS passing} return values cancel further callbacks.
+	 *
+	 * @param entity        the sleeping entity
+	 * @param sleepingPos   the position of the block
+	 * @param state         the block state to check
+	 * @param vanillaResult {@code true} if vanilla allows the block, {@code false} otherwise
+	 * @return {@link InteractionResult#SUCCESS} if the bed is valid, {@link InteractionResult#FAIL} if it's not,
+	 * {@link InteractionResult#PASS} to fall back to other callbacks
+	 */
+	public static InteractionResult handler( LivingEntity entity, BlockPos sleepingPos, BlockState state, boolean vanillaResult ) {
+		if (ServerScriptManager.instance == null) {
+			return InteractionResult.PASS;
+		}
+
+		return FabricEventsJS.ALLOW_BED.post(new AllowBedEventJS(entity, sleepingPos, state, vanillaResult)).arch().asMinecraft();
 	}
 
 	public LivingEntity getEntity() {
@@ -56,24 +74,5 @@ public class AllowBedEventJS extends LivingEntityEventJS {
 		return vanillaResult;
 	}
 
-	/**
-	 * Checks whether a block is a valid bed for the entity.
-	 *
-	 * <p>Non-{@linkplain InteractionResult#PASS passing} return values cancel further callbacks.
-	 *
-	 * @param entity        the sleeping entity
-	 * @param sleepingPos   the position of the block
-	 * @param state         the block state to check
-	 * @param vanillaResult {@code true} if vanilla allows the block, {@code false} otherwise
-	 * @return {@link InteractionResult#SUCCESS} if the bed is valid, {@link InteractionResult#FAIL} if it's not,
-	 * {@link InteractionResult#PASS} to fall back to other callbacks
-	 */
-	public static InteractionResult handler(LivingEntity entity, BlockPos sleepingPos, BlockState state, boolean vanillaResult) {
-		if (ServerScriptManager.instance == null) {
-			return InteractionResult.PASS;
-		}
-
-		return FabricEventsJS.ALLOW_BED.post(new AllowBedEventJS(entity, sleepingPos, state, vanillaResult)).arch().asMinecraft();
-	}
 }
 

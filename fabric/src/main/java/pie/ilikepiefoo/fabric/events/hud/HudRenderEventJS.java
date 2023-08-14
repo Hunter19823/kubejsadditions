@@ -4,70 +4,70 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Matrix4f;
 import com.mojang.math.Quaternion;
 import dev.latvian.mods.kubejs.event.EventJS;
-import dev.latvian.mods.kubejs.script.ScriptType;
 import pie.ilikepiefoo.fabric.FabricEventsJS;
 
 public class HudRenderEventJS extends EventJS {
-	private final float tickDelta;
-	private final PoseStack matrixStack;
+    private final float tickDelta;
+    private final PoseStack matrixStack;
 
-	public HudRenderEventJS(float tickDelta, PoseStack matrixStack) {
-		this.tickDelta = tickDelta;
-		this.matrixStack = matrixStack;
-	}
+    public HudRenderEventJS( float tickDelta, PoseStack matrixStack ) {
+        this.tickDelta = tickDelta;
+        this.matrixStack = matrixStack;
+    }
 
-	public float getTickDelta() {
-		return tickDelta;
-	}
+    /**
+     * Called after rendering the whole hud, which is displayed in game, in a world.
+     *
+     * @param matrixStack the matrixStack
+     * @param tickDelta   Progress for linearly interpolating between the previous and current game state
+     */
+    public static void handle( PoseStack matrixStack, float tickDelta ) {
+        FabricEventsJS.RENDER_HUD.post(new HudRenderEventJS(tickDelta, matrixStack));
+    }
 
-	public PoseStack getMatrixStack() {
-		return matrixStack;
-	}
+    public float getTickDelta() {
+        return tickDelta;
+    }
 
-	public void translate(double d, double e, double f) {
-		matrixStack.translate(d, e, f);
-	}
+    public PoseStack getMatrixStack() {
+        return matrixStack;
+    }
 
-	public void scale(float f, float g, float h) {
-		matrixStack.scale(f, g, h);
-	}
+    public void translate( double d, double e, double f ) {
+        matrixStack.translate(d, e, f);
+    }
 
-	public void mulPose(Quaternion quaternion) {
-		matrixStack.mulPose(quaternion);
-	}
+    public void scale( float f, float g, float h ) {
+        matrixStack.scale(f, g, h);
+    }
 
-	public void pushPose() {
-		matrixStack.pushPose();
-	}
+    public void mulPose( Quaternion quaternion ) {
+        matrixStack.mulPose(quaternion);
+    }
 
-	public void popPose() {
-		matrixStack.popPose();
-	}
+    public void pushPose() {
+        matrixStack.pushPose();
+    }
 
-	public PoseStack.Pose last() {
-		return matrixStack.last();
-	}
+    public void popPose() {
+        matrixStack.popPose();
+    }
 
-	public boolean clear() {
-		return matrixStack.clear();
-	}
+    public PoseStack.Pose last() {
+        return matrixStack.last();
+    }
 
-	public void setIdentity() {
-		matrixStack.setIdentity();
-	}
+    public boolean clear() {
+        return matrixStack.clear();
+    }
 
-	public void mulPoseMatrix(Matrix4f matrix4f) {
-		matrixStack.mulPoseMatrix(matrix4f);
-	}
+    public void setIdentity() {
+        matrixStack.setIdentity();
+    }
 
-	/**
-	 * Called after rendering the whole hud, which is displayed in game, in a world.
-	 *
-	 * @param matrixStack the matrixStack
-	 * @param tickDelta Progress for linearly interpolating between the previous and current game state
-	 */
-	public static void handle(PoseStack matrixStack, float tickDelta) {
-		FabricEventsJS.RENDER_HUD.post(new HudRenderEventJS(tickDelta, matrixStack));
-	}
+    public void mulPoseMatrix( Matrix4f matrix4f ) {
+        matrixStack.mulPoseMatrix(matrix4f);
+    }
+
 }
 

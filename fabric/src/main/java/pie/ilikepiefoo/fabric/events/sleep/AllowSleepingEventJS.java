@@ -1,10 +1,8 @@
 package pie.ilikepiefoo.fabric.events.sleep;
 
-import dev.latvian.mods.kubejs.bindings.UtilsWrapper;
 import dev.latvian.mods.kubejs.level.BlockContainerJS;
 import dev.latvian.mods.kubejs.player.PlayerEventJS;
 import dev.latvian.mods.kubejs.server.ServerScriptManager;
-import dev.latvian.mods.kubejs.util.UtilsJS;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -32,10 +30,49 @@ public class AllowSleepingEventJS extends PlayerEventJS {
 	@Nullable
 	private Player.BedSleepingProblem sleepingProblem;
 
-	public AllowSleepingEventJS(Player player, BlockPos sleepingPos) {
+	public AllowSleepingEventJS( Player player, BlockPos sleepingPos ) {
 		this.player = player;
 		this.sleepingPos = sleepingPos;
 		this.sleepingProblem = null;
+	}
+
+	/**
+	 * Checks whether a player can start sleeping in a bed-like block.
+	 *
+	 * @param player      the sleeping player
+	 * @param sleepingPos the future {@linkplain LivingEntity#getSleepingPos() sleeping position} of the entity
+	 * @return {@code null} if the player can sleep, or a failure reason if they cannot
+	 * @see Player#startSleepInBed(BlockPos)
+	 */
+	public static Player.BedSleepingProblem handler( Player player, BlockPos sleepingPos ) {
+		if (ServerScriptManager.instance == null) {
+			return null;
+		}
+		AllowSleepingEventJS event = new AllowSleepingEventJS(player, sleepingPos);
+		var result = FabricEventsJS.ALLOW_SLEEPING.post(event);
+		boolean isCanceled = !result.pass();
+
+		// If it's an error, ignore.
+		if (result.error()) {
+			return null;
+		}
+
+		// If no cancel occurred, and no sleeping problem was provided during the event.
+		if (isCanceled && event.getSleepingProblem() == null) {
+			return Player.BedSleepingProblem.OTHER_PROBLEM;
+		}
+
+		// Return the sleeping problem provided by the event.
+		return event.sleepingProblem;
+	}
+
+	@Nullable
+	public Player.BedSleepingProblem getSleepingProblem() {
+		return sleepingProblem;
+	}
+
+	public void setSleepingProblem( @Nullable Player.BedSleepingProblem sleepingProblem ) {
+		this.sleepingProblem = sleepingProblem;
 	}
 
 	@Override
@@ -51,43 +88,5 @@ public class AllowSleepingEventJS extends PlayerEventJS {
 		return getLevel().kjs$getBlock(sleepingPos);
 	}
 
-	@Nullable
-	public Player.BedSleepingProblem getSleepingProblem() {
-		return sleepingProblem;
-	}
-
-	public void setSleepingProblem(@Nullable Player.BedSleepingProblem sleepingProblem) {
-		this.sleepingProblem = sleepingProblem;
-	}
-
-	/**
-	 * Checks whether a player can start sleeping in a bed-like block.
-	 *
-	 * @param player      the sleeping player
-	 * @param sleepingPos the future {@linkplain LivingEntity#getSleepingPos() sleeping position} of the entity
-	 * @return {@code null} if the player can sleep, or a failure reason if they cannot
-	 * @see Player#startSleepInBed(BlockPos)
-	 */
-	public static Player.BedSleepingProblem handler(Player player, BlockPos sleepingPos) {
-		if (ServerScriptManager.instance == null) {
-			return null;
-		}
-		AllowSleepingEventJS event = new AllowSleepingEventJS(player, sleepingPos);
-		var result = FabricEventsJS.ALLOW_SLEEPING.post(event);
-		boolean isCanceled = !result.pass();
-
-		// If it's an error, ignore.
-		if (result.error()){
-			return null;
-		}
-
-		// If no cancel occurred, and no sleeping problem was provided during the event.
-		if(isCanceled && event.getSleepingProblem() == null){
-			return Player.BedSleepingProblem.OTHER_PROBLEM;
-		}
-
-		// Return the sleeping problem provided by the event.
-		return event.sleepingProblem;
-	}
 }
 

@@ -5,36 +5,37 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 
 public class PlayerRespawnEventJS extends PlayerEventJS {
-	private final ServerPlayer player;
-	private final boolean conqueredEnd;
+    private final ServerPlayer player;
+    private final boolean conqueredEnd;
 
-	public PlayerRespawnEventJS(ServerPlayer player, boolean conqueredEnd) {
-		this.player = player;
-		this.conqueredEnd = conqueredEnd;
-	}
+    public PlayerRespawnEventJS( ServerPlayer player, boolean conqueredEnd ) {
+        this.player = player;
+        this.conqueredEnd = conqueredEnd;
+    }
 
-	@Override
-	public Player getEntity() {
-		return player;
-	}
+    public static PlayerRespawnEventJS of( ServerPlayer player, boolean conqueredEnd ) {
+        return new PlayerRespawnEventJS(player, conqueredEnd);
+    }
 
-	public boolean leavingEnd() {
-		return conqueredEnd;
-	}
+    @Override
+    public Player getEntity() {
+        return player;
+    }
 
-	public boolean returningFromEnd() {
-		return conqueredEnd;
-	}
+    public boolean leavingEnd() {
+        return conqueredEnd;
+    }
 
-	public boolean causedByPortal() {
-		return conqueredEnd;
-	}
+    public boolean returningFromEnd() {
+        return conqueredEnd;
+    }
 
-	public boolean causedByDeath() {
-		return !conqueredEnd;
-	}
+    public boolean causedByPortal() {
+        return conqueredEnd;
+    }
 
-	public static PlayerRespawnEventJS of(ServerPlayer player, boolean conqueredEnd) {
-		return new PlayerRespawnEventJS(player, conqueredEnd);
-	}
+    public boolean causedByDeath() {
+        return !conqueredEnd;
+    }
+
 }

@@ -17,49 +17,50 @@ import pie.ilikepiefoo.fabric.FabricEventsJS;
  * conditions are met, unless forbidden with {@link #ALLOW_RESETTING_TIME}.
  */
 public class AllowSleepTimeEventJS extends PlayerEventJS {
-	private final Player player;
-	private final BlockPos sleepingPos;
-	private final boolean vanillaResult;
+    private final Player player;
+    private final BlockPos sleepingPos;
+    private final boolean vanillaResult;
 
-	public AllowSleepTimeEventJS(Player player, BlockPos sleepingPos, boolean vanillaResult) {
-		this.player = player;
-		this.sleepingPos = sleepingPos;
-		this.vanillaResult = vanillaResult;
-	}
+    public AllowSleepTimeEventJS( Player player, BlockPos sleepingPos, boolean vanillaResult ) {
+        this.player = player;
+        this.sleepingPos = sleepingPos;
+        this.vanillaResult = vanillaResult;
+    }
 
-	@Override
-	public Player getEntity() {
-		return player;
-	}
+    /**
+     * Checks whether the current time of day is valid for sleeping.
+     *
+     * <p>Non-{@linkplain InteractionResult#PASS passing} return values cancel further callbacks.
+     *
+     * @param player        the sleeping player
+     * @param sleepingPos   the (possibly still unset) {@linkplain LivingEntity#getSleepingPos() sleeping position} of the player
+     * @param vanillaResult {@code true} if vanilla allows the time, {@code false} otherwise
+     * @return {@link InteractionResult#SUCCESS} if the time is valid, {@link InteractionResult#FAIL} if it's not,
+     * {@link InteractionResult#PASS} to fall back to other callbacks
+     */
+    public static InteractionResult handler( Player player, BlockPos sleepingPos, boolean vanillaResult ) {
+        if (ServerScriptManager.instance == null) {
+            return InteractionResult.PASS;
+        }
+        return FabricEventsJS.ALLOW_SLEEP_TIME.post(new AllowSleepTimeEventJS(player, sleepingPos, vanillaResult)).arch().asMinecraft();
+    }
 
-	public BlockPos getSleepingPos() {
-		return sleepingPos;
-	}
+    @Override
+    public Player getEntity() {
+        return player;
+    }
 
-	public BlockContainerJS getPos() {
-		return getLevel().kjs$getBlock(sleepingPos);
-	}
+    public BlockPos getSleepingPos() {
+        return sleepingPos;
+    }
 
-	public boolean getVanillaResult() {
-		return vanillaResult;
-	}
+    public BlockContainerJS getPos() {
+        return getLevel().kjs$getBlock(sleepingPos);
+    }
 
-	/**
-	 * Checks whether the current time of day is valid for sleeping.
-	 *
-	 * <p>Non-{@linkplain InteractionResult#PASS passing} return values cancel further callbacks.
-	 *
-	 * @param player        the sleeping player
-	 * @param sleepingPos   the (possibly still unset) {@linkplain LivingEntity#getSleepingPos() sleeping position} of the player
-	 * @param vanillaResult {@code true} if vanilla allows the time, {@code false} otherwise
-	 * @return {@link InteractionResult#SUCCESS} if the time is valid, {@link InteractionResult#FAIL} if it's not,
-	 * {@link InteractionResult#PASS} to fall back to other callbacks
-	 */
-	public static InteractionResult handler(Player player, BlockPos sleepingPos, boolean vanillaResult) {
-		if (ServerScriptManager.instance == null) {
-			return InteractionResult.PASS;
-		}
-		return FabricEventsJS.ALLOW_SLEEP_TIME.post(new AllowSleepTimeEventJS(player, sleepingPos, vanillaResult)).arch().asMinecraft();
-	}
+    public boolean getVanillaResult() {
+        return vanillaResult;
+    }
+
 }
 

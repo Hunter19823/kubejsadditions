@@ -14,13 +14,8 @@ import pie.ilikepiefoo.fabric.FabricEventsJS;
 public class AllowResettingTimeEventJS extends PlayerEventJS {
 	private final Player player;
 
-	public AllowResettingTimeEventJS(Player player) {
+	public AllowResettingTimeEventJS( Player player ) {
 		this.player = player;
-	}
-
-	@Override
-	public Player getEntity() {
-		return player;
 	}
 
 	/**
@@ -29,12 +24,18 @@ public class AllowResettingTimeEventJS extends PlayerEventJS {
 	 * @param player the sleeping player
 	 * @return {@code true} if allowed, {@code false} otherwise
 	 */
-	public static boolean handler(Player player) {
+	public static boolean handler( Player player ) {
 		if (ServerScriptManager.instance == null) {
 			return true;
 		}
 
 		return FabricEventsJS.ALLOW_RESETTING_TIME.post(new AllowResettingTimeEventJS(player)).arch().isTrue();
 	}
+
+	@Override
+	public Player getEntity() {
+		return player;
+	}
+
 }
 

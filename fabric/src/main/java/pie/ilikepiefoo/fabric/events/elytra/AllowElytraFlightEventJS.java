@@ -12,15 +12,15 @@ import pie.ilikepiefoo.fabric.FabricEventsJS;
 public class AllowElytraFlightEventJS extends LivingEntityEventJS {
 	private final LivingEntity entity;
 
-	public AllowElytraFlightEventJS(LivingEntity entity) {
+	public AllowElytraFlightEventJS( LivingEntity entity ) {
 		this.entity = entity;
 	}
 
 	/**
 	 * @return false to block elytra flight, true to allow it (unless another listener returns false)
 	 */
-	public static boolean handler(LivingEntity entity) {
-		if(ServerScriptManager.instance == null) return true;
+	public static boolean handler( LivingEntity entity ) {
+		if (ServerScriptManager.instance == null) return true;
 		return FabricEventsJS.ALLOW_ELYTRA_FLIGHT.post(new AllowElytraFlightEventJS(entity)).arch().isTrue();
 	}
 
@@ -29,5 +29,6 @@ public class AllowElytraFlightEventJS extends LivingEntityEventJS {
 	public LivingEntity getEntity() {
 		return entity;
 	}
+
 }
 

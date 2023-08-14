@@ -16,9 +16,23 @@ public class AllowSettingSpawnEventJS extends PlayerEventJS {
 	private final Player player;
 	private final BlockPos sleepingPos;
 
-	public AllowSettingSpawnEventJS(Player player, BlockPos sleepingPos) {
+	public AllowSettingSpawnEventJS( Player player, BlockPos sleepingPos ) {
 		this.player = player;
 		this.sleepingPos = sleepingPos;
+	}
+
+	/**
+	 * Checks whether a player's spawn can be set when sleeping.
+	 *
+	 * @param player      the sleeping player
+	 * @param sleepingPos the sleeping position
+	 * @return {@code true} if allowed, {@code false} otherwise
+	 */
+	public static boolean handler( Player player, BlockPos sleepingPos ) {
+		if (ServerScriptManager.instance == null) {
+			return true;
+		}
+		return FabricEventsJS.ALLOW_SETTING_SPAWN.post(new AllowSettingSpawnEventJS(player, sleepingPos)).archCompound().isTrue();
 	}
 
 	public BlockPos getSleepingPos() {
@@ -34,18 +48,5 @@ public class AllowSettingSpawnEventJS extends PlayerEventJS {
 		return getLevel().kjs$getBlock(sleepingPos);
 	}
 
-	/**
-	 * Checks whether a player's spawn can be set when sleeping.
-	 *
-	 * @param player      the sleeping player
-	 * @param sleepingPos the sleeping position
-	 * @return {@code true} if allowed, {@code false} otherwise
-	 */
-	public static boolean handler(Player player, BlockPos sleepingPos) {
-		if (ServerScriptManager.instance == null) {
-			return true;
-		}
-		return FabricEventsJS.ALLOW_SETTING_SPAWN.post(new AllowSettingSpawnEventJS(player, sleepingPos)).archCompound().isTrue();
-	}
 }
 
