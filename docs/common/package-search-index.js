@@ -1,0 +1,2 @@
+packageSearchIndex = [{"l": "All Packages", "u": "allpackages-index.html"}, {"l": "pie.ilikepiefoo"}, {"l": "pie.ilikepiefoo.compat.jei"}, {"l": "pie.ilikepiefoo.compat.jei.events"}, {"l": "pie.ilikepiefoo.events"}, {"l": "pie.ilikepiefoo.events.custom"}, {"l": "pie.ilikepiefoo.player"}, {"l": "pie.ilikepiefoo.util"}];
+updateSearchResults();

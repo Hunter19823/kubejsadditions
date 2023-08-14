@@ -1,0 +1,2 @@
+packageSearchIndex = [{"l": "All Packages", "u": "allpackages-index.html"}, {"l": "pie.ilikepiefoo.fabric"}, {"l": "pie.ilikepiefoo.fabric.events.custom"}, {"l": "pie.ilikepiefoo.fabric.events.elytra"}, {"l": "pie.ilikepiefoo.fabric.events.hud"}, {"l": "pie.ilikepiefoo.fabric.events.sleep"}, {"l": "pie.ilikepiefoo.fabric.events.worldrender"}];
+updateSearchResults();
