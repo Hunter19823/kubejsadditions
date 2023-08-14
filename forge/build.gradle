@@ -54,17 +54,17 @@ shadowJar {
     exclude "architectury.common.json"
 
     configurations = [project.configurations.shadowCommon]
-    classifier "dev-shadow"
+	archiveClassifier.set "dev-shadow"
 }
 
 remapJar {
     input.set shadowJar.archiveFile
     dependsOn shadowJar
-    classifier null
+	archiveClassifier.set null
 }
 
 jar {
-    classifier "dev"
+	archiveClassifier.set "dev"
 }
 
 sourcesJar {
@@ -123,12 +123,12 @@ unifiedPublishing {
 				id = project.curseforge_id
 			}
 		}
-		var MT = System.getenv("MODRINTH_TOKEN_BROKEN")
+		var MT = System.getenv("MODRINTH_TOKEN")
 		if (MT != null) {
 			modrinth {
-				token = mt
+				token = MT
 				id = project.modrinth_id
-				version = "$project.version+$project.name"
+				version = "$project.name+$project.version"
 			}
 		}
 	}
