@@ -61,7 +61,7 @@ public class WorldRenderContextEventJS extends EventJS {
      * <p>Vertex consumers are not available in this event because all buffered quads
      * are drawn before this event is called.  Any rendering here must be drawn
      * directly to the frame buffer.  The render state matrix will not include
-     * camera transformation, so {@link #LAST} may be preferable if that is wanted.
+     * camera transformation, so {@link WorldRenderEvents#LAST} may be preferable if that is wanted.
      */
     public static void afterTranslucentHandle( WorldRenderContext context ) {
         FabricEventsJS.AFTER_TRANSLUCENT.post(new WorldRenderContextEventJS(context));

@@ -41,11 +41,12 @@ public class CustomElytraFlightEventJS extends LivingEntityEventJS {
         if (ServerScriptManager.instance == null) {
             return false;
         }
+        if (!FabricEventsJS.CUSTOM_ELYTRA_FLIGHT.hasListeners()) return false;
         // Canceling this event will result in Elytra flight being allowed and canceling subsequent handlers.
         // (Returning true to handler).
         // Not canceling this event will result in Custom Elytra flight event being passed to subsequent listeners.
         // (Returning false to handler).
-        return !FabricEventsJS.CUSTOM_ELYTRA_FLIGHT.post(new CustomElytraFlightEventJS(entity, tickElytra)).pass();
+        return FabricEventsJS.CUSTOM_ELYTRA_FLIGHT.post(new CustomElytraFlightEventJS(entity, tickElytra)).arch().isTrue();
     }
 
     public boolean getTickElytra() {

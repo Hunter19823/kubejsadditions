@@ -39,7 +39,7 @@ public class AllowSleepTimeEventJS extends PlayerEventJS {
      * {@link InteractionResult#PASS} to fall back to other callbacks
      */
     public static InteractionResult handler( Player player, BlockPos sleepingPos, boolean vanillaResult ) {
-        if (ServerScriptManager.instance == null) {
+        if (ServerScriptManager.instance == null || !FabricEventsJS.ALLOW_SLEEP_TIME.hasListeners()) {
             return InteractionResult.PASS;
         }
         return FabricEventsJS.ALLOW_SLEEP_TIME.post(new AllowSleepTimeEventJS(player, sleepingPos, vanillaResult)).arch().asMinecraft();

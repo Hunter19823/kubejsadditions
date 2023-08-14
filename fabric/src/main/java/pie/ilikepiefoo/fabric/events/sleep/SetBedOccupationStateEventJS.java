@@ -37,7 +37,7 @@ public class SetBedOccupationStateEventJS extends LivingEntityEventJS {
      * @return {@code true} if the occupation state was successfully modified, {@code false} to fall back to other callbacks
      */
     public static boolean handler( LivingEntity entity, BlockPos sleepingPos, BlockState bedState, boolean occupied ) {
-        if (ServerScriptManager.instance == null) {
+        if (ServerScriptManager.instance == null || !FabricEventsJS.SET_BED_OCCUPATION_STATE.hasListeners()) {
             return false;
         }
         return FabricEventsJS.SET_BED_OCCUPATION_STATE.post(new SetBedOccupationStateEventJS(entity, sleepingPos, bedState, occupied))

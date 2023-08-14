@@ -42,7 +42,7 @@ public class ModifyWakeUpPositionEventJS extends LivingEntityEventJS {
      */
     @Nullable
     public static Vec3 handler( LivingEntity entity, BlockPos sleepingPos, BlockState bedState, @Nullable Vec3 wakeUpPos ) {
-        if (ServerScriptManager.instance == null) {
+        if (ServerScriptManager.instance == null || !FabricEventsJS.MODIFY_WAKE_UP_POSITION.hasListeners()) {
             return wakeUpPos;
         }
         ModifyWakeUpPositionEventJS event = new ModifyWakeUpPositionEventJS(entity, sleepingPos, bedState, wakeUpPos);

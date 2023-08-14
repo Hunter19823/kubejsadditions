@@ -45,7 +45,7 @@ public class AllowSleepingEventJS extends PlayerEventJS {
 	 * @see Player#startSleepInBed(BlockPos)
 	 */
 	public static Player.BedSleepingProblem handler( Player player, BlockPos sleepingPos ) {
-		if (ServerScriptManager.instance == null) {
+        if (ServerScriptManager.instance == null || !FabricEventsJS.ALLOW_SLEEPING.hasListeners()) {
 			return null;
 		}
 		AllowSleepingEventJS event = new AllowSleepingEventJS(player, sleepingPos);

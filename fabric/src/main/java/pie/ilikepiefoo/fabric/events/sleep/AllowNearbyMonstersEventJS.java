@@ -37,7 +37,7 @@ public class AllowNearbyMonstersEventJS extends PlayerEventJS {
      * {@link InteractionResult#PASS} to fall back to other callbacks
      */
     public static InteractionResult handler( Player player, BlockPos sleepingPos, boolean vanillaResult ) {
-        if (ServerScriptManager.instance == null) {
+        if (ServerScriptManager.instance == null || !FabricEventsJS.ALLOW_NEARBY_MONSTERS.hasListeners()) {
             return InteractionResult.PASS;
         }
         return FabricEventsJS.ALLOW_NEARBY_MONSTERS.post(new AllowNearbyMonstersEventJS(player, sleepingPos, vanillaResult)).arch().asMinecraft();

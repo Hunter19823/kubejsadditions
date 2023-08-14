@@ -39,7 +39,7 @@ public class ModifySleepingDirectionEventJS extends LivingEntityEventJS {
      */
     @Nullable
     public static Direction handler( LivingEntity entity, BlockPos sleepingPos, @Nullable Direction sleepingDirection ) {
-        if (ServerScriptManager.instance == null) {
+        if (ServerScriptManager.instance == null || !FabricEventsJS.MODIFY_SLEEPING_DIRECTION.hasListeners()) {
             return sleepingDirection;
         }
         ModifySleepingDirectionEventJS event = new ModifySleepingDirectionEventJS(entity, sleepingPos, sleepingDirection);

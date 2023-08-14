@@ -47,7 +47,7 @@ public class AllowBedEventJS extends LivingEntityEventJS {
 	 * {@link InteractionResult#PASS} to fall back to other callbacks
 	 */
 	public static InteractionResult handler( LivingEntity entity, BlockPos sleepingPos, BlockState state, boolean vanillaResult ) {
-		if (ServerScriptManager.instance == null) {
+		if (ServerScriptManager.instance == null || !FabricEventsJS.ALLOW_BED.hasListeners()) {
 			return InteractionResult.PASS;
 		}
 

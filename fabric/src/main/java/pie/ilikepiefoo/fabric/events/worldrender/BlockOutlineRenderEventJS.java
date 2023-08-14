@@ -38,6 +38,9 @@ public class BlockOutlineRenderEventJS extends WorldRenderContextEventJS {
      * by targeting {@link LevelRenderer#renderShape}.
      */
     public static boolean handle( WorldRenderContext context, WorldRenderContext.BlockOutlineContext blockOutlineContext ) {
+        if (!FabricEventsJS.BLOCK_OUTLINE.hasListeners()) {
+            return true;
+        }
         return FabricEventsJS.BLOCK_OUTLINE.post(new BlockOutlineRenderEventJS(context, blockOutlineContext)).arch().isTrue();
     }
 

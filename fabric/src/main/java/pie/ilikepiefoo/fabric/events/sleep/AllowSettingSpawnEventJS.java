@@ -29,7 +29,7 @@ public class AllowSettingSpawnEventJS extends PlayerEventJS {
 	 * @return {@code true} if allowed, {@code false} otherwise
 	 */
 	public static boolean handler( Player player, BlockPos sleepingPos ) {
-		if (ServerScriptManager.instance == null) {
+        if (ServerScriptManager.instance == null || !FabricEventsJS.ALLOW_SETTING_SPAWN.hasListeners()) {
 			return true;
 		}
 		return FabricEventsJS.ALLOW_SETTING_SPAWN.post(new AllowSettingSpawnEventJS(player, sleepingPos)).archCompound().isTrue();

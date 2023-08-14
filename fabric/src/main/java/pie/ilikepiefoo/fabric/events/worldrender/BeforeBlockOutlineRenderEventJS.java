@@ -28,6 +28,9 @@ public class BeforeBlockOutlineRenderEventJS extends WorldRenderContextEventJS {
      * and also skips the vanilla block outline render, but has no effect on other subscribers to this event.
      */
     public static boolean handle( WorldRenderContext context, @Nullable HitResult hitResult ) {
+        if (!FabricEventsJS.BEFORE_BLOCK_OUTLINE.hasListeners()) {
+            return true;
+        }
         return FabricEventsJS.BEFORE_BLOCK_OUTLINE.post(new BeforeBlockOutlineRenderEventJS(context, hitResult)).arch().isTrue();
     }
 
