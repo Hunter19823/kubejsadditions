@@ -36,8 +36,8 @@ public class EventHandler {
 	 * the action may be cancelled by the result.
 	 */
 	private static EventResult onEntityTame(Animal animal, Player player) {
-		if(player instanceof ServerPlayer && AdditionalEvents.ENTITY_TAME.post(new EntityTameEventJS(animal, player))){
-			return EventResult.interruptFalse(); //TODO: Copied from KJS
+		if (player instanceof ServerPlayer serverPlayer) {
+			return AdditionalEvents.ENTITY_TAME.post(new EntityTameEventJS(animal, player)).arch();
 		}
 		return EventResult.pass();
 	}

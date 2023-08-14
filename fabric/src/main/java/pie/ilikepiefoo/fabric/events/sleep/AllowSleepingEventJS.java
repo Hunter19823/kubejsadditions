@@ -1,14 +1,15 @@
 package pie.ilikepiefoo.fabric.events.sleep;
 
+import dev.latvian.mods.kubejs.bindings.UtilsWrapper;
 import dev.latvian.mods.kubejs.level.BlockContainerJS;
 import dev.latvian.mods.kubejs.player.PlayerEventJS;
 import dev.latvian.mods.kubejs.server.ServerScriptManager;
+import dev.latvian.mods.kubejs.util.UtilsJS;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
+import org.jetbrains.annotations.Nullable;
 import pie.ilikepiefoo.fabric.FabricEventsJS;
-
-import javax.annotation.Nullable;
 
 /**
  * An event that checks whether a player can start to sleep in a bed-like block.
@@ -72,10 +73,20 @@ public class AllowSleepingEventJS extends PlayerEventJS {
 			return null;
 		}
 		AllowSleepingEventJS event = new AllowSleepingEventJS(player, sleepingPos);
-		FabricEventsJS.ALLOW_SLEEPING.post(event);
-		if (event.isCanceled() && event.getSleepingProblem() == null) {
+		var result = FabricEventsJS.ALLOW_SLEEPING.post(event);
+		boolean isCanceled = !result.pass();
+
+		// If it's an error, ignore.
+		if (result.error()){
+			return null;
+		}
+
+		// If no cancel occurred, and no sleeping problem was provided during the event.
+		if(isCanceled && event.getSleepingProblem() == null){
 			return Player.BedSleepingProblem.OTHER_PROBLEM;
 		}
+
+		// Return the sleeping problem provided by the event.
 		return event.sleepingProblem;
 	}
 }

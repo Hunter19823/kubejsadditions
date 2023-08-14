@@ -61,9 +61,7 @@ public class SetBedOccupationStateEventJS extends LivingEntityEventJS {
 		if (ServerScriptManager.instance == null) {
 			return false;
 		}
-		SetBedOccupationStateEventJS event = new SetBedOccupationStateEventJS(entity, sleepingPos, bedState, occupied);
-		FabricEventsJS.SET_BED_OCCUPATION_STATE.post(event);
-		return !event.isCanceled();
+		return FabricEventsJS.SET_BED_OCCUPATION_STATE.post(new SetBedOccupationStateEventJS(entity, sleepingPos, bedState, occupied)).arch().isTrue();
 	}
 }
 

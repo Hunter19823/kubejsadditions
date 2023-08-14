@@ -9,7 +9,6 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import pie.ilikepiefoo.fabric.FabricEventsJS;
 
-import javax.annotation.Nonnull;
 
 /**
  * An event that checks whether the current time of day is valid for sleeping.
@@ -21,14 +20,11 @@ public class AllowSleepTimeEventJS extends PlayerEventJS {
 	private final Player player;
 	private final BlockPos sleepingPos;
 	private final boolean vanillaResult;
-	@Nonnull
-	private InteractionResult result;
 
 	public AllowSleepTimeEventJS(Player player, BlockPos sleepingPos, boolean vanillaResult) {
 		this.player = player;
 		this.sleepingPos = sleepingPos;
 		this.vanillaResult = vanillaResult;
-		this.result = InteractionResult.PASS;
 	}
 
 	@Override
@@ -48,15 +44,6 @@ public class AllowSleepTimeEventJS extends PlayerEventJS {
 		return vanillaResult;
 	}
 
-	@Nonnull
-	public InteractionResult getResult() {
-		return result;
-	}
-
-	public void setResult(@Nonnull InteractionResult result) {
-		this.result = result;
-	}
-
 	/**
 	 * Checks whether the current time of day is valid for sleeping.
 	 *
@@ -72,12 +59,7 @@ public class AllowSleepTimeEventJS extends PlayerEventJS {
 		if (ServerScriptManager.instance == null) {
 			return InteractionResult.PASS;
 		}
-		AllowSleepTimeEventJS event = new AllowSleepTimeEventJS(player, sleepingPos, vanillaResult);
-		FabricEventsJS.ALLOW_SLEEP_TIME.post(event);
-		if (event.isCanceled() && event.getResult() == InteractionResult.PASS) {
-			return InteractionResult.FAIL;
-		}
-		return event.getResult();
+		return FabricEventsJS.ALLOW_SLEEP_TIME.post(new AllowSleepTimeEventJS(player, sleepingPos, vanillaResult)).arch().asMinecraft();
 	}
 }
 

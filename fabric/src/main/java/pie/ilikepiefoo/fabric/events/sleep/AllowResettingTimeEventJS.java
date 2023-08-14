@@ -33,9 +33,8 @@ public class AllowResettingTimeEventJS extends PlayerEventJS {
 		if (ServerScriptManager.instance == null) {
 			return true;
 		}
-		AllowResettingTimeEventJS event = new AllowResettingTimeEventJS(player);
-		FabricEventsJS.ALLOW_RESETTING_TIME.post(event);
-		return !event.isCanceled();
+
+		return FabricEventsJS.ALLOW_RESETTING_TIME.post(new AllowResettingTimeEventJS(player)).arch().isTrue();
 	}
 }
 

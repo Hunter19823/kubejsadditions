@@ -9,8 +9,6 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import pie.ilikepiefoo.fabric.FabricEventsJS;
 
-import javax.annotation.Nonnull;
-
 /**
  * An event that checks whether players can sleep when monsters are nearby.
  *
@@ -20,14 +18,11 @@ public class AllowNearbyMonstersEventJS extends PlayerEventJS {
 	private final Player player;
 	private final BlockPos sleepingPos;
 	private final boolean vanillaResult;
-	@Nonnull
-	private InteractionResult result;
 
 	public AllowNearbyMonstersEventJS(Player player, BlockPos sleepingPos, boolean vanillaResult) {
 		this.player = player;
 		this.sleepingPos = sleepingPos;
 		this.vanillaResult = vanillaResult;
-		this.result = InteractionResult.PASS;
 	}
 
 	public BlockPos getSleepingPos() {
@@ -47,14 +42,6 @@ public class AllowNearbyMonstersEventJS extends PlayerEventJS {
 		return vanillaResult;
 	}
 
-	@Nonnull
-	public InteractionResult getResult() {
-		return result;
-	}
-
-	public void setResult(@Nonnull InteractionResult result) {
-		this.result = result;
-	}
 
 	/**
 	 * Checks whether a player can sleep when monsters are nearby.
@@ -71,12 +58,7 @@ public class AllowNearbyMonstersEventJS extends PlayerEventJS {
 		if (ServerScriptManager.instance == null) {
 			return InteractionResult.PASS;
 		}
-		AllowNearbyMonstersEventJS event = new AllowNearbyMonstersEventJS(player, sleepingPos, vanillaResult);
-		FabricEventsJS.ALLOW_NEARBY_MONSTERS.post(event);
-		if (event.isCanceled() && event.getResult() == InteractionResult.PASS) {
-			return InteractionResult.FAIL;
-		}
-		return event.getResult();
+		return FabricEventsJS.ALLOW_NEARBY_MONSTERS.post(new AllowNearbyMonstersEventJS(player, sleepingPos, vanillaResult)).arch().asMinecraft();
 	}
 }
 

@@ -66,9 +66,7 @@ public class BlockOutlineRenderEventJS extends WorldRenderContextEventJS {
 	 * by targeting {@link LevelRenderer#renderShape}.
 	 */
 	public static boolean handle(WorldRenderContext context, WorldRenderContext.BlockOutlineContext blockOutlineContext) {
-		BlockOutlineRenderEventJS event = new BlockOutlineRenderEventJS(context, blockOutlineContext);
-		FabricEventsJS.BLOCK_OUTLINE.post(event);
-		return !event.isCanceled();
+		return FabricEventsJS.BLOCK_OUTLINE.post(new BlockOutlineRenderEventJS(context, blockOutlineContext)).arch().isTrue();
 	}
 
 }

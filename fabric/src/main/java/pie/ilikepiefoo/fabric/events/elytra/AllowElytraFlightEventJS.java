@@ -21,7 +21,7 @@ public class AllowElytraFlightEventJS extends LivingEntityEventJS {
 	 */
 	public static boolean handler(LivingEntity entity) {
 		if(ServerScriptManager.instance == null) return true;
-		return !FabricEventsJS.ALLOW_ELYTRA_FLIGHT.post(new AllowElytraFlightEventJS(entity));
+		return FabricEventsJS.ALLOW_ELYTRA_FLIGHT.post(new AllowElytraFlightEventJS(entity)).arch().isTrue();
 	}
 
 

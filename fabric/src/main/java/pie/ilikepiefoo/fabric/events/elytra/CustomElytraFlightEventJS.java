@@ -44,7 +44,7 @@ public class CustomElytraFlightEventJS extends LivingEntityEventJS {
 		// (Returning true to handler).
 		// Not canceling this event will result in Custom Elytra flight event being passed to subsequent listeners.
 		// (Returning false to handler).
-		return FabricEventsJS.CUSTOM_ELYTRA_FLIGHT.post(new CustomElytraFlightEventJS(entity, tickElytra));
+		return !FabricEventsJS.CUSTOM_ELYTRA_FLIGHT.post(new CustomElytraFlightEventJS(entity, tickElytra)).pass();
 	}
 
 	@Override

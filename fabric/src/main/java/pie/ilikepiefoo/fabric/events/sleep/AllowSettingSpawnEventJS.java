@@ -45,9 +45,7 @@ public class AllowSettingSpawnEventJS extends PlayerEventJS {
 		if (ServerScriptManager.instance == null) {
 			return true;
 		}
-		AllowSettingSpawnEventJS event = new AllowSettingSpawnEventJS(player, sleepingPos);
-		FabricEventsJS.ALLOW_SETTING_SPAWN.post(event);
-		return event.isCanceled();
+		return FabricEventsJS.ALLOW_SETTING_SPAWN.post(new AllowSettingSpawnEventJS(player, sleepingPos)).archCompound().isTrue();
 	}
 }
 

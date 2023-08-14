@@ -92,17 +92,17 @@ public class FabricEventHandler {
 	 *
 	 * <p>These events can be categorized into three groups:
 	 * <ol>
-	 * <li>Simple listeners: {@link #START_SLEEPING} and {@link #STOP_SLEEPING}</li>
-	 * <li>Predicates: {@link #ALLOW_BED}, {@link #ALLOW_SLEEP_TIME}, {@link #ALLOW_RESETTING_TIME},
-	 * {@link #ALLOW_NEARBY_MONSTERS}, {@link #ALLOW_SETTING_SPAWN} and {@link #ALLOW_SLEEPING}
+	 * <li>Simple listeners: {@link EntitySleepEvents#START_SLEEPING} and {@link EntitySleepEvents#STOP_SLEEPING}</li>
+	 * <li>Predicates: {@link EntitySleepEvents#ALLOW_BED}, {@link EntitySleepEvents#ALLOW_SLEEP_TIME}, {@link EntitySleepEvents#ALLOW_RESETTING_TIME},
+	 * {@link EntitySleepEvents#ALLOW_NEARBY_MONSTERS}, {@link EntitySleepEvents#ALLOW_SETTING_SPAWN} and {@link EntitySleepEvents#ALLOW_SLEEPING}
 	 *
-	 * <p><b>Note:</b> Only the {@link #ALLOW_BED} event applies to non-player entities.</li>
-	 * <li>Modifiers: {@link #MODIFY_SLEEPING_DIRECTION}, {@link #SET_BED_OCCUPATION_STATE}
-	 * and {@link #MODIFY_WAKE_UP_POSITION}</li>
+	 * <p><b>Note:</b> Only the {@link EntitySleepEvents#ALLOW_BED} event applies to non-player entities.</li>
+	 * <li>Modifiers: {@link EntitySleepEvents#MODIFY_SLEEPING_DIRECTION}, {@link EntitySleepEvents#SET_BED_OCCUPATION_STATE}
+	 * and {@link EntitySleepEvents#MODIFY_WAKE_UP_POSITION}</li>
 	 * </ol>
 	 *
 	 * <p>Sleep events are useful for making custom bed blocks that do not extend {@link net.minecraft.world.level.block.BedBlock}.
-	 * Custom beds generally only need a custom {@link #ALLOW_BED} checker and a {@link #MODIFY_SLEEPING_DIRECTION} callback,
+	 * Custom beds generally only need a custom {@link EntitySleepEvents#ALLOW_BED} checker and a {@link EntitySleepEvents#MODIFY_SLEEPING_DIRECTION} callback,
 	 * but the other events might be useful as well.
 	 */
 	private static void registerSleepEvents() {

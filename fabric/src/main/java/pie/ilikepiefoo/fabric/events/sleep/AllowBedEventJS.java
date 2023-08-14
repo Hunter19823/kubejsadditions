@@ -1,6 +1,7 @@
 package pie.ilikepiefoo.fabric.events.sleep;
 
 import dev.latvian.mods.kubejs.entity.LivingEntityEventJS;
+import dev.latvian.mods.kubejs.event.EventExit;
 import dev.latvian.mods.kubejs.level.BlockContainerJS;
 import dev.latvian.mods.kubejs.server.ServerScriptManager;
 import net.minecraft.core.BlockPos;
@@ -9,8 +10,6 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.NotNull;
 import pie.ilikepiefoo.fabric.FabricEventsJS;
-
-import javax.annotation.Nonnull;
 
 /**
  * An event that is called to check whether a block is valid for sleeping.
@@ -29,15 +28,12 @@ public class AllowBedEventJS extends LivingEntityEventJS {
 	private final BlockPos sleepingPos;
 	private final BlockState state;
 	private final boolean vanillaResult;
-	@Nonnull
-	private InteractionResult result;
 
 	public AllowBedEventJS(LivingEntity entity, BlockPos sleepingPos, BlockState state, boolean vanillaResult) {
 		this.entity = entity;
 		this.sleepingPos = sleepingPos;
 		this.state = state;
 		this.vanillaResult = vanillaResult;
-		this.result = InteractionResult.PASS;
 	}
 
 	public LivingEntity getEntity() {
@@ -60,14 +56,6 @@ public class AllowBedEventJS extends LivingEntityEventJS {
 		return vanillaResult;
 	}
 
-	public @NotNull InteractionResult getResult() {
-		return result;
-	}
-
-	public void setResult(@Nonnull InteractionResult result) {
-		this.result = result;
-	}
-
 	/**
 	 * Checks whether a block is a valid bed for the entity.
 	 *
@@ -85,12 +73,7 @@ public class AllowBedEventJS extends LivingEntityEventJS {
 			return InteractionResult.PASS;
 		}
 
-		AllowBedEventJS event = new AllowBedEventJS(entity, sleepingPos, state, vanillaResult);
-		FabricEventsJS.ALLOW_BED.post(event);
-		if (event.isCanceled() && event.getResult() == InteractionResult.PASS) {
-			return InteractionResult.FAIL;
-		}
-		return event.result;
+		return FabricEventsJS.ALLOW_BED.post(new AllowBedEventJS(entity, sleepingPos, state, vanillaResult)).arch().asMinecraft();
 	}
 }
 
