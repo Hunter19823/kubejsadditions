@@ -49,17 +49,17 @@ dependencies {
 	forge "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
 
 	// KubeJS
-	modImplementation("dev.latvian.mods:kubejs-${loader}:${kubejs_version}")
+	modImplementation "dev.latvian.mods:kubejs-${loader}:${kubejs_version}"
 
 	// Arch
 	modApi "dev.architectury:architectury-${loader}:${architectury_version}"
 
 	// JEI Api
-	modCompileOnlyApi("mezz.jei:jei-${minecraft_version}-common-api:${jei_version}")
-	modCompileOnlyApi("mezz.jei:jei-${minecraft_version}-${loader}-api:${jei_version}")
+	modCompileOnlyApi "mezz.jei:jei-${minecraft_version}-common-api:${jei_version}"
+	modCompileOnlyApi "mezz.jei:jei-${minecraft_version}-${loader}-api:${jei_version}"
 
 	// Jei Impl
-	modRuntimeOnly("mezz.jei:jei-${minecraft_version}-${loader}:${jei_version}")
+	modRuntimeOnly "mezz.jei:jei-${minecraft_version}-${loader}:${jei_version}"
 
 	// Combine Common and Forge
 	common(project(path: ":common", configuration: "namedElements")) { transitive false }
