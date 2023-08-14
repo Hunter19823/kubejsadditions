@@ -1,6 +1,6 @@
 {
   "pack": {
-    "description": "KubeJS Additions",
+	  "description": "${mod_name} ${mod_version} by ${mod_author}",
     "pack_format": 9
   }
 }

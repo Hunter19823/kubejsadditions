@@ -145,7 +145,7 @@ CommonAddedEvents.entityTame(event => {
 });
 ```
 
-#### Entity Changed Dimension (Server Only)
+#### Player Changed Dimension (Server Only)
 
 ```js
 CommonAddedEvents.playerChangeDimension(event => {

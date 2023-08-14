@@ -1,107 +1,103 @@
 plugins {
-    id "com.github.johnrengelman.shadow" version "7.1.2"
 	id 'me.shedaniel.unified-publishing'
 }
+
+def loader = "forge"
+def Loader = "Forge"
 
 architectury {
     platformSetupLoomIde()
     forge()
 }
 
+configurations {
+	developmentForge.extendsFrom common
+}
+
 loom {
-    accessWidenerPath = project(":common").loom.accessWidenerPath
+	accessWidenerPath = project(":common").file("src/main/resources/${mod_id}.accesswidener")
 
     forge {
         convertAccessWideners = true
         extraAccessWideners.add loom.accessWidenerPath.get().asFile.name
-		mixinConfig "kubejsadditions.mixins.json"
-		mixinConfig "kubejsadditions-common.mixins.json"
-    }
+	}
+
+	interfaceInjection {
+		interfaceInjectionSourceSets.add project(':common').sourceSets.main
+	}
 }
 
-configurations {
-    common
-    shadowCommon // Don't use shadow from the shadow plugin because we don't want IDEA to index this.
-    compileClasspath.extendsFrom common
-    runtimeClasspath.extendsFrom common
-    developmentForge.extendsFrom common
+repositories {
+	maven {
+		name "ModMaven (JEI)"
+		url "https://modmaven.dev/"
+		content {
+			includeGroup "net.darkhax.bookshelf"
+			includeGroup "net.darkhax.gamestages"
+		}
+	}
+	maven {
+		url "https://maven.blamejared.com"
+		content {
+			includeGroup "mezz.jei"
+		}
+	}
 }
 
 dependencies {
-	forge "net.minecraftforge:forge:${rootProject.forge_version}"
-	// Remove the next line if you don't want to depend on the API
-	modApi "dev.architectury:architectury-forge:${rootProject.architectury_version}"
+	// Loader Dependencies
+	forge "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
 
+	// KubeJS
+	modImplementation("dev.latvian.mods:kubejs-${loader}:${kubejs_version}")
+
+	// Arch
+	modApi "dev.architectury:architectury-${loader}:${architectury_version}"
+
+	// JEI Api
+	modCompileOnlyApi("mezz.jei:jei-${minecraft_version}-common-api:${jei_version}")
+	modCompileOnlyApi("mezz.jei:jei-${minecraft_version}-${loader}-api:${jei_version}")
+
+	// Jei Impl
+	modRuntimeOnly("mezz.jei:jei-${minecraft_version}-${loader}:${jei_version}")
+
+	// Combine Common and Forge
 	common(project(path: ":common", configuration: "namedElements")) { transitive false }
-	shadowCommon(project(path: ":common", configuration: "transformProductionForge")) { transitive = false }
+	bundle(project(path: ":common", configuration: "transformProduction${Loader}")) { transitive false }
 
-	modImplementation("dev.latvian.mods:kubejs-forge:${rootProject.kubejs_version}")
-
-	modCompileOnly("mezz.jei:jei-${minecraft_version}-forge-api:${rootProject.jei_version}")
-	modRuntimeOnly("mezz.jei:jei-${minecraft_version}-forge:${rootProject.jei_version}")
-}
-
-processResources {
-    inputs.property "version", project.version
-
-    filesMatching("META-INF/mods.toml") {
-        expand "version": project.version
-    }
-}
-
-shadowJar {
-    exclude "fabric.mod.json"
-    exclude "architectury.common.json"
-
-    configurations = [project.configurations.shadowCommon]
-	archiveClassifier.set "dev-shadow"
-}
-
-remapJar {
-    input.set shadowJar.archiveFile
-    dependsOn shadowJar
-	archiveClassifier.set null
+	implementation(annotationProcessor("com.github.llamalad7.mixinextras:mixinextras-common:${mixin_extras}"))
+	implementation(include("com.github.llamalad7.mixinextras:mixinextras-${loader}:${mixin_extras}"))
 }
 
 jar {
-	archiveClassifier.set "dev"
-}
-
-sourcesJar {
-    def commonSources = project(":common").sourcesJar
-    dependsOn commonSources
-    from commonSources.archiveFile.map { zipTree(it) }
+	manifest {
+		attributes([
+				"Specification-Title"     : project.mod_id,
+				"Specification-Vendor"    : project.mod_author,
+				"Specification-Version"   : "1",
+				"Implementation-Title"    : project.name,
+				"Implementation-Version"  : version,
+				"Implementation-Vendor"   : project.mod_author,
+				"Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")
+		])
+	}
 }
 
 components.java {
-    withVariantsFromConfiguration(project.configurations.shadowRuntimeElements) {
-        skip()
-    }
+	withVariantsFromConfiguration(project.configurations.shadowRuntimeElements) {
+		skip()
+	}
 }
-
-publishing {
-    publications {
-        mavenForge(MavenPublication) {
-            artifactId = rootProject.archives_base_name + "-" + project.name
-            from components.java
-        }
-    }
-
-    // See https://docs.gradle.org/current/userguide/publishing_maven.html for information on how to set up publishing.
-    repositories {
-        // Add repositories to publish to here.
-    }
-}
-
 
 unifiedPublishing {
 	project {
-		releaseType = rootProject.artifact_type
+		releaseType = project.upload_type
 		gameVersions = [
-				rootProject.minecraft_version
+				project.minecraft_version
 		]
-		gameLoaders = ["forge"]
-		displayName = "$project.mod_name Forge $project.version"
+		gameLoaders = ["${loader}"]
+		displayName = "$mod_name ${Loader} $project.version"
+
 		mainPublication remapJar
 
 		relations {
@@ -109,24 +105,20 @@ unifiedPublishing {
 				curseforge = modrinth = "architectury-api"
 			}
 			depends {
-				curseforge = modrinth = "rhino"
-			}
-			depends {
 				curseforge = modrinth = "kubejs"
 			}
 		}
 
-		var CF = System.getenv("CURSEFORGE_KEY")
-		if (CF != null) {
+		if (ENV.CURSEFORGE_KEY) {
 			curseforge {
-				token = CF
+				token = ENV.CURSEFORGE_KEY
 				id = project.curseforge_id
 			}
 		}
-		var MT = System.getenv("MODRINTH_TOKEN")
-		if (MT != null) {
+
+		if (ENV.MODRINTH_TOKEN) {
 			modrinth {
-				token = MT
+				token = ENV.MODRINTH_TOKEN
 				id = project.modrinth_id
 				version = "$project.name+$project.version"
 			}

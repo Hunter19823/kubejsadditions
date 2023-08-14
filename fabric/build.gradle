@@ -1,101 +1,101 @@
 plugins {
-    id "com.github.johnrengelman.shadow" version "7.1.2"
 	id 'me.shedaniel.unified-publishing'
 }
 
-architectury {
-    platformSetupLoomIde()
-    fabric()
-}
+def loader = "fabric"
+def Loader = "Fabric"
 
-loom {
-    accessWidenerPath = project(":common").loom.accessWidenerPath
+def generatedResources = file("src/generated/resources")
+def accessWidenerFile = project(":common").file("src/main/resources/${mod_id}.accesswidener")
+
+architectury {
+	platformSetupLoomIde()
+	fabric()
 }
 
 configurations {
-    common
-    shadowCommon // Don't use shadow from the shadow plugin because we don't want IDEA to index this.
-    compileClasspath.extendsFrom common
-    runtimeClasspath.extendsFrom common
-    developmentFabric.extendsFrom common
+	developmentFabric.extendsFrom common
+	configureEach {
+		resolutionStrategy {
+			force "net.fabricmc:fabric-loader:${fabric_loader_version}"
+		}
+	}
+
+	//common
+	//shadowCommon // Don't use shadow from the shadow plugin because we don't want IDEA to index this.
+	//compileClasspath.extendsFrom common
+	//runtimeClasspath.extendsFrom common
+}
+
+loom {
+	accessWidenerPath = accessWidenerFile
+}
+
+repositories {
+	maven {
+		url "https://maven.blamejared.com"
+		content {
+			includeGroup "com.faux.ingredientextension"
+		}
+	}
 }
 
 dependencies {
-    modImplementation "net.fabricmc:fabric-loader:${rootProject.fabric_loader_version}"
-	modApi "net.fabricmc.fabric-api:fabric-api:${rootProject.fabric_api_version}"
-	// Remove the next line if you don't want to depend on the API
-	modApi "dev.architectury:architectury-fabric:${rootProject.architectury_version}"
+	// Loader Dependencies
+	modApi "net.fabricmc:fabric-loader:${fabric_loader_version}"
+	modApi "net.fabricmc.fabric-api:fabric-api:${fabric_api_version}+${minecraft_version}"
 
+	// KubeJS
+	modImplementation("dev.latvian.mods:kubejs-${loader}:${kubejs_version}")
+
+	// Arch
+	modApi "dev.architectury:architectury-${loader}:${architectury_version}"
+
+	// JEI Api
+	modCompileOnlyApi("mezz.jei:jei-${minecraft_version}-common-api:${jei_version}")
+	modCompileOnlyApi("mezz.jei:jei-${minecraft_version}-${loader}-api:${jei_version}")
+
+	// Jei Impl
+	modRuntimeOnly("mezz.jei:jei-${minecraft_version}-${loader}:${jei_version}")
+
+	// Combine Common and Fabric
 	common(project(path: ":common", configuration: "namedElements")) { transitive false }
-	shadowCommon(project(path: ":common", configuration: "transformProductionFabric")) { transitive false }
+	bundle(project(path: ":common", configuration: "transformProduction${Loader}")) { transitive false }
 
-	modImplementation("dev.latvian.mods:kubejs-fabric:${rootProject.kubejs_version}")
-
-
-	modCompileOnly("mezz.jei:jei-${minecraft_version}-fabric-api:${rootProject.jei_version}")
-	modRuntimeOnly("mezz.jei:jei-${minecraft_version}-fabric:${rootProject.jei_version}")
+	// MixinExtras
+	include(implementation(annotationProcessor("com.github.llamalad7.mixinextras:mixinextras-${loader}:${mixin_extras}")))
 }
 
-processResources {
-    inputs.property "version", project.version
-
-    filesMatching("fabric.mod.json") {
-        expand "version": project.version
-    }
+// The AccessWidener file is needed in :fabric project resources when the game is run.
+tasks.register('copyAccessWidener', Copy) {
+	from accessWidenerFile
+	into generatedResources
 }
 
-shadowJar {
-    exclude "architectury.common.json"
-
-    configurations = [project.configurations.shadowCommon]
-	archiveClassifier.set("dev-shadow")
-}
-
-remapJar {
-    injectAccessWidener = true
-    input.set shadowJar.archiveFile
-    dependsOn shadowJar
-	archiveClassifier.set null
-}
-
-jar {
-	archiveClassifier.set "dev"
-}
-
-sourcesJar {
-    def commonSources = project(":common").sourcesJar
-    dependsOn commonSources
-    from commonSources.archiveFile.map { zipTree(it) }
+sourceSets {
+	main {
+		// compiledBy copyAccessWidener // I think this broke things even more
+		resources {
+			// srcDir generatedResources
+			srcDir copyAccessWidener
+		}
+	}
 }
 
 components.java {
-    withVariantsFromConfiguration(project.configurations.shadowRuntimeElements) {
-        skip()
-    }
-}
-
-publishing {
-    publications {
-        mavenFabric(MavenPublication) {
-            artifactId = rootProject.archives_base_name + "-" + project.name
-            from components.java
-        }
-    }
-
-    // See https://docs.gradle.org/current/userguide/publishing_maven.html for information on how to set up publishing.
-    repositories {
-        // Add repositories to publish to here.
-    }
+	withVariantsFromConfiguration(project.configurations.shadowRuntimeElements) {
+		skip()
+	}
 }
 
 unifiedPublishing {
 	project {
-		releaseType = rootProject.artifact_type
+		releaseType = project.upload_type
 		gameVersions = [
-				rootProject.minecraft_version
+				project.minecraft_version
 		]
-		gameLoaders = ["fabric"]
-		displayName = "$mod_name Fabric $project.version"
+		gameLoaders = ["${loader}"]
+		displayName = "$mod_name ${Loader} $project.version"
 		mainPublication remapJar
 
 		relations {
@@ -103,24 +103,20 @@ unifiedPublishing {
 				curseforge = modrinth = "architectury-api"
 			}
 			depends {
-				curseforge = modrinth = "rhino"
-			}
-			depends {
 				curseforge = modrinth = "kubejs"
 			}
 		}
 
-		var CF = System.getenv("CURSEFORGE_KEY")
-		if (CF != null) {
+		if (ENV.CURSEFORGE_KEY) {
 			curseforge {
-				token = CF
+				token = ENV.CURSEFORGE_KEY
 				id = project.curseforge_id
 			}
 		}
-		var MT = System.getenv("MODRINTH_TOKEN")
-		if (MT != null) {
+
+		if (ENV.MODRINTH_TOKEN) {
 			modrinth {
-				token = MT
+				token = ENV.MODRINTH_TOKEN
 				id = project.modrinth_id
 				version = "$project.name+$project.version"
 			}
