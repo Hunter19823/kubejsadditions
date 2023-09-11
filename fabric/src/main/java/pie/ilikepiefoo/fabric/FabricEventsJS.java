@@ -48,25 +48,25 @@ public interface FabricEventsJS {
     // World Render Events
     EventHandler BEFORE_ENTITIES = GROUP.client("beforeEntities", () -> WorldRenderContextEventJS.class);
     EventHandler AFTER_ENTITIES = GROUP.client("afterEntities", () -> WorldRenderContextEventJS.class);
-    EventHandler AFTER_TRANSLUCENT = GROUP.client("afterTranslucent", () -> WorldRenderContextEventJS.class);
-    EventHandler AFTER_SETUP = GROUP.client("afterSetup", () -> WorldRenderContextEventJS.class);
-    EventHandler START_RENDER = GROUP.client("startRender", () -> WorldRenderContextEventJS.class);
-    EventHandler LAST_RENDER = GROUP.client("lastRender", () -> WorldRenderContextEventJS.class);
-    EventHandler END_RENDER = GROUP.client("endRender", () -> WorldRenderContextEventJS.class);
-    EventHandler BEFORE_BLOCK_OUTLINE = GROUP.client("beforeBlockOutline", () -> BeforeBlockOutlineRenderEventJS.class).hasResult();
-    EventHandler BLOCK_OUTLINE = GROUP.client("blockOutline", () -> BlockOutlineRenderEventJS.class);
+	EventHandler AFTER_TRANSLUCENT = GROUP.client("afterTranslucent", () -> WorldRenderContextEventJS.class);
+	EventHandler AFTER_SETUP = GROUP.client("afterSetup", () -> WorldRenderContextEventJS.class);
+	EventHandler START_RENDER = GROUP.client("startRender", () -> WorldRenderContextEventJS.class);
+	EventHandler LAST_RENDER = GROUP.client("lastRender", () -> WorldRenderContextEventJS.class);
+	EventHandler END_RENDER = GROUP.client("endRender", () -> WorldRenderContextEventJS.class);
+	EventHandler BEFORE_BLOCK_OUTLINE = GROUP.client("beforeBlockOutline", () -> BeforeBlockOutlineRenderEventJS.class).hasResult();
+	EventHandler BLOCK_OUTLINE = GROUP.client("blockOutline", () -> BlockOutlineRenderEventJS.class);
 
-    // Custom Events
-    EventGroup CUSTOM = EventGroup.of("FabricEvents");
-    EventHandler FABRIC_STARTUP_EVENT_HANDLER = CUSTOM.startup("handle", () -> ProxyEventJS.class).extra(Extra.REQUIRES_STRING);
-    EventHandler FABRIC_CLIENT_EVENT_HANDLER = CUSTOM.client("handle", () -> ProxyEventJS.class).extra(Extra.REQUIRES_STRING);
-    EventHandler FABRIC_SERVER_EVENT_HANDLER = CUSTOM.server("handle", () -> ProxyEventJS.class).extra(Extra.REQUIRES_STRING);
-    EventHandler FABRIC_EVENT_REGISTER = CUSTOM.startup("registry", () -> FabricEventRegisterEventJS.class);
+	// Custom Events
+	EventGroup CUSTOM = EventGroup.of("FabricEvents");
+	EventHandler FABRIC_STARTUP_EVENT_HANDLER = CUSTOM.startup("handleStartup", () -> ProxyEventJS.class).extra(Extra.REQUIRES_STRING);
+	EventHandler FABRIC_CLIENT_EVENT_HANDLER = CUSTOM.client("handleClient", () -> ProxyEventJS.class).extra(Extra.REQUIRES_STRING);
+	EventHandler FABRIC_SERVER_EVENT_HANDLER = CUSTOM.server("handleServer", () -> ProxyEventJS.class).extra(Extra.REQUIRES_STRING);
+	EventHandler FABRIC_EVENT_REGISTER = CUSTOM.startup("registry", () -> FabricEventRegisterEventJS.class);
 
-    static void register() {
-        GROUP.register();
-        CUSTOM.register();
-    }
+	static void register() {
+		GROUP.register();
+		CUSTOM.register();
+	}
 
 }
 

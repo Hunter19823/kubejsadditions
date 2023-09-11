@@ -57,7 +57,7 @@ See the below example for how to listen to the event.
 
 ```js
 // See above for the first part of this example.
-ArchEvents.handle('server starting', event => {
+ArchEvents.handleServer('server starting', event => {
 	console.log('Custom Arch Event handler has fired!');
 	console.log("Event Class: " + event); // Returns the class of the event. (It's always a ProxyClass)
 	console.log("Method Name: " + event.getMethodName()); // Returns the name of the method that fired the event.
@@ -71,12 +71,21 @@ ArchEvents.handle('server starting', event => {
 	// We can return a value like so:
 	// event.setResult("Hello World!");
 });
+// Pre KubeJS 6.0, you would use ArchEvents.handle for all script types.
+// Instead of ArchEvents.handleClient, ArchEvents.handleServer, or ArchEvents.handleStartup.
 ```
 
 This example showcases how to listen to the event we registered above.
 You use the name of the event you registered to listen to it.
 The event parameter is an instance of the `ProxyClass` class.
 You can listen to any event from any script context (Startup, Client, Server) with the same syntax.
+
+***Important Note for KubeJS Additions 3.2.0+ (KubeJS 6.1+)***:
+
+Due to changes with KubeJS Event handlers, `ArchEvents.handle` has been split into `ArchEvents.handleClient`, `ArchEvents.handleServer`, and `ArchEvents.handleStartup` for each script type respectively.
+The syntax is the same as the above example, however, you must use the correct method for the script type you are using.
+
+For previous versions of KubeJS Additions, you can use `ArchEvents.handle` for all script types.
 
 ## [Custom Fabric Event Listeners](https://github.com/Hunter19823/kubejsadditions/blob/3d489ddef363573218f68a8a7e34f924729fe1c2/fabric/src/main/java/pie/ilikepiefoo/fabric/FabricEventsJS.java#L60)
 
@@ -104,7 +113,7 @@ See the below example for how to listen to the event.
 
 ```js
 // See above for the first part of this example.
-FabricEvents.handle('chat messages', event => {
+FabricEvents.handleServer('chat messages', event => {
 	console.log('Custom Arch Event handler has fired!');
 	console.log("Event Class: " + event); // Returns the class of the event. (It's always a ProxyClass)
 	console.log("Method Name: " + event.getMethodName()); // Returns the name of the method that fired the event.
@@ -118,12 +127,22 @@ FabricEvents.handle('chat messages', event => {
 	// We can return a value like so:
 	// event.setResult("Hello World!");
 });
+
+// Pre KubeJS 6.0, you would use FabricEvents.handle for all script types.
+// Instead of FabricEvents.handleClient, FabricEvents.handleServer, or FabricEvents.handleStartup.
 ```
 
 This example showcases how to listen to the event we registered above.
 You use the name of the event you registered to listen to it.
 The event parameter is an instance of the `ProxyClass` class.
 You can listen to any event from any script context (Startup, Client, Server) with the same syntax.
+
+***Important Note for KubeJS Additions 3.2.0+ (KubeJS 6.1+)***:
+
+Due to changes with KubeJS Event handlers, `FabricEvents.handle` has been split into `FabricEvents.handleClient`, `FabricEvents.handleServer`, and `FabricEvents.handleStartup` for each script type respectively.
+The syntax is the same as the above example, however, you must use the correct method for the script type you are using.
+
+For previous versions of KubeJS Additions, you can use `FabricEvents.handle` for all script types.
 
 ### [Common Events](https://github.com/Hunter19823/kubejsadditions/blob/1.19.2/common/src/main/java/pie/ilikepiefoo/events/AdditionalEvents.java)
 
