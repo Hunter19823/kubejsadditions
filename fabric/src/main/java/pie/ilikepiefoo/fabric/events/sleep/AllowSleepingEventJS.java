@@ -28,61 +28,62 @@ import javax.annotation.Nullable;
  * are also checked before this event.
  */
 public class AllowSleepingEventJS extends PlayerEventJS {
-	private final Player player;
-	private final BlockPos sleepingPos;
-	@Nullable
-	private Player.BedSleepingProblem sleepingProblem;
+    private final Player player;
+    private final BlockPos sleepingPos;
+    @Nullable
+    private Player.BedSleepingProblem sleepingProblem;
 
-	public AllowSleepingEventJS(Player player, BlockPos sleepingPos) {
-		this.player = player;
-		this.sleepingPos = sleepingPos;
-		this.sleepingProblem = null;
-	}
+    public AllowSleepingEventJS(Player player, BlockPos sleepingPos) {
+        this.player = player;
+        this.sleepingPos = sleepingPos;
+        this.sleepingProblem = null;
+    }
 
-	@Override
-	public boolean canCancel() {
-		return true;
-	}
+    /**
+     * Checks whether a player can start sleeping in a bed-like block.
+     *
+     * @param player      the sleeping player
+     * @param sleepingPos the future {@linkplain LivingEntity#getSleepingPos() sleeping position} of the entity
+     * @return {@code null} if the player can sleep, or a failure reason if they cannot
+     * @see Player#startSleepInBed(BlockPos)
+     */
+    public static Player.BedSleepingProblem handler(Player player, BlockPos sleepingPos) {
+        if (ServerScriptManager.instance == null) {
+            return null;
+        }
+        AllowSleepingEventJS event = new AllowSleepingEventJS(player, sleepingPos);
+        event.post(ScriptType.SERVER, FabricEventsJS.ALLOW_SLEEPING);
+        if (event.isCancelled() && event.getSleepingProblem() == null) {
+            return Player.BedSleepingProblem.OTHER_PROBLEM;
+        }
+        return event.sleepingProblem;
+    }
 
-	public BlockPos getSleepingPos() {
-		return sleepingPos;
-	}
+    @Nullable
+    public Player.BedSleepingProblem getSleepingProblem() {
+        return sleepingProblem;
+    }
 
-	public BlockContainerJS getPos() {
-		return getLevel().getBlock(sleepingPos);
-	}
+    public void setSleepingProblem(@Nullable Player.BedSleepingProblem sleepingProblem) {
+        this.sleepingProblem = sleepingProblem;
+    }
 
-	@Nullable
-	public Player.BedSleepingProblem getSleepingProblem() {
-		return sleepingProblem;
-	}
+    @Override
+    public boolean canCancel() {
+        return true;
+    }
 
-	public void setSleepingProblem(@Nullable Player.BedSleepingProblem sleepingProblem) {
-		this.sleepingProblem = sleepingProblem;
-	}
+    public BlockPos getSleepingPos() {
+        return sleepingPos;
+    }
 
-	/**
-	 * Checks whether a player can start sleeping in a bed-like block.
-	 *
-	 * @param player      the sleeping player
-	 * @param sleepingPos the future {@linkplain LivingEntity#getSleepingPos() sleeping position} of the entity
-	 * @return {@code null} if the player can sleep, or a failure reason if they cannot
-	 * @see Player#startSleepInBed(BlockPos)
-	 */
-	public static Player.BedSleepingProblem handler(Player player, BlockPos sleepingPos) {
-		if(ServerScriptManager.instance == null)
-			return null;
-		AllowSleepingEventJS event = new AllowSleepingEventJS(player, sleepingPos);
-		event.post(ScriptType.SERVER, FabricEventsJS.ALLOW_SLEEPING);
-		if(event.isCancelled() && event.getSleepingProblem() == null) {
-			return Player.BedSleepingProblem.OTHER_PROBLEM;
-		}
-		return event.sleepingProblem;
-	}
+    public BlockContainerJS getPos() {
+        return getLevel().getBlock(sleepingPos);
+    }
 
-	@Override
-	public EntityJS getEntity() {
-		return entityOf(player);
-	}
+    @Override
+    public EntityJS getEntity() {
+        return entityOf(player);
+    }
 }
 

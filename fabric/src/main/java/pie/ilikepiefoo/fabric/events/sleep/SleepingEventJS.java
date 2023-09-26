@@ -16,51 +16,53 @@ import pie.ilikepiefoo.fabric.FabricEventsJS;
  */
 public class SleepingEventJS extends LivingEntityEventJS {
 
-	private final LivingEntity entity;
-	private final BlockPos sleepingPos;
+    private final LivingEntity entity;
+    private final BlockPos sleepingPos;
 
-	public SleepingEventJS(LivingEntity entity, BlockPos sleepingPos) {
-		this.entity = entity;
-		this.sleepingPos = sleepingPos;
-	}
+    public SleepingEventJS(LivingEntity entity, BlockPos sleepingPos) {
+        this.entity = entity;
+        this.sleepingPos = sleepingPos;
+    }
 
-	public BlockPos getSleepingPos() {
-		return sleepingPos;
-	}
+    /**
+     * Called when an entity starts to sleep.
+     *
+     * @param entity      the sleeping entity
+     * @param sleepingPos the {@linkplain LivingEntity#getSleepingPos() sleeping position} of the entity
+     */
+    public static void startHandler(LivingEntity entity, BlockPos sleepingPos) {
+        if (ServerScriptManager.instance == null) {
+            return;
+        }
+        SleepingEventJS event = new SleepingEventJS(entity, sleepingPos);
+        event.post(ScriptType.SERVER, FabricEventsJS.START_SLEEPING);
+    }
 
-	public BlockContainerJS getPos() {
-		return getLevel().getBlock(sleepingPos);
-	}
+    /**
+     * Called when an entity stops sleeping and wakes up.
+     *
+     * @param entity      the sleeping entity
+     * @param sleepingPos the {@linkplain LivingEntity#getSleepingPos() sleeping position} of the entity
+     */
+    public static void stopHandler(LivingEntity entity, BlockPos sleepingPos) {
+        if (ServerScriptManager.instance == null) {
+            return;
+        }
+        SleepingEventJS event = new SleepingEventJS(entity, sleepingPos);
+        event.post(ScriptType.SERVER, FabricEventsJS.STOP_SLEEPING);
+    }
 
-	/**
-	 * Called when an entity starts to sleep.
-	 *
-	 * @param entity      the sleeping entity
-	 * @param sleepingPos the {@linkplain LivingEntity#getSleepingPos() sleeping position} of the entity
-	 */
-	public static void startHandler(LivingEntity entity, BlockPos sleepingPos) {
-		if(ServerScriptManager.instance == null)
-			return;
-		SleepingEventJS event = new SleepingEventJS(entity, sleepingPos);
-		event.post(ScriptType.SERVER, FabricEventsJS.START_SLEEPING);
-	}
+    public BlockPos getSleepingPos() {
+        return sleepingPos;
+    }
 
-	/**
-	 * Called when an entity stops sleeping and wakes up.
-	 *
-	 * @param entity      the sleeping entity
-	 * @param sleepingPos the {@linkplain LivingEntity#getSleepingPos() sleeping position} of the entity
-	 */
-	public static void stopHandler(LivingEntity entity, BlockPos sleepingPos) {
-		if(ServerScriptManager.instance == null)
-			return;
-		SleepingEventJS event = new SleepingEventJS(entity, sleepingPos);
-		event.post(ScriptType.SERVER, FabricEventsJS.STOP_SLEEPING);
-	}
+    public BlockContainerJS getPos() {
+        return getLevel().getBlock(sleepingPos);
+    }
 
-	@Override
-	public EntityJS getEntity() {
-		return entityOf(entity);
-	}
+    @Override
+    public EntityJS getEntity() {
+        return entityOf(entity);
+    }
 }
 

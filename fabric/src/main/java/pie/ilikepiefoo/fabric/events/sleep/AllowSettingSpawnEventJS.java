@@ -16,45 +16,46 @@ import pie.ilikepiefoo.fabric.FabricEventsJS;
  */
 public class AllowSettingSpawnEventJS extends PlayerEventJS {
 
-	private final Player player;
-	private final BlockPos sleepingPos;
+    private final Player player;
+    private final BlockPos sleepingPos;
 
-	public AllowSettingSpawnEventJS(Player player, BlockPos sleepingPos) {
-		this.player = player;
-		this.sleepingPos = sleepingPos;
-	}
+    public AllowSettingSpawnEventJS(Player player, BlockPos sleepingPos) {
+        this.player = player;
+        this.sleepingPos = sleepingPos;
+    }
 
-	@Override
-	public boolean canCancel() {
-		return true;
-	}
+    /**
+     * Checks whether a player's spawn can be set when sleeping.
+     *
+     * @param player      the sleeping player
+     * @param sleepingPos the sleeping position
+     * @return {@code true} if allowed, {@code false} otherwise
+     */
+    public static boolean handler(Player player, BlockPos sleepingPos) {
+        if (ServerScriptManager.instance == null) {
+            return true;
+        }
+        AllowSettingSpawnEventJS event = new AllowSettingSpawnEventJS(player, sleepingPos);
+        event.post(ScriptType.SERVER, FabricEventsJS.ALLOW_SETTING_SPAWN);
+        return event.isCancelled();
+    }
 
-	public BlockPos getSleepingPos() {
-		return sleepingPos;
-	}
+    @Override
+    public boolean canCancel() {
+        return true;
+    }
 
-	@Override
-	public EntityJS getEntity() {
-		return entityOf(player);
-	}
+    public BlockPos getSleepingPos() {
+        return sleepingPos;
+    }
 
-	public BlockContainerJS getPos() {
-		return getLevel().getBlock(sleepingPos);
-	}
+    @Override
+    public EntityJS getEntity() {
+        return entityOf(player);
+    }
 
-	/**
-	 * Checks whether a player's spawn can be set when sleeping.
-	 *
-	 * @param player      the sleeping player
-	 * @param sleepingPos the sleeping position
-	 * @return {@code true} if allowed, {@code false} otherwise
-	 */
-	public static boolean handler(Player player, BlockPos sleepingPos) {
-		if(ServerScriptManager.instance == null)
-			return true;
-		AllowSettingSpawnEventJS event = new AllowSettingSpawnEventJS(player, sleepingPos);
-		event.post(ScriptType.SERVER, FabricEventsJS.ALLOW_SETTING_SPAWN);
-		return event.isCancelled();
-	}
+    public BlockContainerJS getPos() {
+        return getLevel().getBlock(sleepingPos);
+    }
 }
 

@@ -21,70 +21,71 @@ import javax.annotation.Nonnull;
  */
 public class AllowSleepTimeEventJS extends PlayerEventJS {
 
-	private final Player player;
-	private final BlockPos sleepingPos;
-	private final boolean vanillaResult;
-	@Nonnull
-	private InteractionResult result;
+    private final Player player;
+    private final BlockPos sleepingPos;
+    private final boolean vanillaResult;
+    @Nonnull
+    private InteractionResult result;
 
-	public AllowSleepTimeEventJS(Player player, BlockPos sleepingPos, boolean vanillaResult) {
-		this.player = player;
-		this.sleepingPos = sleepingPos;
-		this.vanillaResult = vanillaResult;
-		this.result = InteractionResult.PASS;
-	}
+    public AllowSleepTimeEventJS(Player player, BlockPos sleepingPos, boolean vanillaResult) {
+        this.player = player;
+        this.sleepingPos = sleepingPos;
+        this.vanillaResult = vanillaResult;
+        this.result = InteractionResult.PASS;
+    }
 
-	@Override
-	public boolean canCancel() {
-		return true;
-	}
+    /**
+     * Checks whether the current time of day is valid for sleeping.
+     *
+     * <p>Non-{@linkplain InteractionResult#PASS passing} return values cancel further callbacks.
+     *
+     * @param player        the sleeping player
+     * @param sleepingPos   the (possibly still unset) {@linkplain LivingEntity#getSleepingPos() sleeping position} of the player
+     * @param vanillaResult {@code true} if vanilla allows the time, {@code false} otherwise
+     * @return {@link InteractionResult#SUCCESS} if the time is valid, {@link InteractionResult#FAIL} if it's not,
+     * {@link InteractionResult#PASS} to fall back to other callbacks
+     */
+    public static InteractionResult handler(Player player, BlockPos sleepingPos, boolean vanillaResult) {
+        if (ServerScriptManager.instance == null) {
+            return InteractionResult.PASS;
+        }
+        AllowSleepTimeEventJS event = new AllowSleepTimeEventJS(player, sleepingPos, vanillaResult);
+        event.post(ScriptType.SERVER, FabricEventsJS.ALLOW_SLEEP_TIME);
+        if (event.isCancelled() && event.getResult() == InteractionResult.PASS) {
+            return InteractionResult.FAIL;
+        }
+        return event.getResult();
+    }
 
-	public BlockPos getSleepingPos() {
-		return sleepingPos;
-	}
+    @Nonnull
+    public InteractionResult getResult() {
+        return result;
+    }
 
-	public BlockContainerJS getPos() {
-		return getLevel().getBlock(sleepingPos);
-	}
+    public void setResult(@Nonnull InteractionResult result) {
+        this.result = result;
+    }
 
-	public boolean getVanillaResult() {
-		return vanillaResult;
-	}
+    @Override
+    public boolean canCancel() {
+        return true;
+    }
 
-	@Nonnull
-	public InteractionResult getResult() {
-		return result;
-	}
+    public BlockPos getSleepingPos() {
+        return sleepingPos;
+    }
 
-	public void setResult(@Nonnull InteractionResult result) {
-		this.result = result;
-	}
+    public BlockContainerJS getPos() {
+        return getLevel().getBlock(sleepingPos);
+    }
 
-	/**
-	 * Checks whether the current time of day is valid for sleeping.
-	 *
-	 * <p>Non-{@linkplain InteractionResult#PASS passing} return values cancel further callbacks.
-	 *
-	 * @param player        the sleeping player
-	 * @param sleepingPos   the (possibly still unset) {@linkplain LivingEntity#getSleepingPos() sleeping position} of the player
-	 * @param vanillaResult {@code true} if vanilla allows the time, {@code false} otherwise
-	 * @return {@link InteractionResult#SUCCESS} if the time is valid, {@link InteractionResult#FAIL} if it's not,
-	 *         {@link InteractionResult#PASS} to fall back to other callbacks
-	 */
-	public static InteractionResult handler(Player player, BlockPos sleepingPos, boolean vanillaResult) {
-		if(ServerScriptManager.instance == null)
-			return InteractionResult.PASS;
-		AllowSleepTimeEventJS event = new AllowSleepTimeEventJS(player, sleepingPos, vanillaResult);
-		event.post(ScriptType.SERVER, FabricEventsJS.ALLOW_SLEEP_TIME);
-		if(event.isCancelled() && event.getResult() == InteractionResult.PASS) {
-			return InteractionResult.FAIL;
-		}
-		return event.getResult();
-	}
+    public boolean getVanillaResult() {
+        return vanillaResult;
+    }
 
-	@Override
-	public EntityJS getEntity() {
-		return entityOf(player);
-	}
+    @Override
+    public EntityJS getEntity() {
+        return entityOf(player);
+    }
 }
 

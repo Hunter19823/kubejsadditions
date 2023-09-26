@@ -10,38 +10,38 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.level.Level;
 
 public class PlayerChangeDimensionEventJS extends PlayerEventJS {
-	private final ServerPlayer player;
-	private final ResourceKey<Level> oldWorld;
-	private final ResourceKey<Level> newWorld;
+    private final ServerPlayer player;
+    private final ResourceKey<Level> oldWorld;
+    private final ResourceKey<Level> newWorld;
 
-	public PlayerChangeDimensionEventJS(ServerPlayer player, ResourceKey<Level> oldWorld, ResourceKey<Level> newWorld) {
-		this.player = player;
-		this.oldWorld = oldWorld;
-		this.newWorld = newWorld;
-	}
+    public PlayerChangeDimensionEventJS(ServerPlayer player, ResourceKey<Level> oldWorld, ResourceKey<Level> newWorld) {
+        this.player = player;
+        this.oldWorld = oldWorld;
+        this.newWorld = newWorld;
+    }
 
-	@Override
-	public EntityJS getEntity() {
-		return entityOf(player);
-	}
+    public static PlayerChangeDimensionEventJS of(ServerPlayer player, ResourceKey<Level> oldLevel, ResourceKey<Level> newLevel) {
+        return new PlayerChangeDimensionEventJS(player, oldLevel, newLevel);
+    }
 
-	public ResourceKey<Level> getOldWorldKey() {
-		return oldWorld;
-	}
+    @Override
+    public EntityJS getEntity() {
+        return entityOf(player);
+    }
 
-	public LevelJS getOldLevel() {
-		return UtilsJS.getLevel(player.getServer().getLevel(oldWorld));
-	}
+    public ResourceKey<Level> getOldWorldKey() {
+        return oldWorld;
+    }
 
-	public LevelJS getNewLevel() {
-		return UtilsJS.getLevel(player.getServer().getLevel(newWorld));
-	}
+    public LevelJS getOldLevel() {
+        return UtilsJS.getLevel(player.getServer().getLevel(oldWorld));
+    }
 
-	public ResourceKey<Level> getNewWorldKey() {
-		return newWorld;
-	}
+    public LevelJS getNewLevel() {
+        return UtilsJS.getLevel(player.getServer().getLevel(newWorld));
+    }
 
-	public static PlayerChangeDimensionEventJS of(ServerPlayer player, ResourceKey<Level> oldLevel, ResourceKey<Level> newLevel) {
-		return new PlayerChangeDimensionEventJS(player, oldLevel, newLevel);
-	}
+    public ResourceKey<Level> getNewWorldKey() {
+        return newWorld;
+    }
 }

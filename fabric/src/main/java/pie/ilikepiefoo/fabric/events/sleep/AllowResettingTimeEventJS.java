@@ -14,34 +14,35 @@ import pie.ilikepiefoo.fabric.FabricEventsJS;
  * is used in addition to vanilla checks.
  */
 public class AllowResettingTimeEventJS extends PlayerEventJS {
-	private final Player player;
+    private final Player player;
 
-	public AllowResettingTimeEventJS(Player player) {
-		this.player = player;
-	}
+    public AllowResettingTimeEventJS(Player player) {
+        this.player = player;
+    }
 
-	@Override
-	public boolean canCancel() {
-		return true;
-	}
+    /**
+     * Checks whether a sleeping player counts into skipping the current day and resetting the time to 0.
+     *
+     * @param player the sleeping player
+     * @return {@code true} if allowed, {@code false} otherwise
+     */
+    public static boolean handler(Player player) {
+        if (ServerScriptManager.instance == null) {
+            return true;
+        }
+        AllowResettingTimeEventJS event = new AllowResettingTimeEventJS(player);
+        event.post(ScriptType.SERVER, FabricEventsJS.ALLOW_RESETTING_TIME);
+        return !event.isCancelled();
+    }
 
-	@Override
-	public EntityJS getEntity() {
-		return entityOf(player);
-	}
+    @Override
+    public boolean canCancel() {
+        return true;
+    }
 
-	/**
-	 * Checks whether a sleeping player counts into skipping the current day and resetting the time to 0.
-	 *
-	 * @param player        the sleeping player
-	 * @return {@code true} if allowed, {@code false} otherwise
-	 */
-	public static boolean handler(Player player) {
-		if(ServerScriptManager.instance == null)
-			return true;
-		AllowResettingTimeEventJS event = new AllowResettingTimeEventJS(player);
-		event.post(ScriptType.SERVER, FabricEventsJS.ALLOW_RESETTING_TIME);
-		return !event.isCancelled();
-	}
+    @Override
+    public EntityJS getEntity() {
+        return entityOf(player);
+    }
 }
 

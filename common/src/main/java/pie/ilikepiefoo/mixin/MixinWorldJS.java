@@ -26,101 +26,101 @@ import java.util.List;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
-@Mixin (value = LevelJS.class, remap = false)
+@Mixin(value = LevelJS.class, remap = false)
 public abstract class MixinWorldJS {
 
-	@Shadow
-	@Final
-	public Level minecraftLevel;
+    @Shadow
+    @Final
+    public Level minecraftLevel;
 
-	@Shadow
-	public abstract BlockContainerJS getBlock(BlockPos pos);
+    public void tickChunk(ChunkPos pos) {
+        tickChunk(pos.x, pos.z);
+    }
 
-	@Shadow
-	public abstract @org.jetbrains.annotations.Nullable ServerJS getServer();
+    public void tickChunk(int x, int z) {
+        if (getServerLevel() != null) {
+            getServerLevel().tickChunk(getServerLevel().getChunk(x, z), 1);
+        }
+    }
 
-	@Nullable
-	public ServerLevel getServerLevel() {
-		if(minecraftLevel instanceof ServerLevel) {
-			return ((ServerLevel) minecraftLevel);
-		}
-		return null;
-	}
+    @Nullable
+    public ServerLevel getServerLevel() {
+        if (minecraftLevel instanceof ServerLevel) {
+            return ((ServerLevel) minecraftLevel);
+        }
+        return null;
+    }
 
-	public void tickChunk(int x, int z) {
-		if(getServerLevel() != null) {
-			getServerLevel().tickChunk(getServerLevel().getChunk(x,z),1);
-		}
-	}
+    public void tickChunk(int x, int z, int tickCount) {
+        if (getServerLevel() != null) {
+            getServerLevel().tickChunk(getServerLevel().getChunk(x, z), tickCount);
+        }
+    }
 
-	public void tickChunk(ChunkPos pos) {
-		tickChunk(pos.x, pos.z);
-	}
+    public void forceLoadChunk(ChunkPos pos, boolean forceLoad) {
+        forceLoadChunk(pos.x, pos.z, forceLoad);
+    }
 
-	public void tickChunk(int x, int z, int tickCount) {
-		if(getServerLevel() != null) {
-			getServerLevel().tickChunk(getServerLevel().getChunk(x,z),tickCount);
-		}
-	}
+    public void forceLoadChunk(int x, int z, boolean forceLoad) {
+        if (getServerLevel() != null) {
+            getServerLevel().setChunkForced(x, z, true);
+        }
+    }
 
-	public void forceLoadChunk(ChunkPos pos, boolean forceLoad) {
-		forceLoadChunk(pos.x, pos.z, forceLoad);
-	}
+    public List<ChunkPos> getForceLoadedChunks() {
+        if (getServerLevel() != null) {
+            return getServerLevel().getForcedChunks()
+                    .stream()
+                    .map(ChunkPos::new)
+                    .collect(Collectors.toList());
+        }
+        return Collections.emptyList();
+    }
 
-	public void forceLoadChunk(int x, int z, boolean forceLoad) {
-		if(getServerLevel() != null) {
-			getServerLevel().setChunkForced(x,z,true);
-		}
-	}
+    @Nullable
+    public Pair<BlockPos, Holder<Biome>> findNearestBiome(Predicate<Holder<Biome>> biomePredicate, BlockPos pos, int i, int j) {
+        Pair<BlockPos, Holder<Biome>> biome = null;
+        if (getServerLevel() != null) {
+            biome = getServerLevel().findNearestBiome(biomePredicate, pos, i, j);
+        }
+        return biome;
+    }
 
-	public List<ChunkPos> getForceLoadedChunks() {
-		if(getServerLevel() != null) {
-			return getServerLevel().getForcedChunks()
-					.stream()
-					.map(ChunkPos::new)
-					.collect(Collectors.toList());
-		}
-		return Collections.emptyList();
-	}
+    @Nullable
+    public BlockContainerJS findNearestMapFeature(TagKey<ConfiguredStructureFeature<?, ?>> structureFeature, BlockPos pos, int i, boolean bl) {
+        BlockPos featurePos = null;
+        if (getServerLevel() != null) {
+            featurePos = getServerLevel().findNearestMapFeature(structureFeature, pos, i, bl);
+        }
+        return featurePos == null ? null : getBlock(featurePos);
+    }
 
-	@Nullable
-	public Pair<BlockPos, Holder<Biome>> findNearestBiome(Predicate<Holder<Biome>> biomePredicate, BlockPos pos, int i, int j) {
-		Pair<BlockPos, Holder<Biome>> biome = null;
-		if(getServerLevel() != null) {
-			biome = getServerLevel().findNearestBiome(biomePredicate, pos, i, j);
-		}
-		return biome;
-	}
+    @Shadow
+    public abstract BlockContainerJS getBlock(BlockPos pos);
 
-	@Nullable
-	public BlockContainerJS findNearestMapFeature(TagKey<ConfiguredStructureFeature<?, ?>> structureFeature, BlockPos pos, int i, boolean bl) {
-		BlockPos featurePos = null;
-		if(getServerLevel() != null) {
-			featurePos = getServerLevel().findNearestMapFeature(structureFeature, pos, i, bl);
-		}
-		return featurePos == null ? null : getBlock(featurePos);
-	}
+    public int countTickableBlocks() {
+        if (getServerLevel() != null) {
+            return getServerLevel().getBlockTicks().count();
+        }
+        return -1;
+    }
 
-	public int countTickableBlocks() {
-		if(getServerLevel() != null) {
-			return getServerLevel().getBlockTicks().count();
-		}
-		return -1;
-	}
+    public void spawnNetherPortal(BlockPos pos, Direction.Axis axis) {
+        if (getServerLevel() != null) {
+            getServerLevel().getPortalForcer().createPortal(pos, axis);
+        }
+    }
 
-	public void spawnNetherPortal(BlockPos pos, Direction.Axis axis) {
-		if(getServerLevel() != null) {
-			getServerLevel().getPortalForcer().createPortal(pos, axis);
-		}
-	}
+    @Nullable
+    public PlayerJS getRandomPlayer() {
+        if (getServerLevel() != null && getServer() != null) {
+            return getServer().getPlayer(PlayerSelector.mc(getServerLevel().getRandomPlayer()));
+        }
+        return null;
+    }
 
-	@Nullable
-	public PlayerJS getRandomPlayer() {
-		if(getServerLevel() != null && getServer() != null) {
-			return getServer().getPlayer(PlayerSelector.mc(getServerLevel().getRandomPlayer()));
-		}
-		return null;
-	}
+    @Shadow
+    public abstract @org.jetbrains.annotations.Nullable ServerJS getServer();
 
 
 }

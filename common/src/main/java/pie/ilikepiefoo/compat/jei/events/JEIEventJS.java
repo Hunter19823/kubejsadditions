@@ -4,8 +4,8 @@ import dev.latvian.mods.kubejs.event.EventJS;
 
 public class JEIEventJS extends EventJS {
 
-	@Override
-	public boolean canCancel() {
-		return false;
-	}
+    @Override
+    public boolean canCancel() {
+        return false;
+    }
 }

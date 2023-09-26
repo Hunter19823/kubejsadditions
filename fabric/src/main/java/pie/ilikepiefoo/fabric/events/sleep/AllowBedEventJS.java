@@ -28,75 +28,76 @@ import javax.annotation.Nonnull;
  */
 public class AllowBedEventJS extends LivingEntityEventJS {
 
-	private final LivingEntity entity;
-	private final BlockPos sleepingPos;
-	private final BlockState state;
-	private final boolean vanillaResult;
-	@Nonnull
-	private InteractionResult result;
+    private final LivingEntity entity;
+    private final BlockPos sleepingPos;
+    private final BlockState state;
+    private final boolean vanillaResult;
+    @Nonnull
+    private InteractionResult result;
 
-	public AllowBedEventJS(LivingEntity entity, BlockPos sleepingPos, BlockState state, boolean vanillaResult) {
-		this.entity = entity;
-		this.sleepingPos = sleepingPos;
-		this.state = state;
-		this.vanillaResult = vanillaResult;
-		this.result = InteractionResult.PASS;
-	}
+    public AllowBedEventJS(LivingEntity entity, BlockPos sleepingPos, BlockState state, boolean vanillaResult) {
+        this.entity = entity;
+        this.sleepingPos = sleepingPos;
+        this.state = state;
+        this.vanillaResult = vanillaResult;
+        this.result = InteractionResult.PASS;
+    }
 
-	@Override
-	public boolean canCancel() {
-		return true;
-	}
+    /**
+     * Checks whether a block is a valid bed for the entity.
+     *
+     * <p>Non-{@linkplain InteractionResult#PASS passing} return values cancel further callbacks.
+     *
+     * @param entity        the sleeping entity
+     * @param sleepingPos   the position of the block
+     * @param state         the block state to check
+     * @param vanillaResult {@code true} if vanilla allows the block, {@code false} otherwise
+     * @return {@link InteractionResult#SUCCESS} if the bed is valid, {@link InteractionResult#FAIL} if it's not,
+     * {@link InteractionResult#PASS} to fall back to other callbacks
+     */
+    public static InteractionResult handler(LivingEntity entity, BlockPos sleepingPos, BlockState state, boolean vanillaResult) {
+        if (ServerScriptManager.instance == null) {
+            return InteractionResult.PASS;
+        }
+        AllowBedEventJS event = new AllowBedEventJS(entity, sleepingPos, state, vanillaResult);
+        event.post(ScriptType.SERVER, FabricEventsJS.ALLOW_BED);
+        if (event.isCancelled() && event.getResult() == InteractionResult.PASS) {
+            return InteractionResult.FAIL;
+        }
+        return event.result;
+    }
 
-	public LivingEntityJS getEntity() {
-		return (LivingEntityJS) entityOf(entity);
-	}
+    public @NotNull InteractionResult getResult() {
+        return result;
+    }
 
-	public BlockContainerJS getPos() {
-		return getLevel().getBlock(sleepingPos);
-	}
+    public void setResult(@Nonnull InteractionResult result) {
+        this.result = result;
+    }
 
-	public BlockPos getSleepingPos() {
-		return sleepingPos;
-	}
+    @Override
+    public boolean canCancel() {
+        return true;
+    }
 
-	public BlockState getState() {
-		return state;
-	}
+    public LivingEntityJS getEntity() {
+        return (LivingEntityJS) entityOf(entity);
+    }
 
-	public boolean isVanillaResult() {
-		return vanillaResult;
-	}
+    public BlockContainerJS getPos() {
+        return getLevel().getBlock(sleepingPos);
+    }
 
-	public @NotNull InteractionResult getResult() {
-		return result;
-	}
+    public BlockPos getSleepingPos() {
+        return sleepingPos;
+    }
 
-	public void setResult(@Nonnull InteractionResult result) {
-		this.result = result;
-	}
+    public BlockState getState() {
+        return state;
+    }
 
-	/**
-	 * Checks whether a block is a valid bed for the entity.
-	 *
-	 * <p>Non-{@linkplain InteractionResult#PASS passing} return values cancel further callbacks.
-	 *
-	 * @param entity        the sleeping entity
-	 * @param sleepingPos   the position of the block
-	 * @param state         the block state to check
-	 * @param vanillaResult {@code true} if vanilla allows the block, {@code false} otherwise
-	 * @return {@link InteractionResult#SUCCESS} if the bed is valid, {@link InteractionResult#FAIL} if it's not,
-	 *         {@link InteractionResult#PASS} to fall back to other callbacks
-	 */
-	public static InteractionResult handler(LivingEntity entity, BlockPos sleepingPos, BlockState state, boolean vanillaResult) {
-		if(ServerScriptManager.instance == null)
-			return InteractionResult.PASS;
-		AllowBedEventJS event = new AllowBedEventJS(entity, sleepingPos, state, vanillaResult);
-		event.post(ScriptType.SERVER, FabricEventsJS.ALLOW_BED);
-		if(event.isCancelled() && event.getResult() == InteractionResult.PASS) {
-			return InteractionResult.FAIL;
-		}
-		return event.result;
-	}
+    public boolean isVanillaResult() {
+        return vanillaResult;
+    }
 }
 

@@ -1,13 +1,11 @@
 package pie.ilikepiefoo.mixin;
 
-import dev.architectury.registry.registries.Registries;
 import dev.latvian.mods.kubejs.level.ServerLevelJS;
 import it.unimi.dsi.fastutil.longs.LongSet;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.Registry;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.core.SectionPos;
 import net.minecraft.nbt.CompoundTag;
@@ -31,7 +29,6 @@ import net.minecraft.world.level.chunk.FeatureAccess;
 import net.minecraft.world.level.chunk.LevelChunkSection;
 import net.minecraft.world.level.dimension.end.EndDragonFight;
 import net.minecraft.world.level.levelgen.feature.ConfiguredStructureFeature;
-import net.minecraft.world.level.levelgen.feature.StructureFeature;
 import net.minecraft.world.level.levelgen.structure.StructureCheckResult;
 import net.minecraft.world.level.levelgen.structure.StructureStart;
 import net.minecraft.world.level.levelgen.structure.templatesystem.StructureManager;
@@ -52,249 +49,249 @@ import java.util.stream.Stream;
 
 @Mixin(ServerLevelJS.class)
 public class MixinServerLevelJS {
-	public ServerLevelJS getInstance() {
-		return ((ServerLevelJS) (Object) this);
-	}
+    public ServerLevelJS getInstance() {
+        return ((ServerLevelJS) (Object) this);
+    }
 
-	private ServerLevel getMinecraftLeveInstance() {
-		return (ServerLevel) ((ServerLevelJS) (Object) this).minecraftLevel;
-	}
+    public ServerScoreboard getScoreboard() {
+        return getMinecraftLeveInstance().getScoreboard();
+    }
 
-	public StructureFeatureManager getStructureFeatureManager() {
-		return getMinecraftLeveInstance().structureFeatureManager();
-	}
+    private ServerLevel getMinecraftLeveInstance() {
+        return (ServerLevel) ((ServerLevelJS) (Object) this).minecraftLevel;
+    }
 
-	public ServerScoreboard getScoreboard() {
-		return getMinecraftLeveInstance().getScoreboard();
-	}
+    public List<? extends EnderDragon> getDragons() {
+        return getMinecraftLeveInstance().getDragons();
+    }
 
-	public List<? extends EnderDragon> getDragons() {
-		return getMinecraftLeveInstance().getDragons();
-	}
+    public ServerChunkCache getChunkSource() {
+        return getMinecraftLeveInstance().getChunkSource();
+    }
 
-	public ServerChunkCache getChunkSource() {
-		return getMinecraftLeveInstance().getChunkSource();
-	}
+    public PortalForcer getPortalForcer() {
+        return getMinecraftLeveInstance().getPortalForcer();
+    }
 
-	public PortalForcer getPortalForcer() {
-		return getMinecraftLeveInstance().getPortalForcer();
-	}
+    public DimensionDataStorage getDataStorage() {
+        return getMinecraftLeveInstance().getDataStorage();
+    }
 
-	public StructureManager getStructureManager() {
-		return getMinecraftLeveInstance().getStructureManager();
-	}
+    public void setDefaultSpawnPos(BlockPos blockPos, float f) {
+        getMinecraftLeveInstance().setDefaultSpawnPos(blockPos, f);
+    }
 
-	public DimensionDataStorage getDataStorage() {
-		return getMinecraftLeveInstance().getDataStorage();
-	}
+    public BlockPos getSharedSpawnPos() {
+        return getMinecraftLeveInstance().getSharedSpawnPos();
+    }
 
-	public void setDefaultSpawnPos(BlockPos blockPos, float f) {
-		getMinecraftLeveInstance().setDefaultSpawnPos(blockPos, f);
-	}
+    public float getSharedSpawnAngle() {
+        return getMinecraftLeveInstance().getSharedSpawnAngle();
+    }
 
-	public BlockPos getSharedSpawnPos() {
-		return getMinecraftLeveInstance().getSharedSpawnPos();
-	}
+    public boolean setChunkForced(int i, int j, boolean bl) {
+        return getMinecraftLeveInstance().setChunkForced(i, j, bl);
+    }
 
-	public float getSharedSpawnAngle() {
-		return getMinecraftLeveInstance().getSharedSpawnAngle();
-	}
+    public boolean isVillage(BlockPos blockPos) {
+        return getMinecraftLeveInstance().isVillage(blockPos);
+    }
 
-	public boolean setChunkForced(int i, int j, boolean bl) {
-		return getMinecraftLeveInstance().setChunkForced(i, j, bl);
-	}
+    public boolean isVillage(SectionPos sectionPos) {
+        return getMinecraftLeveInstance().isVillage(sectionPos);
+    }
 
-	public PoiManager getPoiManager() {
-		return getMinecraftLeveInstance().getPoiManager();
-	}
+    public boolean isCloseToVillage(BlockPos blockPos, int i) {
+        return getMinecraftLeveInstance().isCloseToVillage(blockPos, i);
+    }
 
-	public boolean isVillage(BlockPos blockPos) {
-		return getMinecraftLeveInstance().isVillage(blockPos);
-	}
+    public boolean isRaided(BlockPos blockPos) {
+        return getMinecraftLeveInstance().isRaided(blockPos);
+    }
 
-	public boolean isVillage(SectionPos sectionPos) {
-		return getMinecraftLeveInstance().isVillage(sectionPos);
-	}
+    @Environment(EnvType.CLIENT)
+    public float getShade(Direction direction, boolean bl) {
+        return getMinecraftLeveInstance().getShade(direction, bl);
+    }
 
-	public boolean isCloseToVillage(BlockPos blockPos, int i) {
-		return getMinecraftLeveInstance().isCloseToVillage(blockPos, i);
-	}
+    public boolean isFlat() {
+        return getMinecraftLeveInstance().isFlat();
+    }
 
-	public Raids getRaids() {
-		return getMinecraftLeveInstance().getRaids();
-	}
+    @Nullable
+    public EndDragonFight dragonFight() {
+        return getMinecraftLeveInstance().dragonFight();
+    }
 
-	public boolean isRaided(BlockPos blockPos) {
-		return getMinecraftLeveInstance().isRaided(blockPos);
-	}
+    public Raid getRaid(int i) {
+        return getRaids().get(i);
+    }
 
-	@Environment(EnvType.CLIENT)
-	public float getShade(Direction direction, boolean bl) {
-		return getMinecraftLeveInstance().getShade(direction, bl);
-	}
+    public Raids getRaids() {
+        return getMinecraftLeveInstance().getRaids();
+    }
 
-	public boolean isFlat() {
-		return getMinecraftLeveInstance().isFlat();
-	}
+    @Nullable
+    public Raid createOrExtendRaid(ServerPlayer serverPlayer) {
+        return getRaids().createOrExtendRaid(serverPlayer);
+    }
 
-	@Nullable
-	public EndDragonFight dragonFight() {
-		return getMinecraftLeveInstance().dragonFight();
-	}
+    @Nullable
+    public Raid getNearbyRaid(BlockPos blockPos, int i) {
+        return getRaids().getNearbyRaid(blockPos, i);
+    }
 
-	public Raid getRaid(int i) {
-		return getRaids().get(i);
-	}
+    public long getPoiCountInRange(Predicate<PoiType> predicate, BlockPos blockPos, int i, PoiManager.Occupancy occupancy) {
+        return getPoiManager().getCountInRange(predicate, blockPos, i, occupancy);
+    }
 
-	@Nullable
-	public Raid createOrExtendRaid(ServerPlayer serverPlayer) {
-		return getRaids().createOrExtendRaid(serverPlayer);
-	}
+    public PoiManager getPoiManager() {
+        return getMinecraftLeveInstance().getPoiManager();
+    }
 
-	@Nullable
-	public Raid getNearbyRaid(BlockPos blockPos, int i) {
-		return getRaids().getNearbyRaid(blockPos, i);
-	}
+    public boolean poiExistsAtPosition(PoiType poiType, BlockPos blockPos) {
+        return getPoiManager().existsAtPosition(poiType, blockPos);
+    }
 
-	public long getPoiCountInRange(Predicate<PoiType> predicate, BlockPos blockPos, int i, PoiManager.Occupancy occupancy) {
-		return getPoiManager().getCountInRange(predicate, blockPos, i, occupancy);
-	}
+    public Stream<PoiRecord> getPoiInSquare(Predicate<PoiType> predicate, BlockPos blockPos, int i, PoiManager.Occupancy occupancy) {
+        return getPoiManager().getInSquare(predicate, blockPos, i, occupancy);
+    }
 
-	public boolean poiExistsAtPosition(PoiType poiType, BlockPos blockPos) {
-		return getPoiManager().existsAtPosition(poiType, blockPos);
-	}
+    public Stream<PoiRecord> getPoiInRange(Predicate<PoiType> predicate, BlockPos blockPos, int i, PoiManager.Occupancy occupancy) {
+        return getPoiManager().getInRange(predicate, blockPos, i, occupancy);
+    }
 
-	public Stream<PoiRecord> getPoiInSquare(Predicate<PoiType> predicate, BlockPos blockPos, int i, PoiManager.Occupancy occupancy) {
-		return getPoiManager().getInSquare(predicate, blockPos, i, occupancy);
-	}
+    public Stream<PoiRecord> getPoiInChunk(Predicate<PoiType> predicate, ChunkPos chunkPos, PoiManager.Occupancy occupancy) {
+        return getPoiManager().getInChunk(predicate, chunkPos, occupancy);
+    }
 
-	public Stream<PoiRecord> getPoiInRange(Predicate<PoiType> predicate, BlockPos blockPos, int i, PoiManager.Occupancy occupancy) {
-		return getPoiManager().getInRange(predicate, blockPos, i, occupancy);
-	}
+    public Stream<BlockPos> findAllPoi(Predicate<PoiType> predicate, Predicate<BlockPos> predicate2, BlockPos blockPos, int i, PoiManager.Occupancy occupancy) {
+        return getPoiManager().findAll(predicate, predicate2, blockPos, i, occupancy);
+    }
 
-	public Stream<PoiRecord> getPoiInChunk(Predicate<PoiType> predicate, ChunkPos chunkPos, PoiManager.Occupancy occupancy) {
-		return getPoiManager().getInChunk(predicate, chunkPos, occupancy);
-	}
+    public Stream<BlockPos> findAllClosestFirstPoi(Predicate<PoiType> predicate, Predicate<BlockPos> predicate2, BlockPos blockPos, int i, PoiManager.Occupancy occupancy) {
+        return getPoiManager().findAllClosestFirst(predicate, predicate2, blockPos, i, occupancy);
+    }
 
-	public Stream<BlockPos> findAllPoi(Predicate<PoiType> predicate, Predicate<BlockPos> predicate2, BlockPos blockPos, int i, PoiManager.Occupancy occupancy) {
-		return getPoiManager().findAll(predicate, predicate2, blockPos, i, occupancy);
-	}
+    public Optional<BlockPos> findPoi(Predicate<PoiType> predicate, Predicate<BlockPos> predicate2, BlockPos blockPos, int i, PoiManager.Occupancy occupancy) {
+        return getPoiManager().find(predicate, predicate2, blockPos, i, occupancy);
+    }
 
-	public Stream<BlockPos> findAllClosestFirstPoi(Predicate<PoiType> predicate, Predicate<BlockPos> predicate2, BlockPos blockPos, int i, PoiManager.Occupancy occupancy) {
-		return getPoiManager().findAllClosestFirst(predicate, predicate2, blockPos, i, occupancy);
-	}
+    public Optional<BlockPos> findClosestPoi(Predicate<PoiType> predicate, BlockPos blockPos, int i, PoiManager.Occupancy occupancy) {
+        return getPoiManager().findClosest(predicate, blockPos, i, occupancy);
+    }
 
-	public Optional<BlockPos> findPoi(Predicate<PoiType> predicate, Predicate<BlockPos> predicate2, BlockPos blockPos, int i, PoiManager.Occupancy occupancy) {
-		return getPoiManager().find(predicate, predicate2, blockPos, i, occupancy);
-	}
+    public Optional<BlockPos> getRandomPoi(Predicate<PoiType> predicate, Predicate<BlockPos> predicate2, PoiManager.Occupancy occupancy, BlockPos blockPos, int i, Random random) {
+        return getPoiManager().getRandom(predicate, predicate2, occupancy, blockPos, i, random);
+    }
 
-	public Optional<BlockPos> findClosestPoi(Predicate<PoiType> predicate, BlockPos blockPos, int i, PoiManager.Occupancy occupancy) {
-		return getPoiManager().findClosest(predicate, blockPos, i, occupancy);
-	}
+    public boolean poiExists(BlockPos blockPos, Predicate<PoiType> predicate) {
+        return getPoiManager().exists(blockPos, predicate);
+    }
 
-	public Optional<BlockPos> getRandomPoi(Predicate<PoiType> predicate, Predicate<BlockPos> predicate2, PoiManager.Occupancy occupancy, BlockPos blockPos, int i, Random random) {
-		return getPoiManager().getRandom(predicate, predicate2, occupancy, blockPos, i, random);
-	}
+    public Optional<PoiType> getType(BlockPos blockPos) {
+        return getPoiManager().getType(blockPos);
+    }
 
-	public boolean poiExists(BlockPos blockPos, Predicate<PoiType> predicate) {
-		return getPoiManager().exists(blockPos, predicate);
-	}
+    public int sectionsToVillage(SectionPos sectionPos) {
+        return getPoiManager().sectionsToVillage(sectionPos);
+    }
 
-	public Optional<PoiType> getType(BlockPos blockPos) {
-		return getPoiManager().getType(blockPos);
-	}
+    public void checkConsistencyWithBlocks(ChunkPos chunkPos, LevelChunkSection levelChunkSection) {
+        getPoiManager().checkConsistencyWithBlocks(chunkPos, levelChunkSection);
+    }
 
-	public int sectionsToVillage(SectionPos sectionPos) {
-		return getPoiManager().sectionsToVillage(sectionPos);
-	}
+    public void ensureLoadedAndValid(LevelReader levelReader, BlockPos blockPos, int i) {
+        getPoiManager().ensureLoadedAndValid(levelReader, blockPos, i);
+    }
 
-	public void checkConsistencyWithBlocks(ChunkPos chunkPos, LevelChunkSection levelChunkSection) {
-		getPoiManager().checkConsistencyWithBlocks(chunkPos, levelChunkSection);
-	}
+    public StructureTemplateWrapper getOrCreateStructureTemplate(ResourceLocation resourceLocation) {
+        return StructureTemplateWrapper.of(getStructureManager().getOrCreate(resourceLocation));
+    }
 
-	public void ensureLoadedAndValid(LevelReader levelReader, BlockPos blockPos, int i) {
-		getPoiManager().ensureLoadedAndValid(levelReader, blockPos, i);
-	}
+    public StructureManager getStructureManager() {
+        return getMinecraftLeveInstance().getStructureManager();
+    }
 
-	public StructureTemplateWrapper getOrCreateStructureTemplate(ResourceLocation resourceLocation) {
-		return StructureTemplateWrapper.of(getStructureManager().getOrCreate(resourceLocation));
-	}
+    @Nullable
+    public Optional<StructureTemplateWrapper> getStructureTemplate(ResourceLocation resourceLocation) {
+        return StructureTemplateWrapper.of(getStructureManager().get(resourceLocation));
+    }
 
-	@Nullable
-	public Optional<StructureTemplateWrapper> getStructureTemplate(ResourceLocation resourceLocation) {
-		return StructureTemplateWrapper.of(getStructureManager().get(resourceLocation));
-	}
+    public StructureTemplateWrapper readStructure(CompoundTag compoundTag) {
+        return StructureTemplateWrapper.of(getStructureManager().readStructure(compoundTag));
+    }
 
-	public StructureTemplateWrapper readStructure(CompoundTag compoundTag) {
-		return StructureTemplateWrapper.of(getStructureManager().readStructure(compoundTag));
-	}
+    public StructureFeatureManager forWorldGenRegion(WorldGenRegion worldGenRegion) {
+        return getStructureFeatureManager().forWorldGenRegion(worldGenRegion);
+    }
 
-	public StructureFeatureManager forWorldGenRegion(WorldGenRegion worldGenRegion) {
-		return getStructureFeatureManager().forWorldGenRegion(worldGenRegion);
-	}
+    public StructureFeatureManager getStructureFeatureManager() {
+        return getMinecraftLeveInstance().structureFeatureManager();
+    }
 
-	public List<StructureStartWrapper> startsForFeature(SectionPos sectionPos, ConfiguredStructureFeature<?, ?> structureFeature) {
-		return getStructureFeatureManager().startsForFeature(sectionPos, structureFeature).stream().map(StructureStartWrapper::of).toList();
-	}
+    public List<StructureStartWrapper> startsForFeature(SectionPos sectionPos, ConfiguredStructureFeature<?, ?> structureFeature) {
+        return getStructureFeatureManager().startsForFeature(sectionPos, structureFeature).stream().map(StructureStartWrapper::of).toList();
+    }
 
-	@Nullable
-	public StructureStartWrapper getStartForFeature(SectionPos sectionPos, ConfiguredStructureFeature<?, ?> structureFeature, FeatureAccess featureAccess) {
-		return StructureStartWrapper.of(getStructureFeatureManager().getStartForFeature(sectionPos, structureFeature, featureAccess));
-	}
+    @Nullable
+    public StructureStartWrapper getStartForFeature(SectionPos sectionPos, ConfiguredStructureFeature<?, ?> structureFeature, FeatureAccess featureAccess) {
+        return StructureStartWrapper.of(getStructureFeatureManager().getStartForFeature(sectionPos, structureFeature, featureAccess));
+    }
 
-	public List<StructureStartWrapper> startsForFeature(SectionPos sectionPos, Predicate<ConfiguredStructureFeature<?, ?>> predicate) {
-		return getStructureFeatureManager().startsForFeature(sectionPos, predicate).stream().map(StructureStartWrapper::of).toList();
-	}
+    public List<StructureStartWrapper> startsForFeature(SectionPos sectionPos, Predicate<ConfiguredStructureFeature<?, ?>> predicate) {
+        return getStructureFeatureManager().startsForFeature(sectionPos, predicate).stream().map(StructureStartWrapper::of).toList();
+    }
 
-	public void fillStartsForFeature(ConfiguredStructureFeature<?, ?> configuredStructureFeature, LongSet longSet, Consumer<StructureStart> consumer) {
-		getStructureFeatureManager().fillStartsForFeature(configuredStructureFeature, longSet, consumer);
-	}
+    public void fillStartsForFeature(ConfiguredStructureFeature<?, ?> configuredStructureFeature, LongSet longSet, Consumer<StructureStart> consumer) {
+        getStructureFeatureManager().fillStartsForFeature(configuredStructureFeature, longSet, consumer);
+    }
 
-	public void setStartForFeature(SectionPos sectionPos, ConfiguredStructureFeature<?, ?> configuredStructureFeature, StructureStart structureStart, FeatureAccess featureAccess) {
-		getStructureFeatureManager().setStartForFeature(sectionPos, configuredStructureFeature, structureStart, featureAccess);
-	}
+    public void setStartForFeature(SectionPos sectionPos, ConfiguredStructureFeature<?, ?> configuredStructureFeature, StructureStart structureStart, FeatureAccess featureAccess) {
+        getStructureFeatureManager().setStartForFeature(sectionPos, configuredStructureFeature, structureStart, featureAccess);
+    }
 
-	public void addReferenceForFeature(SectionPos sectionPos, ConfiguredStructureFeature<?, ?> configuredStructureFeature, long l, FeatureAccess featureAccess) {
-		getStructureFeatureManager().addReferenceForFeature(sectionPos, configuredStructureFeature, l, featureAccess);
-	}
+    public void addReferenceForFeature(SectionPos sectionPos, ConfiguredStructureFeature<?, ?> configuredStructureFeature, long l, FeatureAccess featureAccess) {
+        getStructureFeatureManager().addReferenceForFeature(sectionPos, configuredStructureFeature, l, featureAccess);
+    }
 
-	public boolean shouldGenerateFeatures() {
-		return getStructureFeatureManager().shouldGenerateFeatures();
-	}
+    public boolean shouldGenerateFeatures() {
+        return getStructureFeatureManager().shouldGenerateFeatures();
+    }
 
-	public StructureStartWrapper getStructureAt(BlockPos blockPos, ConfiguredStructureFeature<?, ?> configuredStructureFeature) {
-		return StructureStartWrapper.of(getStructureFeatureManager().getStructureAt(blockPos, configuredStructureFeature));
-	}
+    public StructureStartWrapper getStructureAt(BlockPos blockPos, ConfiguredStructureFeature<?, ?> configuredStructureFeature) {
+        return StructureStartWrapper.of(getStructureFeatureManager().getStructureAt(blockPos, configuredStructureFeature));
+    }
 
-	public StructureStartWrapper getStructureWithPieceAt(BlockPos blockPos, ResourceKey<ConfiguredStructureFeature<?, ?>> resourceKey) {
-		return StructureStartWrapper.of(getStructureFeatureManager().getStructureWithPieceAt(blockPos, resourceKey));
-	}
+    public StructureStartWrapper getStructureWithPieceAt(BlockPos blockPos, ResourceKey<ConfiguredStructureFeature<?, ?>> resourceKey) {
+        return StructureStartWrapper.of(getStructureFeatureManager().getStructureWithPieceAt(blockPos, resourceKey));
+    }
 
-	public StructureStartWrapper getStructureWithPieceAt(BlockPos blockPos, ConfiguredStructureFeature<?, ?> configuredStructureFeature) {
-		return StructureStartWrapper.of(getStructureFeatureManager().getStructureWithPieceAt(blockPos, configuredStructureFeature));
-	}
+    public StructureStartWrapper getStructureWithPieceAt(BlockPos blockPos, ConfiguredStructureFeature<?, ?> configuredStructureFeature) {
+        return StructureStartWrapper.of(getStructureFeatureManager().getStructureWithPieceAt(blockPos, configuredStructureFeature));
+    }
 
-	public boolean structureHasPieceAt(BlockPos blockPos, StructureStart structureStart) {
-		return getStructureFeatureManager().structureHasPieceAt(blockPos, structureStart);
-	}
+    public boolean structureHasPieceAt(BlockPos blockPos, StructureStart structureStart) {
+        return getStructureFeatureManager().structureHasPieceAt(blockPos, structureStart);
+    }
 
-	public boolean hasAnyStructureAt(BlockPos blockPos) {
-		return getStructureFeatureManager().hasAnyStructureAt(blockPos);
-	}
+    public boolean hasAnyStructureAt(BlockPos blockPos) {
+        return getStructureFeatureManager().hasAnyStructureAt(blockPos);
+    }
 
-	public Map<ConfiguredStructureFeature<?, ?>, LongSet> getAllStructuresAt(BlockPos blockPos) {
-		return getStructureFeatureManager().getAllStructuresAt(blockPos);
-	}
+    public Map<ConfiguredStructureFeature<?, ?>, LongSet> getAllStructuresAt(BlockPos blockPos) {
+        return getStructureFeatureManager().getAllStructuresAt(blockPos);
+    }
 
-	public StructureCheckResult checkStructurePresence(BlockPos blockPos, ConfiguredStructureFeature<?, ?> configuredStructureFeature, boolean bl) {
-		return getStructureFeatureManager().checkStructurePresence(new ChunkPos(blockPos), configuredStructureFeature, bl);
-	}
+    public StructureCheckResult checkStructurePresence(BlockPos blockPos, ConfiguredStructureFeature<?, ?> configuredStructureFeature, boolean bl) {
+        return getStructureFeatureManager().checkStructurePresence(new ChunkPos(blockPos), configuredStructureFeature, bl);
+    }
 
-	public void addReference(StructureStart structureStart) {
-		getStructureFeatureManager().addReference(structureStart);
-	}
+    public void addReference(StructureStart structureStart) {
+        getStructureFeatureManager().addReference(structureStart);
+    }
 
-	public RegistryAccess registryAccess() {
-		return getStructureFeatureManager().registryAccess();
-	}
+    public RegistryAccess registryAccess() {
+        return getStructureFeatureManager().registryAccess();
+    }
 }

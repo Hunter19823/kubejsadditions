@@ -1,6 +1,6 @@
 plugins {
     id "com.github.johnrengelman.shadow" version "7.1.2"
-	id 'me.shedaniel.unified-publishing'
+    id 'me.shedaniel.unified-publishing'
 }
 
 architectury {
@@ -14,8 +14,8 @@ loom {
     forge {
         convertAccessWideners = true
         extraAccessWideners.add loom.accessWidenerPath.get().asFile.name
-		mixinConfig "kubejsadditions.mixins.json"
-		mixinConfig "kubejsadditions-common.mixins.json"
+        mixinConfig "kubejsadditions.mixins.json"
+        mixinConfig "kubejsadditions-common.mixins.json"
     }
 }
 
@@ -35,11 +35,11 @@ dependencies {
     common(project(path: ":common", configuration: "namedElements")) { transitive false }
     shadowCommon(project(path: ":common", configuration: "transformProductionForge")) { transitive = false }
 
-	modImplementation("dev.latvian.mods:kubejs-forge:${rootProject.kubejs_version}")
+    modImplementation("dev.latvian.mods:kubejs-forge:${rootProject.kubejs_version}")
 
 
-	modCompileOnly("mezz.jei:jei-${minecraft_version}:${rootProject.jei_version}:api")
-	modRuntimeOnly("mezz.jei:jei-${minecraft_version}:${rootProject.jei_version}")
+    modCompileOnly("mezz.jei:jei-${minecraft_version}:${rootProject.jei_version}:api")
+    modRuntimeOnly("mezz.jei:jei-${minecraft_version}:${rootProject.jei_version}")
 }
 
 processResources {
@@ -96,41 +96,41 @@ publishing {
 
 
 unifiedPublishing {
-	project {
-		releaseType = rootProject.artifact_type
-		gameVersions = [
-				rootProject.minecraft_version
-		]
-		gameLoaders = ["forge"]
-		displayName = "$project.mod_name Forge $project.version"
-		mainPublication remapJar
+    project {
+        releaseType = rootProject.artifact_type
+        gameVersions = [
+                rootProject.minecraft_version
+        ]
+        gameLoaders = ["forge"]
+        displayName = "$project.mod_name Forge $project.version"
+        mainPublication remapJar
 
-		relations {
-			depends {
-				curseforge = modrinth = "architectury-api"
-			}
-			depends {
-				curseforge = modrinth = "rhino"
-			}
-			depends {
-				curseforge = modrinth = "kubejs"
-			}
-		}
+        relations {
+            depends {
+                curseforge = modrinth = "architectury-api"
+            }
+            depends {
+                curseforge = modrinth = "rhino"
+            }
+            depends {
+                curseforge = modrinth = "kubejs"
+            }
+        }
 
-		var CF = System.getenv("CURSEFORGE_KEY")
-		if (CF != null) {
-			curseforge {
-				token = CF
-				id = project.curseforge_id
-			}
-		}
-		var MT = System.getenv("MODRINTH_TOKEN_BROKEN")
-		if (MT != null) {
-			modrinth {
-				token = mt
-				id = project.modrinth_id
-				version = "$project.version+$project.name"
-			}
-		}
-	}
+        var CF = System.getenv("CURSEFORGE_KEY")
+        if (CF != null) {
+            curseforge {
+                token = CF
+                id = project.curseforge_id
+            }
+        }
+        var MT = System.getenv("MODRINTH_TOKEN_BROKEN")
+        if (MT != null) {
+            modrinth {
+                token = mt
+                id = project.modrinth_id
+                version = "$project.version+$project.name"
+            }
+        }
+    }
 }
