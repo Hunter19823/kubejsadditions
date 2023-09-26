@@ -4,6 +4,9 @@ public class AdditionalEventsJS {
 	// Custom Arch Registry Events
 	public static final String ARCH_REGISTER = "arch.event.register";
 
+    // Advanced Event Registry
+    public static final String PROXY_EVENT_REGISTER = "proxy.event.register";
+
 	public static final String BLOCK_TRAMPLE = "block.trample";
 	public static final String PLAYER_CHANGE_DIMENSION = "player.change_dimension";
 	public static final String PLAYER_CLONE = "player.clone";
