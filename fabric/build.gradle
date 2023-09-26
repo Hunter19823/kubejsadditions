@@ -3,6 +3,9 @@ plugins {
     id 'me.shedaniel.unified-publishing'
 }
 
+def loader = "fabric"
+def Loader = "Fabric"
+
 architectury {
     platformSetupLoomIde()
     fabric()
@@ -94,8 +97,8 @@ unifiedPublishing {
         gameVersions = [
                 rootProject.minecraft_version
         ]
-        gameLoaders = ["fabric"]
-        displayName = "$mod_name Fabric $project.version"
+        gameLoaders = ["${loader}"]
+        displayName = "$mod_name ${Loader} $project.version"
         mainPublication remapJar
 
         relations {
@@ -103,23 +106,22 @@ unifiedPublishing {
                 curseforge = modrinth = "architectury-api"
             }
             depends {
-                curseforge = modrinth = "rhino"
+                curseforge = modrinth = "kubejs"
             }
         }
 
-        var CF = System.getenv("CURSEFORGE_KEY")
-        if (CF != null) {
+        if (ENV.CURSEFORGE_KEY) {
             curseforge {
-                token = CF
+                token = ENV.CURSEFORGE_KEY
                 id = project.curseforge_id
             }
         }
-        var MT = System.getenv("MODRINTH_TOKEN_BROKEN")
-        if (MT != null) {
+
+        if (ENV.MODRINTH_TOKEN) {
             modrinth {
-                token = mt
+                token = ENV.MODRINTH_TOKEN
                 id = project.modrinth_id
-                version = "$project.version+$project.name"
+                version = "${mod_id}-${loader}-${mod_version}"
             }
         }
     }

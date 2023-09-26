@@ -3,6 +3,9 @@ plugins {
     id 'me.shedaniel.unified-publishing'
 }
 
+def loader = "forge"
+def Loader = "Forge"
+
 architectury {
     platformSetupLoomIde()
     forge()
@@ -101,16 +104,13 @@ unifiedPublishing {
         gameVersions = [
                 rootProject.minecraft_version
         ]
-        gameLoaders = ["forge"]
-        displayName = "$project.mod_name Forge $project.version"
+        gameLoaders = ["${loader}"]
+        displayName = "$mod_name ${Loader} $project.version"
         mainPublication remapJar
 
         relations {
             depends {
                 curseforge = modrinth = "architectury-api"
-            }
-            depends {
-                curseforge = modrinth = "rhino"
             }
             depends {
                 curseforge = modrinth = "kubejs"
@@ -124,12 +124,12 @@ unifiedPublishing {
                 id = project.curseforge_id
             }
         }
-        var MT = System.getenv("MODRINTH_TOKEN_BROKEN")
+        var MT = System.getenv("MODRINTH_TOKEN")
         if (MT != null) {
             modrinth {
-                token = mt
+                token = MT
                 id = project.modrinth_id
-                version = "$project.version+$project.name"
+                version = "${mod_id}-${loader}-${mod_version}"
             }
         }
     }
