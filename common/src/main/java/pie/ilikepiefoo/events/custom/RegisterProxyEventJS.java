@@ -30,6 +30,22 @@ public class RegisterProxyEventJS extends EventJS {
      * })
      * }</pre>
      *
+     * Another Example: using an Architectury event.
+     * <pre>
+     * {@code
+     * const LIFE_CYCLE_EVENTS = java('dev.architectury.event.events.common.LifecycleEvent');
+     *
+     * onEvent('proxy.event.register', event => {
+     *     console.log("Registering proxy event...");
+     *     event.register('server_before_start', LIFE_CYCLE_EVENTS, 'SERVER_BEFORE_START', (event, handler) => event.register(handler));
+     *     console.log("Registered proxy event!");
+     * });
+     *
+     * onEvent('server_before_start', event => {
+     *     console.log('Custom Proxy Event handler has fired!');
+     * });
+     * }</pre>
+     *
      * @param name          The name of the event that will be registered and used to listen to the event.
      * @param eventProvider The class that contains the event field.
      *                      This class must be a public class and must be accessible from the class loader.
