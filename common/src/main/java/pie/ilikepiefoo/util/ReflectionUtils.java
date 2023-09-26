@@ -20,8 +20,10 @@ public class ReflectionUtils {
 		} catch (NoSuchFieldException e) {
 			throw new IllegalArgumentException("Field Name must be a valid field!");
 		}
-		if (!eventType.isAssignableFrom(field.getType())) {
-			throw new IllegalArgumentException("Field must be of type Event!");
+        if (eventType != null) {
+            if (!eventType.isAssignableFrom(field.getType())) {
+                throw new IllegalArgumentException("Field must be of type Event!");
+            }
 		}
 		if (!(Modifier.isPublic(field.getModifiers()) || Modifier.isStatic(field.getModifiers()))) {
 			throw new IllegalArgumentException("Event Field must be public static!");
