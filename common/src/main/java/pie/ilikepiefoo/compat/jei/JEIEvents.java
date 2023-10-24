@@ -1,5 +1,6 @@
 package pie.ilikepiefoo.compat.jei;
 
+import dev.architectury.platform.Platform;
 import dev.latvian.mods.kubejs.event.EventGroup;
 import dev.latvian.mods.kubejs.event.EventHandler;
 import pie.ilikepiefoo.compat.jei.events.OnRuntimeAvailableEventJS;
@@ -32,7 +33,9 @@ public interface JEIEvents {
                                                                      () -> RegisterVanillaCategoryExtensionsEventJS.class);
 
     static void register() {
-        GROUP.register();
+		if (Platform.isModLoaded("jei")) {
+			GROUP.register();
+		}
     }
 
 }
