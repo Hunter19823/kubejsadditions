@@ -25,23 +25,25 @@ import pie.ilikepiefoo.fabric.events.worldrender.BeforeBlockOutlineRenderEventJS
 import pie.ilikepiefoo.fabric.events.worldrender.BlockOutlineRenderEventJS;
 import pie.ilikepiefoo.fabric.events.worldrender.WorldRenderContextEventJS;
 
+import static pie.ilikepiefoo.config.FeatureFlags.feature;
+
 public class FabricEventHandler {
 
     public static void init() {
         if (Platform.getEnv() == EnvType.CLIENT) {
-            registerClient();
+			feature("Clientside Event Handlers", FabricEventHandler::registerClient);
         }
-        registerServer();
+		feature("Serverside Event Handlers", FabricEventHandler::registerServer);
     }
 
     private static void registerClient() {
-        registerWorldRenderEvents();
-        registerHudEvents();
+		feature("World Rendering Event Handlers", FabricEventHandler::registerWorldRenderEvents);
+		feature("HUD Rendering Event Handlers", FabricEventHandler::registerHudEvents);
     }
 
     private static void registerServer() {
-        registerElytraEvents();
-        registerSleepEvents();
+		feature("Elytra Event Handlers", FabricEventHandler::registerElytraEvents);
+		feature("Sleep Event Handlers", FabricEventHandler::registerSleepEvents);
     }
 
     /**
@@ -65,27 +67,27 @@ public class FabricEventHandler {
      * <p>These events are not dependent on the Fabric rendering API or Indigo but work when those are present.
      */
     private static void registerWorldRenderEvents() {
-        WorldRenderEvents.BEFORE_ENTITIES.register(WorldRenderContextEventJS::beforeEntitiesHandle);
-        WorldRenderEvents.AFTER_TRANSLUCENT.register(WorldRenderContextEventJS::afterTranslucentHandle);
-        WorldRenderEvents.AFTER_ENTITIES.register(WorldRenderContextEventJS::afterEntitiesHandle);
-        WorldRenderEvents.START.register(WorldRenderContextEventJS::startHandle);
-        WorldRenderEvents.LAST.register(WorldRenderContextEventJS::lastHandle);
-        WorldRenderEvents.END.register(WorldRenderContextEventJS::endHandle);
-        WorldRenderEvents.AFTER_SETUP.register(WorldRenderContextEventJS::afterSetupHandle);
-        WorldRenderEvents.BEFORE_BLOCK_OUTLINE.register(BeforeBlockOutlineRenderEventJS::handle);
-        WorldRenderEvents.BLOCK_OUTLINE.register(BlockOutlineRenderEventJS::handle);
+		feature("Before Entities World Render Event Listener", () -> WorldRenderEvents.BEFORE_ENTITIES.register(WorldRenderContextEventJS::beforeEntitiesHandle));
+		feature("After Translucent World Render Event Listener", () -> WorldRenderEvents.AFTER_TRANSLUCENT.register(WorldRenderContextEventJS::afterTranslucentHandle));
+		feature("After Entities World Render Event Listener", () -> WorldRenderEvents.AFTER_ENTITIES.register(WorldRenderContextEventJS::afterEntitiesHandle));
+		feature("Start World Render Event Listener", () -> WorldRenderEvents.START.register(WorldRenderContextEventJS::startHandle));
+		feature("Last World Render Event Listener", () -> WorldRenderEvents.LAST.register(WorldRenderContextEventJS::lastHandle));
+		feature("End World Render Event Listener", () -> WorldRenderEvents.END.register(WorldRenderContextEventJS::endHandle));
+		feature("After Setup World Render Event Listener", () -> WorldRenderEvents.AFTER_SETUP.register(WorldRenderContextEventJS::afterSetupHandle));
+		feature("Before Block Outline World Render Event Listener", () -> WorldRenderEvents.BEFORE_BLOCK_OUTLINE.register(BeforeBlockOutlineRenderEventJS::handle));
+		feature("Block Outline World Render Event Listener", () -> WorldRenderEvents.BLOCK_OUTLINE.register(BlockOutlineRenderEventJS::handle));
     }
 
     private static void registerHudEvents() {
-        HudRenderCallback.EVENT.register(HudRenderEventJS::handle);
+		feature("HUD Render Event Listener", () -> HudRenderCallback.EVENT.register(HudRenderEventJS::handle));
     }
 
     /**
      * Events related to elytra flight for living entities. Elytra flight is also known as "fall flying".
      */
     private static void registerElytraEvents() {
-        EntityElytraEvents.ALLOW.register(AllowElytraFlightEventJS::handler);
-        EntityElytraEvents.CUSTOM.register(CustomElytraFlightEventJS::handler);
+		feature("Allow Elytra Event Listener Listener", () -> EntityElytraEvents.ALLOW.register(AllowElytraFlightEventJS::handler));
+		feature("Custom Elytra Flight Event Listener", () -> EntityElytraEvents.CUSTOM.register(CustomElytraFlightEventJS::handler));
     }
 
     /**
@@ -109,17 +111,17 @@ public class FabricEventHandler {
      * but the other events might be useful as well.
      */
     private static void registerSleepEvents() {
-        EntitySleepEvents.ALLOW_SLEEPING.register(AllowSleepingEventJS::handler);
-        EntitySleepEvents.START_SLEEPING.register(SleepingEventJS::startHandler);
-        EntitySleepEvents.STOP_SLEEPING.register(SleepingEventJS::stopHandler);
-        EntitySleepEvents.ALLOW_BED.register(AllowBedEventJS::handler);
-        EntitySleepEvents.ALLOW_SLEEP_TIME.register(AllowSleepTimeEventJS::handler);
-        EntitySleepEvents.ALLOW_NEARBY_MONSTERS.register(AllowNearbyMonstersEventJS::handler);
-        EntitySleepEvents.ALLOW_RESETTING_TIME.register(AllowResettingTimeEventJS::handler);
-        EntitySleepEvents.MODIFY_SLEEPING_DIRECTION.register(ModifySleepingDirectionEventJS::handler);
-        EntitySleepEvents.ALLOW_SETTING_SPAWN.register(AllowSettingSpawnEventJS::handler);
-        EntitySleepEvents.SET_BED_OCCUPATION_STATE.register(SetBedOccupationStateEventJS::handler);
-        EntitySleepEvents.MODIFY_WAKE_UP_POSITION.register(ModifyWakeUpPositionEventJS::handler);
+		feature("Allow Sleeping Event Listener", () -> EntitySleepEvents.ALLOW_SLEEPING.register(AllowSleepingEventJS::handler));
+		feature("Start Sleeping Event Listener", () -> EntitySleepEvents.START_SLEEPING.register(SleepingEventJS::startHandler));
+		feature("Stop Sleeping Event Listener", () -> EntitySleepEvents.STOP_SLEEPING.register(SleepingEventJS::stopHandler));
+		feature("Allow Bed Event Listener", () -> EntitySleepEvents.ALLOW_BED.register(AllowBedEventJS::handler));
+		feature("Allow Sleep Time Event Listener", () -> EntitySleepEvents.ALLOW_SLEEP_TIME.register(AllowSleepTimeEventJS::handler));
+		feature("Allow Nearby Monsters Event Listener", () -> EntitySleepEvents.ALLOW_NEARBY_MONSTERS.register(AllowNearbyMonstersEventJS::handler));
+		feature("Allow Resetting Time Event Listener", () -> EntitySleepEvents.ALLOW_RESETTING_TIME.register(AllowResettingTimeEventJS::handler));
+		feature("Modify Sleeping Direction Event Listener", () -> EntitySleepEvents.MODIFY_SLEEPING_DIRECTION.register(ModifySleepingDirectionEventJS::handler));
+		feature("Allow Setting Spawn Event Listener", () -> EntitySleepEvents.ALLOW_SETTING_SPAWN.register(AllowSettingSpawnEventJS::handler));
+		feature("Set Bed Occupation State Event Listener", () -> EntitySleepEvents.SET_BED_OCCUPATION_STATE.register(SetBedOccupationStateEventJS::handler));
+		feature("Modify Wake Up Position Event Listener", () -> EntitySleepEvents.MODIFY_WAKE_UP_POSITION.register(ModifyWakeUpPositionEventJS::handler));
     }
 
 }
