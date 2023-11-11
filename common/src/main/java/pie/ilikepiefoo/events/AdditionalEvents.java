@@ -5,6 +5,8 @@ import dev.latvian.mods.kubejs.event.EventHandler;
 import dev.latvian.mods.kubejs.event.Extra;
 import pie.ilikepiefoo.events.custom.ArchEventRegisterEventJS;
 
+import static pie.ilikepiefoo.config.FeatureFlags.feature;
+
 public interface AdditionalEvents {
 	EventGroup GROUP = EventGroup.of("CommonAddedEvents");
 
@@ -21,8 +23,10 @@ public interface AdditionalEvents {
 	EventHandler ARCH_EVENT_REGISTER = ARCH_EVENTS.startup("registry", () -> ArchEventRegisterEventJS.class);
 
 	static void register() {
-		GROUP.register();
-		ARCH_EVENTS.register();
+		// Register Common Events
+		feature("Additional Architectury Events", GROUP::register);
+		// Register Architectury Events
+		feature("Custom Architectury Proxy Events", ARCH_EVENTS::register);
 	}
 
 }
