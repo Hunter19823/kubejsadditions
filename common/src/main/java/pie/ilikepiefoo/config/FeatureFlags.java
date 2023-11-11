@@ -18,10 +18,10 @@ import java.util.TreeMap;
 
 public class FeatureFlags {
 	public static final String CONFIG_FILE = "feature_flags.json";
-	public static final FeatureFlags INSTANCE = new FeatureFlags();
-	private static final Logger LOG = LogManager.getLogger();
+	public static final Logger LOG = LogManager.getLogger();
 	private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
 	private static final Map<String, Boolean> FLAGS = new TreeMap<>();
+	public static final FeatureFlags INSTANCE = new FeatureFlags();
 
 	private FeatureFlags() {
 		load();
