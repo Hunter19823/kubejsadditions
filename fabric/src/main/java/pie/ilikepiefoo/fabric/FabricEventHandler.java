@@ -8,7 +8,6 @@ import net.fabricmc.fabric.api.entity.event.v1.EntityElytraEvents;
 import net.fabricmc.fabric.api.entity.event.v1.EntitySleepEvents;
 import net.minecraft.client.renderer.LevelRenderer;
 import net.minecraft.world.entity.LivingEntity;
-import pie.ilikepiefoo.config.FeatureFlags;
 import pie.ilikepiefoo.fabric.events.elytra.AllowElytraFlightEventJS;
 import pie.ilikepiefoo.fabric.events.elytra.CustomElytraFlightEventJS;
 import pie.ilikepiefoo.fabric.events.hud.HudRenderEventJS;
@@ -35,7 +34,6 @@ public class FabricEventHandler {
 			feature("Clientside Event Handlers", FabricEventHandler::registerClient);
         }
 		feature("Serverside Event Handlers", FabricEventHandler::registerServer);
-		FeatureFlags.INSTANCE.save();
     }
 
     private static void registerClient() {
