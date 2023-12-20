@@ -15,8 +15,6 @@ import pie.ilikepiefoo.compat.jei.events.RegisterRecipeTransferHandlersEventJS;
 import pie.ilikepiefoo.compat.jei.events.RegisterRecipesEventJS;
 import pie.ilikepiefoo.compat.jei.events.RegisterVanillaCategoryExtensionsEventJS;
 
-import static pie.ilikepiefoo.config.FeatureFlags.feature;
-
 public interface JEIEvents {
     EventGroup GROUP = EventGroup.of("JEIAddedEvents");
 
@@ -35,12 +33,9 @@ public interface JEIEvents {
                                                                      () -> RegisterVanillaCategoryExtensionsEventJS.class);
 
     static void register() {
-		feature("JEI KubeJS Events", () -> {
-			// Register JEI Events
-			if (Platform.isModLoaded("jei")) {
-				GROUP.register();
-			}
-		});
+		if (Platform.isModLoaded("jei")) {
+			GROUP.register();
+		}
     }
 
 }
