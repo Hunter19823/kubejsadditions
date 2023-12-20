@@ -9,7 +9,6 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
-import pie.ilikepiefoo.config.FeatureFlags;
 import pie.ilikepiefoo.events.AdditionalEvents;
 import pie.ilikepiefoo.events.EntityEnterChunkEventJS;
 import pie.ilikepiefoo.events.EntityTameEventJS;
@@ -17,32 +16,13 @@ import pie.ilikepiefoo.events.PlayerChangeDimensionEventJS;
 import pie.ilikepiefoo.events.PlayerCloneEventJS;
 import pie.ilikepiefoo.events.PlayerRespawnEventJS;
 
-import static pie.ilikepiefoo.config.FeatureFlags.feature;
-
 public class EventHandler {
     public static void init() {
-		feature(
-				"Player Change Dimension Event Handler",
-				() -> PlayerEvent.CHANGE_DIMENSION.register(EventHandler::onPlayerChangeDimension)
-		);
-		feature(
-				"Player Clone Event Handler",
-				() -> PlayerEvent.PLAYER_CLONE.register(EventHandler::onPlayerClone)
-		);
-		feature(
-				"Player Respawn Event Handler",
-				() -> PlayerEvent.PLAYER_RESPAWN.register(EventHandler::onPlayerRespawn)
-		);
-		feature(
-				"Entity Enter Section Event Handler",
-				() -> EntityEvent.ENTER_SECTION.register(EventHandler::onEntityEnterChunk)
-		);
-		feature(
-				"Animal Tame Event Handler",
-				() -> EntityEvent.ANIMAL_TAME.register(EventHandler::onEntityTame)
-		);
-
-		FeatureFlags.INSTANCE.save();
+        PlayerEvent.CHANGE_DIMENSION.register(EventHandler::onPlayerChangeDimension);
+        PlayerEvent.PLAYER_CLONE.register(EventHandler::onPlayerClone);
+        PlayerEvent.PLAYER_RESPAWN.register(EventHandler::onPlayerRespawn);
+        EntityEvent.ENTER_SECTION.register(EventHandler::onEntityEnterChunk);
+        EntityEvent.ANIMAL_TAME.register(EventHandler::onEntityTame);
     }
 
     /**
