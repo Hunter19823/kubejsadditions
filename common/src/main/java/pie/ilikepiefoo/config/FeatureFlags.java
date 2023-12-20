@@ -28,22 +28,26 @@ public class FeatureFlags {
 		LOG.info("Initialized Feature Flags. Loaded {} flags from config.", FLAGS.size());
 	}
 
-	public static void feature(String name, Boolean defaultValue, Runnable runnable) {
-		String packageName = runnable.getClass().getPackageName();
-		if (packageName.contains("fabric")) {
-			name = "Fabric: " + name;
-		} else if (packageName.contains("forge")) {
-			name = "Forge: " + name;
-		} else {
-			name = "Common: " + name;
+	public synchronized void load() {
+		File configFile = createConfigFile();
+		TreeMap<?, ?> flags;
+		try (var reader = new FileReader(configFile)) {
+			flags = GSON.fromJson(reader, TreeMap.class);
+		} catch (IOException e) {
+			LOG.error("Failed to read from Config File.", e);
+			return;
 		}
+		FLAGS.clear();
 
-		if (INSTANCE.getFlagDefault(name, defaultValue)) {
-			runnable.run();
-		}
+		flags.entrySet().stream()
+				.filter(Objects::nonNull)
+				.filter((entry) -> entry.getKey() instanceof String && entry.getValue() instanceof Boolean)
+				.map((entry) -> Map.entry((String) entry.getKey(), (Boolean) entry.getValue()))
+				.forEachOrdered((entry) -> FLAGS.put(entry.getKey(), entry.getValue()));
 	}
 
 	private synchronized File createConfigFile() {
+		LOG.info("Saving Feature Flags");
 		var configFolder = Platform.getConfigFolder().resolve(KubeJSAdditions.MOD_ID).toFile();
 		if (!configFolder.exists()) {
 			if (configFolder.mkdirs()) {
@@ -72,33 +76,22 @@ public class FeatureFlags {
 	}
 
 	public synchronized Boolean getFlagDefault(String name, Boolean defaultValue) {
-		if (FLAGS.containsKey(name)) {
-			return FLAGS.get(name);
-		}
-		setFlag(name, defaultValue);
-		return defaultValue;
+		return FLAGS.getOrDefault(name, defaultValue);
 	}
 
-	public synchronized void load() {
-		LOG.info("Loading Feature Flags...");
-		File configFile = createConfigFile();
-		TreeMap<?, ?> flags;
-		try (var reader = new FileReader(configFile)) {
-			flags = GSON.fromJson(reader, TreeMap.class);
-		} catch (IOException e) {
-			LOG.error("Failed to read from Config File.", e);
-			return;
-		}
-		FLAGS.clear();
-		if (flags == null || flags.isEmpty()) {
-			return;
+	public static void feature(String name, Boolean defaultValue, Runnable runnable) {
+		String packageName = runnable.getClass().getPackageName();
+		if (packageName.contains("fabric")) {
+			name += " (Fabric)";
+		} else if (packageName.contains("forge")) {
+			name += " (Forge)";
+		} else {
+			name += " (Common)";
 		}
 
-		flags.entrySet().stream()
-				.filter(Objects::nonNull)
-				.filter((entry) -> entry.getKey() instanceof String && entry.getValue() instanceof Boolean)
-				.map((entry) -> Map.entry((String) entry.getKey(), (Boolean) entry.getValue()))
-				.forEachOrdered((entry) -> FLAGS.put(entry.getKey(), entry.getValue()));
+		if (INSTANCE.getFlagDefault(name, defaultValue)) {
+			runnable.run();
+		}
 	}
 
 	public synchronized void setFlag(String name, Boolean value) {
@@ -107,7 +100,6 @@ public class FeatureFlags {
 	}
 
 	public synchronized void save() {
-		LOG.info("Saving Feature Flags");
 		File configFile = createConfigFile();
 		try (var writer = new FileWriter(configFile)) {
 			GSON.toJson(FLAGS, writer);
