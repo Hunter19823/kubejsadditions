@@ -72,7 +72,9 @@ public class FeatureFlags {
 	}
 
 	public static void feature(String name, Runnable runnable) {
-		feature(name, true, runnable);
+		if (INSTANCE.getFlagDefault(name, true)) {
+			runnable.run();
+		}
 	}
 
 	public synchronized Boolean getFlagDefault(String name, Boolean defaultValue) {
@@ -80,15 +82,6 @@ public class FeatureFlags {
 	}
 
 	public static void feature(String name, Boolean defaultValue, Runnable runnable) {
-		String packageName = runnable.getClass().getPackageName();
-		if (packageName.contains("fabric")) {
-			name += " (Fabric)";
-		} else if (packageName.contains("forge")) {
-			name += " (Forge)";
-		} else {
-			name += " (Common)";
-		}
-
 		if (INSTANCE.getFlagDefault(name, defaultValue)) {
 			runnable.run();
 		}
