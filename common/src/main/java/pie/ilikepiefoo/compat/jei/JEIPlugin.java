@@ -1,6 +1,6 @@
 package pie.ilikepiefoo.compat.jei;
 
-import dev.latvian.mods.kubejs.script.ScriptType;
+import dev.latvian.kubejs.script.ScriptType;
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.JeiPlugin;
 import mezz.jei.api.registration.IAdvancedRegistration;
