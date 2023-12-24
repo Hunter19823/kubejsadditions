@@ -3,30 +3,12 @@ package pie.ilikepiefoo.compat.jei;
 import dev.latvian.kubejs.script.ScriptType;
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.JeiPlugin;
-import mezz.jei.api.registration.IAdvancedRegistration;
-import mezz.jei.api.registration.IGuiHandlerRegistration;
-import mezz.jei.api.registration.IModIngredientRegistration;
-import mezz.jei.api.registration.IRecipeCatalystRegistration;
-import mezz.jei.api.registration.IRecipeCategoryRegistration;
-import mezz.jei.api.registration.IRecipeRegistration;
-import mezz.jei.api.registration.IRecipeTransferRegistration;
-import mezz.jei.api.registration.ISubtypeRegistration;
-import mezz.jei.api.registration.IVanillaCategoryExtensionRegistration;
+import mezz.jei.api.registration.*;
 import mezz.jei.api.runtime.IJeiRuntime;
 import net.minecraft.resources.ResourceLocation;
 import pie.ilikepiefoo.AdditionalEventsJS;
 import pie.ilikepiefoo.KubeJSAdditions;
-import pie.ilikepiefoo.compat.jei.events.OnRuntimeAvailableEventJSJS;
-import pie.ilikepiefoo.compat.jei.events.RegisterAdvancedEventJS;
-import pie.ilikepiefoo.compat.jei.events.RegisterCategoriesEventJS;
-import pie.ilikepiefoo.compat.jei.events.RegisterFluidSubtypeEventJS;
-import pie.ilikepiefoo.compat.jei.events.RegisterGUIHandlersEventJS;
-import pie.ilikepiefoo.compat.jei.events.RegisterIngredientsEventJS;
-import pie.ilikepiefoo.compat.jei.events.RegisterItemSubtypeEventJS;
-import pie.ilikepiefoo.compat.jei.events.RegisterRecipeCatalystsEventJS;
-import pie.ilikepiefoo.compat.jei.events.RegisterRecipeTransferHandlersEventJS;
-import pie.ilikepiefoo.compat.jei.events.RegisterRecipesEventJS;
-import pie.ilikepiefoo.compat.jei.events.RegisterVanillaCategoryExtensionsEventJS;
+import pie.ilikepiefoo.compat.jei.events.*;
 
 @JeiPlugin
 public class JEIPlugin implements IModPlugin {
