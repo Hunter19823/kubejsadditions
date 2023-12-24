@@ -9,6 +9,7 @@ public class AdditionalEventsJS {
 	public static final String ENTITY_TAME = "entity.tame";
 
 	// JEI Events
+	// Forge only, because there's no Fabric version of JEI in 1.16
 	public static final String JEI_ON_RUNTIME_AVAILABLE = "jei.runtime";
 	public static final String JEI_REGISTER_ADVANCED = "jei.register.advanced";
 	public static final String JEI_REGISTER_CATEGORIES = "jei.register.categories";
