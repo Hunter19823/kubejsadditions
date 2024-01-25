@@ -114,16 +114,16 @@ unifiedPublishing {
 		}
 
 		var CF = System.getenv("CURSEFORGE_KEY")
-		if (CF != null) {
+		if (CF != null && project.hasProperty("curseforge_id")) {
 			curseforge {
 				token = CF
 				id = project.curseforge_id
 			}
 		}
 		var MT = System.getenv("MODRINTH_TOKEN")
-		if (MT != null) {
+		if (MT != null && project.hasProperty("modrinth_id")) {
 			modrinth {
-				token = mt
+				token = MT
 				id = project.modrinth_id
 				version = "$project.version+$project.name"
 			}
