@@ -44,7 +44,6 @@ public class MethodWrapper {
                 this.requiredImports.add(type);
             }
         }
-        this.requiredImports.add(MethodHandler.class.getCanonicalName());
     }
 
     public String getOverrideMethodBody(Method method) {
