@@ -12,7 +12,7 @@ public class EntityEnterChunkEventJS extends EntityEventJS {
     private final int prevY;
     private final int prevZ;
 
-    public EntityEnterChunkEventJS( Entity entity, int chunkX, int chunkY, int chunkZ, int prevX, int prevY, int prevZ ) {
+    public EntityEnterChunkEventJS(Entity entity, int chunkX, int chunkY, int chunkZ, int prevX, int prevY, int prevZ) {
         this.entity = entity;
         this.chunkX = chunkX;
         this.chunkY = chunkY;
@@ -22,7 +22,7 @@ public class EntityEnterChunkEventJS extends EntityEventJS {
         this.prevZ = prevZ;
     }
 
-    public static EntityEnterChunkEventJS of( Entity entity, int chunkX, int chunkY, int chunkZ, int prevX, int prevY, int prevZ ) {
+    public static EntityEnterChunkEventJS of(Entity entity, int chunkX, int chunkY, int chunkZ, int prevX, int prevY, int prevZ) {
         return new EntityEnterChunkEventJS(entity, chunkX, chunkY, chunkZ, prevX, prevY, prevZ);
     }
 

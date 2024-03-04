@@ -11,27 +11,32 @@ import pie.ilikepiefoo.fabric.FabricEventsJS;
  * All listeners need to return true to allow the entity to fly, otherwise elytra flight will be blocked/stopped.
  */
 public class AllowElytraFlightEventJS extends LivingEntityEventJS {
-	private final LivingEntity entity;
+    private final LivingEntity entity;
 
-	public AllowElytraFlightEventJS( LivingEntity entity ) {
-		this.entity = entity;
-	}
+    public AllowElytraFlightEventJS(LivingEntity entity) {
+        this.entity = entity;
+    }
 
-	/**
-	 * If you want to allow elytra flight, you can call {@link EventJS#success()}.
-	 * @return false to block elytra flight, true to allow it (unless another listener returns false)
-	 */
-	public static boolean handler( LivingEntity entity ) {
-		if (ServerScriptManager.instance == null) return true;
-		if (!FabricEventsJS.ALLOW_ELYTRA_FLIGHT.hasListeners()) return true;
-		return FabricEventsJS.ALLOW_ELYTRA_FLIGHT.post(new AllowElytraFlightEventJS(entity)).arch().isTrue();
-	}
+    /**
+     * If you want to allow elytra flight, you can call {@link EventJS#success()}.
+     *
+     * @return false to block elytra flight, true to allow it (unless another listener returns false)
+     */
+    public static boolean handler(LivingEntity entity) {
+        if (ServerScriptManager.instance == null) {
+            return true;
+        }
+        if (!FabricEventsJS.ALLOW_ELYTRA_FLIGHT.hasListeners()) {
+            return true;
+        }
+        return FabricEventsJS.ALLOW_ELYTRA_FLIGHT.post(new AllowElytraFlightEventJS(entity)).arch().isTrue();
+    }
 
 
-	@Override
-	public LivingEntity getEntity() {
-		return entity;
-	}
+    @Override
+    public LivingEntity getEntity() {
+        return entity;
+    }
 
 }
 

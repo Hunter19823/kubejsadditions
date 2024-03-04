@@ -16,7 +16,7 @@ public class SleepingEventJS extends LivingEntityEventJS {
     private final LivingEntity entity;
     private final BlockPos sleepingPos;
 
-    public SleepingEventJS( LivingEntity entity, BlockPos sleepingPos ) {
+    public SleepingEventJS(LivingEntity entity, BlockPos sleepingPos) {
         this.entity = entity;
         this.sleepingPos = sleepingPos;
     }
@@ -27,7 +27,7 @@ public class SleepingEventJS extends LivingEntityEventJS {
      * @param entity      the sleeping entity
      * @param sleepingPos the {@linkplain LivingEntity#getSleepingPos() sleeping position} of the entity
      */
-    public static void startHandler( LivingEntity entity, BlockPos sleepingPos ) {
+    public static void startHandler(LivingEntity entity, BlockPos sleepingPos) {
         if (ServerScriptManager.instance == null) {
             return;
         }
@@ -40,7 +40,7 @@ public class SleepingEventJS extends LivingEntityEventJS {
      * @param entity      the sleeping entity
      * @param sleepingPos the {@linkplain LivingEntity#getSleepingPos() sleeping position} of the entity
      */
-    public static void stopHandler( LivingEntity entity, BlockPos sleepingPos ) {
+    public static void stopHandler(LivingEntity entity, BlockPos sleepingPos) {
         if (ServerScriptManager.instance == null) {
             return;
         }

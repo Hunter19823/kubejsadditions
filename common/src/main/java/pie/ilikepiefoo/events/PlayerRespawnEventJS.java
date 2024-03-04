@@ -8,12 +8,12 @@ public class PlayerRespawnEventJS extends PlayerEventJS {
     private final ServerPlayer player;
     private final boolean conqueredEnd;
 
-    public PlayerRespawnEventJS( ServerPlayer player, boolean conqueredEnd ) {
+    public PlayerRespawnEventJS(ServerPlayer player, boolean conqueredEnd) {
         this.player = player;
         this.conqueredEnd = conqueredEnd;
     }
 
-    public static PlayerRespawnEventJS of( ServerPlayer player, boolean conqueredEnd ) {
+    public static PlayerRespawnEventJS of(ServerPlayer player, boolean conqueredEnd) {
         return new PlayerRespawnEventJS(player, conqueredEnd);
     }
 

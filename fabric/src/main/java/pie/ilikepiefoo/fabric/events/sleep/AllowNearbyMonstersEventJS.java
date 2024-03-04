@@ -19,7 +19,7 @@ public class AllowNearbyMonstersEventJS extends PlayerEventJS {
     private final BlockPos sleepingPos;
     private final boolean vanillaResult;
 
-    public AllowNearbyMonstersEventJS( Player player, BlockPos sleepingPos, boolean vanillaResult ) {
+    public AllowNearbyMonstersEventJS(Player player, BlockPos sleepingPos, boolean vanillaResult) {
         this.player = player;
         this.sleepingPos = sleepingPos;
         this.vanillaResult = vanillaResult;
@@ -36,7 +36,7 @@ public class AllowNearbyMonstersEventJS extends PlayerEventJS {
      * @return {@link InteractionResult#SUCCESS} to allow sleeping, {@link InteractionResult#FAIL} to prevent sleeping,
      * {@link InteractionResult#PASS} to fall back to other callbacks
      */
-    public static InteractionResult handler( Player player, BlockPos sleepingPos, boolean vanillaResult ) {
+    public static InteractionResult handler(Player player, BlockPos sleepingPos, boolean vanillaResult) {
         if (ServerScriptManager.instance == null || !FabricEventsJS.ALLOW_NEARBY_MONSTERS.hasListeners()) {
             return InteractionResult.PASS;
         }

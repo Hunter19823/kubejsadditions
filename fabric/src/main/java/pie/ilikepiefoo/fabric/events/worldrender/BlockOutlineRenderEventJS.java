@@ -11,7 +11,7 @@ import pie.ilikepiefoo.fabric.FabricEventsJS;
 public class BlockOutlineRenderEventJS extends WorldRenderContextEventJS {
     private final WorldRenderContext.BlockOutlineContext blockOutlineContext;
 
-    public BlockOutlineRenderEventJS( WorldRenderContext context, WorldRenderContext.BlockOutlineContext blockOutlineContext ) {
+    public BlockOutlineRenderEventJS(WorldRenderContext context, WorldRenderContext.BlockOutlineContext blockOutlineContext) {
         super(context);
         this.blockOutlineContext = blockOutlineContext;
     }
@@ -19,7 +19,7 @@ public class BlockOutlineRenderEventJS extends WorldRenderContextEventJS {
     /**
      * Called after block outline render checks are made and before the
      * default block outline render runs.  Will NOT be called if the default outline
-	 * render was cancelled in {@link WorldRenderEvents#BEFORE_BLOCK_OUTLINE}.
+     * render was cancelled in {@link WorldRenderEvents#BEFORE_BLOCK_OUTLINE}.
      *
      * <p>Use this to replace the default block outline rendering for specific blocks that
      * need special outline rendering or to add information that doesn't replace the block outline.
@@ -38,7 +38,7 @@ public class BlockOutlineRenderEventJS extends WorldRenderContextEventJS {
      * be accomplished by mixin to the block outline render routine itself, typically
      * by targeting {@link LevelRenderer#renderShape}.
      */
-    public static boolean handle( WorldRenderContext context, WorldRenderContext.BlockOutlineContext blockOutlineContext ) {
+    public static boolean handle(WorldRenderContext context, WorldRenderContext.BlockOutlineContext blockOutlineContext) {
         if (!FabricEventsJS.BLOCK_OUTLINE.hasListeners()) {
             return true;
         }

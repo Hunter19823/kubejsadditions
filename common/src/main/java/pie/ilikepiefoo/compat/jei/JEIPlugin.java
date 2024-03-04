@@ -44,7 +44,7 @@ public class JEIPlugin implements IModPlugin {
      * @param registration
      */
     @Override
-    public void registerItemSubtypes( ISubtypeRegistration registration ) {
+    public void registerItemSubtypes(ISubtypeRegistration registration) {
         JEIEvents.REGISTER_ITEM_SUBTYPES.post(new RegisterItemSubtypeEventJS(registration));
     }
 
@@ -54,7 +54,7 @@ public class JEIPlugin implements IModPlugin {
      * @param registration
      */
     @Override
-    public <T> void registerFluidSubtypes( ISubtypeRegistration registration, IPlatformFluidHelper<T> platformFluidHelper ) {
+    public <T> void registerFluidSubtypes(ISubtypeRegistration registration, IPlatformFluidHelper<T> platformFluidHelper) {
         JEIEvents.REGISTER_FLUID_SUBTYPES.post(new RegisterFluidSubtypeEventJS(registration));
     }
 
@@ -64,7 +64,7 @@ public class JEIPlugin implements IModPlugin {
      * @param registration
      */
     @Override
-    public void registerIngredients( IModIngredientRegistration registration ) {
+    public void registerIngredients(IModIngredientRegistration registration) {
         JEIEvents.REGISTER_INGREDIENTS.post(new RegisterIngredientsEventJS(registration));
     }
 
@@ -75,7 +75,7 @@ public class JEIPlugin implements IModPlugin {
      * @param registration
      */
     @Override
-    public void registerCategories( IRecipeCategoryRegistration registration ) {
+    public void registerCategories(IRecipeCategoryRegistration registration) {
         JEIEvents.REGISTER_CATEGORIES.post(new RegisterCategoriesEventJS(registration));
     }
 
@@ -86,7 +86,7 @@ public class JEIPlugin implements IModPlugin {
      * @param registration
      */
     @Override
-    public void registerVanillaCategoryExtensions( IVanillaCategoryExtensionRegistration registration ) {
+    public void registerVanillaCategoryExtensions(IVanillaCategoryExtensionRegistration registration) {
         JEIEvents.REGISTER_VANILLA_CATEGORY_EXTENSIONS.post(new RegisterVanillaCategoryExtensionsEventJS(registration));
     }
 
@@ -96,7 +96,7 @@ public class JEIPlugin implements IModPlugin {
      * @param registration
      */
     @Override
-    public void registerRecipes( IRecipeRegistration registration ) {
+    public void registerRecipes(IRecipeRegistration registration) {
         JEIEvents.REGISTER_RECIPES.post(new RegisterRecipesEventJS(registration));
     }
 
@@ -106,7 +106,7 @@ public class JEIPlugin implements IModPlugin {
      * @param registration
      */
     @Override
-    public void registerRecipeTransferHandlers( IRecipeTransferRegistration registration ) {
+    public void registerRecipeTransferHandlers(IRecipeTransferRegistration registration) {
         JEIEvents.REGISTER_RECIPE_TRANSFER_HANDLERS.post(new RegisterRecipeTransferHandlersEventJS(registration));
     }
 
@@ -118,7 +118,7 @@ public class JEIPlugin implements IModPlugin {
      * @param registration
      */
     @Override
-    public void registerRecipeCatalysts( IRecipeCatalystRegistration registration ) {
+    public void registerRecipeCatalysts(IRecipeCatalystRegistration registration) {
         JEIEvents.REGISTER_RECIPE_CATALYSTS.post(new RegisterRecipeCatalystsEventJS(registration));
     }
 
@@ -130,7 +130,7 @@ public class JEIPlugin implements IModPlugin {
      * @param registration
      */
     @Override
-    public void registerGuiHandlers( IGuiHandlerRegistration registration ) {
+    public void registerGuiHandlers(IGuiHandlerRegistration registration) {
         JEIEvents.REGISTER_GUI_HANDLERS.post(new RegisterGUIHandlersEventJS(registration));
     }
 
@@ -140,7 +140,7 @@ public class JEIPlugin implements IModPlugin {
      * @param registration
      */
     @Override
-    public void registerAdvanced( IAdvancedRegistration registration ) {
+    public void registerAdvanced(IAdvancedRegistration registration) {
         JEIEvents.REGISTER_ADVANCED.post(new RegisterAdvancedEventJS(registration));
     }
 
@@ -150,7 +150,7 @@ public class JEIPlugin implements IModPlugin {
      * @param jeiRuntime
      */
     @Override
-    public void onRuntimeAvailable( IJeiRuntime jeiRuntime ) {
+    public void onRuntimeAvailable(IJeiRuntime jeiRuntime) {
         JEIEvents.ON_RUNTIME_AVAILABLE.post(new OnRuntimeAvailableEventJS(jeiRuntime));
     }
 

@@ -20,7 +20,7 @@ public class SetBedOccupationStateEventJS extends LivingEntityEventJS {
     private final BlockState bedState;
     private final boolean occupied;
 
-    public SetBedOccupationStateEventJS( LivingEntity entity, BlockPos sleepingPos, BlockState bedState, boolean occupied ) {
+    public SetBedOccupationStateEventJS(LivingEntity entity, BlockPos sleepingPos, BlockState bedState, boolean occupied) {
         this.entity = entity;
         this.sleepingPos = sleepingPos;
         this.bedState = bedState;
@@ -36,13 +36,13 @@ public class SetBedOccupationStateEventJS extends LivingEntityEventJS {
      * @param occupied    {@code true} if occupied, {@code false} if free
      * @return {@code true} if the occupation state was successfully modified, {@code false} to fall back to other callbacks
      */
-    public static boolean handler( LivingEntity entity, BlockPos sleepingPos, BlockState bedState, boolean occupied ) {
+    public static boolean handler(LivingEntity entity, BlockPos sleepingPos, BlockState bedState, boolean occupied) {
         if (ServerScriptManager.instance == null || !FabricEventsJS.SET_BED_OCCUPATION_STATE.hasListeners()) {
             return false;
         }
         return FabricEventsJS.SET_BED_OCCUPATION_STATE.post(new SetBedOccupationStateEventJS(entity, sleepingPos, bedState, occupied))
-                                                      .arch()
-                                                      .isTrue();
+                .arch()
+                .isTrue();
     }
 
     @Override

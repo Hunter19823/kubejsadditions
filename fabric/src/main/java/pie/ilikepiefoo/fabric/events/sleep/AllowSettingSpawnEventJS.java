@@ -13,40 +13,40 @@ import pie.ilikepiefoo.fabric.FabricEventsJS;
  * <p>Vanilla always allows this operation.
  */
 public class AllowSettingSpawnEventJS extends PlayerEventJS {
-	private final Player player;
-	private final BlockPos sleepingPos;
+    private final Player player;
+    private final BlockPos sleepingPos;
 
-	public AllowSettingSpawnEventJS( Player player, BlockPos sleepingPos ) {
-		this.player = player;
-		this.sleepingPos = sleepingPos;
-	}
+    public AllowSettingSpawnEventJS(Player player, BlockPos sleepingPos) {
+        this.player = player;
+        this.sleepingPos = sleepingPos;
+    }
 
-	/**
-	 * Checks whether a player's spawn can be set when sleeping.
-	 *
-	 * @param player      the sleeping player
-	 * @param sleepingPos the sleeping position
-	 * @return {@code true} if allowed, {@code false} otherwise
-	 */
-	public static boolean handler( Player player, BlockPos sleepingPos ) {
+    /**
+     * Checks whether a player's spawn can be set when sleeping.
+     *
+     * @param player      the sleeping player
+     * @param sleepingPos the sleeping position
+     * @return {@code true} if allowed, {@code false} otherwise
+     */
+    public static boolean handler(Player player, BlockPos sleepingPos) {
         if (ServerScriptManager.instance == null || !FabricEventsJS.ALLOW_SETTING_SPAWN.hasListeners()) {
-			return true;
-		}
-		return FabricEventsJS.ALLOW_SETTING_SPAWN.post(new AllowSettingSpawnEventJS(player, sleepingPos)).archCompound().isTrue();
-	}
+            return true;
+        }
+        return FabricEventsJS.ALLOW_SETTING_SPAWN.post(new AllowSettingSpawnEventJS(player, sleepingPos)).archCompound().isTrue();
+    }
 
-	public BlockPos getSleepingPos() {
-		return sleepingPos;
-	}
+    public BlockPos getSleepingPos() {
+        return sleepingPos;
+    }
 
-	@Override
-	public Player getEntity() {
-		return player;
-	}
+    @Override
+    public Player getEntity() {
+        return player;
+    }
 
-	public BlockContainerJS getPos() {
-		return getLevel().kjs$getBlock(sleepingPos);
-	}
+    public BlockContainerJS getPos() {
+        return getLevel().kjs$getBlock(sleepingPos);
+    }
 
 }
 

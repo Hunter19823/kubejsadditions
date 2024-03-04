@@ -22,7 +22,7 @@ public class AllowSleepTimeEventJS extends PlayerEventJS {
     private final BlockPos sleepingPos;
     private final boolean vanillaResult;
 
-    public AllowSleepTimeEventJS( Player player, BlockPos sleepingPos, boolean vanillaResult ) {
+    public AllowSleepTimeEventJS(Player player, BlockPos sleepingPos, boolean vanillaResult) {
         this.player = player;
         this.sleepingPos = sleepingPos;
         this.vanillaResult = vanillaResult;
@@ -39,7 +39,7 @@ public class AllowSleepTimeEventJS extends PlayerEventJS {
      * @return {@link InteractionResult#SUCCESS} if the time is valid, {@link InteractionResult#FAIL} if it's not,
      * {@link InteractionResult#PASS} to fall back to other callbacks
      */
-    public static InteractionResult handler( Player player, BlockPos sleepingPos, boolean vanillaResult ) {
+    public static InteractionResult handler(Player player, BlockPos sleepingPos, boolean vanillaResult) {
         if (ServerScriptManager.instance == null || !FabricEventsJS.ALLOW_SLEEP_TIME.hasListeners()) {
             return InteractionResult.PASS;
         }

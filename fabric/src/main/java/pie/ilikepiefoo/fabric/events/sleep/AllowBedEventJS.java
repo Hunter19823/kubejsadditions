@@ -22,57 +22,57 @@ import pie.ilikepiefoo.fabric.FabricEventsJS;
  * @see LivingEntity#checkBedExists()
  */
 public class AllowBedEventJS extends LivingEntityEventJS {
-	private final LivingEntity entity;
-	private final BlockPos sleepingPos;
-	private final BlockState state;
-	private final boolean vanillaResult;
+    private final LivingEntity entity;
+    private final BlockPos sleepingPos;
+    private final BlockState state;
+    private final boolean vanillaResult;
 
-	public AllowBedEventJS( LivingEntity entity, BlockPos sleepingPos, BlockState state, boolean vanillaResult ) {
-		this.entity = entity;
-		this.sleepingPos = sleepingPos;
-		this.state = state;
-		this.vanillaResult = vanillaResult;
-	}
+    public AllowBedEventJS(LivingEntity entity, BlockPos sleepingPos, BlockState state, boolean vanillaResult) {
+        this.entity = entity;
+        this.sleepingPos = sleepingPos;
+        this.state = state;
+        this.vanillaResult = vanillaResult;
+    }
 
-	/**
-	 * Checks whether a block is a valid bed for the entity.
-	 *
-	 * <p>Non-{@linkplain InteractionResult#PASS passing} return values cancel further callbacks.
-	 *
-	 * @param entity        the sleeping entity
-	 * @param sleepingPos   the position of the block
-	 * @param state         the block state to check
-	 * @param vanillaResult {@code true} if vanilla allows the block, {@code false} otherwise
-	 * @return {@link InteractionResult#SUCCESS} if the bed is valid, {@link InteractionResult#FAIL} if it's not,
-	 * {@link InteractionResult#PASS} to fall back to other callbacks
-	 */
-	public static InteractionResult handler( LivingEntity entity, BlockPos sleepingPos, BlockState state, boolean vanillaResult ) {
-		if (ServerScriptManager.instance == null || !FabricEventsJS.ALLOW_BED.hasListeners()) {
-			return InteractionResult.PASS;
-		}
+    /**
+     * Checks whether a block is a valid bed for the entity.
+     *
+     * <p>Non-{@linkplain InteractionResult#PASS passing} return values cancel further callbacks.
+     *
+     * @param entity        the sleeping entity
+     * @param sleepingPos   the position of the block
+     * @param state         the block state to check
+     * @param vanillaResult {@code true} if vanilla allows the block, {@code false} otherwise
+     * @return {@link InteractionResult#SUCCESS} if the bed is valid, {@link InteractionResult#FAIL} if it's not,
+     * {@link InteractionResult#PASS} to fall back to other callbacks
+     */
+    public static InteractionResult handler(LivingEntity entity, BlockPos sleepingPos, BlockState state, boolean vanillaResult) {
+        if (ServerScriptManager.instance == null || !FabricEventsJS.ALLOW_BED.hasListeners()) {
+            return InteractionResult.PASS;
+        }
 
-		return FabricEventsJS.ALLOW_BED.post(new AllowBedEventJS(entity, sleepingPos, state, vanillaResult)).arch().asMinecraft();
-	}
+        return FabricEventsJS.ALLOW_BED.post(new AllowBedEventJS(entity, sleepingPos, state, vanillaResult)).arch().asMinecraft();
+    }
 
-	public LivingEntity getEntity() {
-		return entity;
-	}
+    public LivingEntity getEntity() {
+        return entity;
+    }
 
-	public BlockContainerJS getPos() {
-		return getLevel().kjs$getBlock(sleepingPos);
-	}
+    public BlockContainerJS getPos() {
+        return getLevel().kjs$getBlock(sleepingPos);
+    }
 
-	public BlockPos getSleepingPos() {
-		return sleepingPos;
-	}
+    public BlockPos getSleepingPos() {
+        return sleepingPos;
+    }
 
-	public BlockState getState() {
-		return state;
-	}
+    public BlockState getState() {
+        return state;
+    }
 
-	public boolean isVanillaResult() {
-		return vanillaResult;
-	}
+    public boolean isVanillaResult() {
+        return vanillaResult;
+    }
 
 }
 

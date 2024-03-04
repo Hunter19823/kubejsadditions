@@ -13,15 +13,15 @@ public class ProxyEventJS extends EventJS {
     public static final Logger LOG = LogManager.getLogger();
     private final Method method;
     private final Object[] args;
-    private final Map<String,Object> parameterMap;
+    private final Map<String, Object> parameterMap;
     private Optional<Object> result;
     private boolean hasResult = false;
 
-    public ProxyEventJS( final Method method, final Object[] args ) {
+    public ProxyEventJS(final Method method, final Object[] args) {
         this.method = method;
         this.parameterMap = new HashMap<>();
         for (int i = 0; i < method.getParameters().length; i++) {
-            this.parameterMap.put(method.getParameters()[ i ].getName(), args[ i ]);
+            this.parameterMap.put(method.getParameters()[i].getName(), args[i]);
         }
         this.args = args;
         this.result = Optional.empty();
@@ -43,7 +43,7 @@ public class ProxyEventJS extends EventJS {
         return args;
     }
 
-    public Map<String,Object> getParameters() {
+    public Map<String, Object> getParameters() {
         return parameterMap;
     }
 
@@ -55,7 +55,7 @@ public class ProxyEventJS extends EventJS {
         return result.orElse(null);
     }
 
-    public void setResult( final Object result ) {
+    public void setResult(final Object result) {
         this.hasResult = true;
         this.result = Optional.ofNullable(result);
     }
@@ -68,8 +68,8 @@ public class ProxyEventJS extends EventJS {
         return !method.getReturnType().equals(Void.TYPE);
     }
 
-    public Object getArg( final int index ) {
-        return args[ index ];
+    public Object getArg(final int index) {
+        return args[index];
     }
 
 

@@ -28,14 +28,14 @@ public interface JEIEvents {
     EventHandler REGISTER_RECIPE_CATALYSTS = GROUP.client("registerRecipeCatalysts", () -> RegisterRecipeCatalystsEventJS.class);
     EventHandler REGISTER_RECIPES = GROUP.client("registerRecipes", () -> RegisterRecipesEventJS.class);
     EventHandler REGISTER_RECIPE_TRANSFER_HANDLERS = GROUP.client("registerRecipeTransferHandlers",
-                                                                  () -> RegisterRecipeTransferHandlersEventJS.class);
+            () -> RegisterRecipeTransferHandlersEventJS.class);
     EventHandler REGISTER_VANILLA_CATEGORY_EXTENSIONS = GROUP.client("registerVanillaCategoryExtensions",
-                                                                     () -> RegisterVanillaCategoryExtensionsEventJS.class);
+            () -> RegisterVanillaCategoryExtensionsEventJS.class);
 
     static void register() {
-		if (Platform.isModLoaded("jei")) {
-			GROUP.register();
-		}
+        if (Platform.isModLoaded("jei")) {
+            GROUP.register();
+        }
     }
 
 }

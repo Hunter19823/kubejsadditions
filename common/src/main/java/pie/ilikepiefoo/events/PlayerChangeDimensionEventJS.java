@@ -11,13 +11,13 @@ public class PlayerChangeDimensionEventJS extends PlayerEventJS {
     private final ResourceKey<Level> oldWorld;
     private final ResourceKey<Level> newWorld;
 
-    public PlayerChangeDimensionEventJS( ServerPlayer player, ResourceKey<Level> oldWorld, ResourceKey<Level> newWorld ) {
+    public PlayerChangeDimensionEventJS(ServerPlayer player, ResourceKey<Level> oldWorld, ResourceKey<Level> newWorld) {
         this.player = player;
         this.oldWorld = oldWorld;
         this.newWorld = newWorld;
     }
 
-    public static PlayerChangeDimensionEventJS of( ServerPlayer player, ResourceKey<Level> oldLevel, ResourceKey<Level> newLevel ) {
+    public static PlayerChangeDimensionEventJS of(ServerPlayer player, ResourceKey<Level> oldLevel, ResourceKey<Level> newLevel) {
         return new PlayerChangeDimensionEventJS(player, oldLevel, newLevel);
     }
 

@@ -12,7 +12,7 @@ import pie.ilikepiefoo.fabric.FabricEventsJS;
 public class BeforeBlockOutlineRenderEventJS extends WorldRenderContextEventJS {
     private final @Nullable HitResult hitResult;
 
-    public BeforeBlockOutlineRenderEventJS( WorldRenderContext context, @Nullable HitResult hitResult ) {
+    public BeforeBlockOutlineRenderEventJS(WorldRenderContext context, @Nullable HitResult hitResult) {
         super(context);
         this.hitResult = hitResult;
     }
@@ -27,7 +27,7 @@ public class BeforeBlockOutlineRenderEventJS extends WorldRenderContextEventJS {
      * Returning false prevents {@link WorldRenderEvents#BLOCK_OUTLINE} from invoking
      * and also skips the vanilla block outline render, but has no effect on other subscribers to this event.
      */
-    public static boolean handle( WorldRenderContext context, @Nullable HitResult hitResult ) {
+    public static boolean handle(WorldRenderContext context, @Nullable HitResult hitResult) {
         if (!FabricEventsJS.BEFORE_BLOCK_OUTLINE.hasListeners()) {
             return true;
         }
@@ -39,7 +39,7 @@ public class BeforeBlockOutlineRenderEventJS extends WorldRenderContextEventJS {
         return hitResult;
     }
 
-    public double distanceTo( Entity entity ) {
+    public double distanceTo(Entity entity) {
         assert hitResult != null;
         return hitResult.distanceTo(entity);
     }
@@ -68,7 +68,7 @@ public class BeforeBlockOutlineRenderEventJS extends WorldRenderContextEventJS {
      * <p>This event should NOT be used for general-purpose replacement of
      * the default block outline rendering because it will interfere with mod-specific
      * renders.  Mods that replace the default block outline for specific blocks
-	 * should instead subscribe to {@link WorldRenderEvents#BLOCK_OUTLINE}.
+     * should instead subscribe to {@link WorldRenderEvents#BLOCK_OUTLINE}.
      */
 
     public Vec3 getLocation() {

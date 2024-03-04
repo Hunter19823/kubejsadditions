@@ -22,7 +22,7 @@ public class ModifySleepingDirectionEventJS extends LivingEntityEventJS {
     @Nullable
     private Direction sleepingDirection;
 
-    public ModifySleepingDirectionEventJS( LivingEntity entity, BlockPos sleepingPos, @Nullable Direction sleepingDirection ) {
+    public ModifySleepingDirectionEventJS(LivingEntity entity, BlockPos sleepingPos, @Nullable Direction sleepingDirection) {
         this.entity = entity;
         this.sleepingPos = sleepingPos;
         this.sleepingDirection = sleepingDirection;
@@ -38,7 +38,7 @@ public class ModifySleepingDirectionEventJS extends LivingEntityEventJS {
      * @return the new sleeping direction
      */
     @Nullable
-    public static Direction handler( LivingEntity entity, BlockPos sleepingPos, @Nullable Direction sleepingDirection ) {
+    public static Direction handler(LivingEntity entity, BlockPos sleepingPos, @Nullable Direction sleepingDirection) {
         if (ServerScriptManager.instance == null || !FabricEventsJS.MODIFY_SLEEPING_DIRECTION.hasListeners()) {
             return sleepingDirection;
         }
@@ -52,7 +52,7 @@ public class ModifySleepingDirectionEventJS extends LivingEntityEventJS {
         return sleepingDirection;
     }
 
-    public void setSleepingDirection( @Nullable Direction sleepingDirection ) {
+    public void setSleepingDirection(@Nullable Direction sleepingDirection) {
         this.sleepingDirection = sleepingDirection;
     }
 
@@ -74,7 +74,7 @@ public class ModifySleepingDirectionEventJS extends LivingEntityEventJS {
         return sleepingDirection;
     }
 
-    public void setDirection( @Nullable Direction sleepingDirection ) {
+    public void setDirection(@Nullable Direction sleepingDirection) {
         this.sleepingDirection = sleepingDirection;
     }
 

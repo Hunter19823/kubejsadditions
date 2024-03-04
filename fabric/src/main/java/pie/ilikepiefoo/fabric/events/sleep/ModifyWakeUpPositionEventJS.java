@@ -24,7 +24,7 @@ public class ModifyWakeUpPositionEventJS extends LivingEntityEventJS {
     @Nullable
     private Vec3 wakeUpPos;
 
-    public ModifyWakeUpPositionEventJS( LivingEntity entity, BlockPos sleepingPos, BlockState bedState, @Nullable Vec3 wakeUpPos ) {
+    public ModifyWakeUpPositionEventJS(LivingEntity entity, BlockPos sleepingPos, BlockState bedState, @Nullable Vec3 wakeUpPos) {
         this.entity = entity;
         this.sleepingPos = sleepingPos;
         this.bedState = bedState;
@@ -41,7 +41,7 @@ public class ModifyWakeUpPositionEventJS extends LivingEntityEventJS {
      * @return the new wake-up position
      */
     @Nullable
-    public static Vec3 handler( LivingEntity entity, BlockPos sleepingPos, BlockState bedState, @Nullable Vec3 wakeUpPos ) {
+    public static Vec3 handler(LivingEntity entity, BlockPos sleepingPos, BlockState bedState, @Nullable Vec3 wakeUpPos) {
         if (ServerScriptManager.instance == null || !FabricEventsJS.MODIFY_WAKE_UP_POSITION.hasListeners()) {
             return wakeUpPos;
         }
@@ -55,15 +55,14 @@ public class ModifyWakeUpPositionEventJS extends LivingEntityEventJS {
         return wakeUpPos;
     }
 
-    public void setWakeUpPos( @Nullable Vec3 wakeUpPos ) {
+    public void setWakeUpPos(@Nullable Vec3 wakeUpPos) {
         this.wakeUpPos = wakeUpPos;
     }
 
-    public void setWakeUpPos( @Nullable BlockContainerJS block ) {
+    public void setWakeUpPos(@Nullable BlockContainerJS block) {
         if (block != null) {
             this.wakeUpPos = new Vec3(block.getX(), block.getY(), block.getZ());
-        }
-        else {
+        } else {
             this.wakeUpPos = null;
         }
     }
@@ -85,7 +84,7 @@ public class ModifyWakeUpPositionEventJS extends LivingEntityEventJS {
         return bedState;
     }
 
-    public void setWakeUpPos( double x, double y, double z ) {
+    public void setWakeUpPos(double x, double y, double z) {
         this.wakeUpPos = new Vec3(x, y, z);
     }
 

@@ -33,7 +33,7 @@ public class EventHandler {
      * @param oldLevel The level the player comes from.
      * @param newLevel The level the player teleports into.
      */
-    public static void onPlayerChangeDimension( ServerPlayer player, ResourceKey<Level> oldLevel, ResourceKey<Level> newLevel ) {
+    public static void onPlayerChangeDimension(ServerPlayer player, ResourceKey<Level> oldLevel, ResourceKey<Level> newLevel) {
         AdditionalEvents.PLAYER_CHANGE_DIMENSION.post(new PlayerChangeDimensionEventJS(player, oldLevel, newLevel));
     }
 
@@ -46,7 +46,7 @@ public class EventHandler {
      * @param newPlayer    The new player.
      * @param conqueredEnd This is true when the player joined the end and now is leaving it. {@link ServerPlayer#wonGame}
      */
-    private static void onPlayerClone( ServerPlayer oldPlayer, ServerPlayer newPlayer, boolean conqueredEnd ) {
+    private static void onPlayerClone(ServerPlayer oldPlayer, ServerPlayer newPlayer, boolean conqueredEnd) {
         AdditionalEvents.PLAYER_CLONE.post(new PlayerCloneEventJS(oldPlayer, newPlayer, conqueredEnd));
     }
 
@@ -59,7 +59,7 @@ public class EventHandler {
      * @param conqueredEnd Whether the player has conquered the end. This is true when the player joined the end and now is leaving it.
      *                     {@link ServerPlayer#wonGame}
      */
-    private static void onPlayerRespawn( ServerPlayer serverPlayer, boolean conqueredEnd ) {
+    private static void onPlayerRespawn(ServerPlayer serverPlayer, boolean conqueredEnd) {
         AdditionalEvents.PLAYER_RESPAWN.post(new PlayerRespawnEventJS(serverPlayer, conqueredEnd));
     }
 
@@ -73,7 +73,7 @@ public class EventHandler {
      * @param prevX  The previous chunk x-coordinate.
      * @param prevZ  The previous chunk z-coordinate.
      */
-    private static void onEntityEnterChunk( Entity entity, int chunkX, int chunkY, int chunkZ, int prevX, int prevY, int prevZ ) {
+    private static void onEntityEnterChunk(Entity entity, int chunkX, int chunkY, int chunkZ, int prevX, int prevY, int prevZ) {
         AdditionalEvents.ENTITY_ENTER_CHUNK.post(new EntityEnterChunkEventJS(entity, chunkX, chunkY, chunkZ, prevX, prevY, prevZ));
     }
 
@@ -87,7 +87,7 @@ public class EventHandler {
      * @return A {@link EventResult} determining the outcome of the event,
      * the action may be cancelled by the result.
      */
-    private static EventResult onEntityTame( Animal animal, Player player ) {
+    private static EventResult onEntityTame(Animal animal, Player player) {
         if (player instanceof ServerPlayer serverPlayer) {
             return AdditionalEvents.ENTITY_TAME.post(new EntityTameEventJS(animal, player)).arch();
         }

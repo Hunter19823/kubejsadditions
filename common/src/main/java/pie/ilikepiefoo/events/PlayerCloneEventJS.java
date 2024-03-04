@@ -9,13 +9,13 @@ public class PlayerCloneEventJS extends PlayerEventJS {
     private final ServerPlayer newPlayer;
     private final boolean conqueredEnd;
 
-    public PlayerCloneEventJS( ServerPlayer oldPlayer, ServerPlayer newPlayer, boolean conqueredEnd ) {
+    public PlayerCloneEventJS(ServerPlayer oldPlayer, ServerPlayer newPlayer, boolean conqueredEnd) {
         this.oldPlayer = oldPlayer;
         this.newPlayer = newPlayer;
         this.conqueredEnd = conqueredEnd;
     }
 
-    public static PlayerCloneEventJS of( ServerPlayer oldPlayer, ServerPlayer newPlayer, boolean conqueredEnd ) {
+    public static PlayerCloneEventJS of(ServerPlayer oldPlayer, ServerPlayer newPlayer, boolean conqueredEnd) {
         return new PlayerCloneEventJS(oldPlayer, newPlayer, conqueredEnd);
     }
 

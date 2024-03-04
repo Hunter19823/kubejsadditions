@@ -19,7 +19,7 @@ public class CustomElytraFlightEventJS extends LivingEntityEventJS {
     private final LivingEntity entity;
     private final boolean tickElytra;
 
-    public CustomElytraFlightEventJS( LivingEntity entity, boolean tickElytra ) {
+    public CustomElytraFlightEventJS(LivingEntity entity, boolean tickElytra) {
         this.entity = entity;
         this.tickElytra = tickElytra;
     }
@@ -37,11 +37,13 @@ public class CustomElytraFlightEventJS extends LivingEntityEventJS {
      *                   perform side-effects of flying such as using resources.
      * @return true to use a custom elytra, enabling elytra flight for the entity and cancelling subsequent handlers
      */
-    public static boolean handler( LivingEntity entity, boolean tickElytra ) {
+    public static boolean handler(LivingEntity entity, boolean tickElytra) {
         if (ServerScriptManager.instance == null) {
             return false;
         }
-        if (!FabricEventsJS.CUSTOM_ELYTRA_FLIGHT.hasListeners()) return false;
+        if (!FabricEventsJS.CUSTOM_ELYTRA_FLIGHT.hasListeners()) {
+            return false;
+        }
         // Canceling this event will result in Elytra flight being allowed and canceling subsequent handlers.
         // (Returning true to handler).
         // Not canceling this event will result in Custom Elytra flight event being passed to subsequent listeners.

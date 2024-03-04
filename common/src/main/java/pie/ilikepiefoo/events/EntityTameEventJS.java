@@ -9,12 +9,12 @@ public class EntityTameEventJS extends PlayerEventJS {
     private final Animal animal;
     private final Player player;
 
-    public EntityTameEventJS( Animal animal, Player player ) {
+    public EntityTameEventJS(Animal animal, Player player) {
         this.animal = animal;
         this.player = player;
     }
 
-    public static EntityTameEventJS of( Animal animal, Player player ) {
+    public static EntityTameEventJS of(Animal animal, Player player) {
         return new EntityTameEventJS(animal, player);
     }
 

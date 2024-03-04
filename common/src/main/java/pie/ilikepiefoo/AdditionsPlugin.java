@@ -33,28 +33,24 @@ public class AdditionsPlugin extends KubeJSPlugin {
     }
 
     @Override
-    public void registerBindings( BindingsEvent event ) {
+    public void registerBindings(BindingsEvent event) {
         event.add("DamageSource", CustomDamageSourceJS.class);
         event.add("Structures", Structures.class);
         event.add("Feature", Feature.class);
     }
 
     @Override
-    public void registerTypeWrappers( ScriptType type, TypeWrappers typeWrappers ) {
+    public void registerTypeWrappers(ScriptType type, TypeWrappers typeWrappers) {
         typeWrappers.registerSimple(ChunkPos.class, o -> {
             if (o instanceof ChunkPos chunkPos) {
                 return chunkPos;
-            }
-            else if (o instanceof BlockPos blockPos) {
+            } else if (o instanceof BlockPos blockPos) {
                 return new ChunkPos(blockPos);
-            }
-            else if (o instanceof Long pos) {
+            } else if (o instanceof Long pos) {
                 return new ChunkPos(pos);
-            }
-            else if (o instanceof BlockContainerJS containerJS) {
+            } else if (o instanceof BlockContainerJS containerJS) {
                 return new ChunkPos(containerJS.getPos());
-            }
-            else if (o instanceof Entity entity) {
+            } else if (o instanceof Entity entity) {
                 return entity.chunkPosition();
             }
             return ChunkPos.ZERO;

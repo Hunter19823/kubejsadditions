@@ -23,18 +23,18 @@ public class EventAdapter<T> implements InvocationHandler {
     public final Set<Method> customMethods;
     public final EventHandler[] handlers;
 
-    public EventAdapter( Class<T> eventClass, String eventName, EventHandler... handlers ) {
+    public EventAdapter(Class<T> eventClass, String eventName, EventHandler... handlers) {
         this.name = eventName;
         this.eventClass = eventClass;
         this.handlers = handlers;
         if (!this.eventClass.isInterface()) {
             throw new IllegalArgumentException("Event must be an interface!");
         }
-        this.handler = eventClass.cast(Proxy.newProxyInstance(Thread.currentThread().getContextClassLoader(), new Class<?>[]{ eventClass }, this));
+        this.handler = eventClass.cast(Proxy.newProxyInstance(Thread.currentThread().getContextClassLoader(), new Class<?>[]{eventClass}, this));
         this.customMethods = Arrays.stream(this.eventClass.getMethods())
-                                   .filter(method -> !Modifier.isStatic(method.getModifiers()))
-                                   .filter(method -> !method.getDeclaringClass().equals(Object.class))
-                                   .collect(Collectors.toSet());
+                .filter(method -> !Modifier.isStatic(method.getModifiers()))
+                .filter(method -> !method.getDeclaringClass().equals(Object.class))
+                .collect(Collectors.toSet());
     }
 
     /**
@@ -83,29 +83,26 @@ public class EventAdapter<T> implements InvocationHandler {
      * @see UndeclaredThrowableException
      */
     @Override
-    public Object invoke( Object proxy, Method method, Object[] args ) throws Throwable {
+    public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
         if (this.customMethods.contains(method)) {
             ProxyEventJS event = new ProxyEventJS(method, args);
             EventResult result = EventResult.PASS;
             for (EventHandler handler : this.handlers) {
                 if (result == EventResult.PASS) {
                     result = handler.post(event, this.name);
-                }
-                else {
+                } else {
                     break;
                 }
             }
             if (event.requiresResult()) {
                 if (!event.hasResult()) {
                     throw new IllegalArgumentException("Arch Event requires a result but was provided none!");
-                }
-                else {
+                } else {
                     return event.getResult();
                 }
             }
             return null;
-        }
-        else {
+        } else {
             return InvocationHandler.invokeDefault(proxy, method, args);
         }
     }
