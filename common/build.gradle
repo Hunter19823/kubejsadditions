@@ -1,30 +1,30 @@
 dependencies {
     // We depend on fabric loader here to use the fabric @Environment annotations and get the mixin dependencies
     // Do NOT use other classes from fabric loader
-	modImplementation "net.fabricmc:fabric-loader:${fabric_loader_version}"
+    modImplementation "net.fabricmc:fabric-loader:${fabric_loader_version}"
 
     // Remove the next line if you don't want to depend on the API
-	modApi "dev.architectury:architectury:${architectury_version}"
+    modApi "dev.architectury:architectury:${architectury_version}"
 
-	// compile against the JEI API but do not include it at runtime
-	modApi "mezz.jei:jei-${minecraft_version}-common-api:${jei_version}"
+    // compile against the JEI API but do not include it at runtime
+    modApi "mezz.jei:jei-${minecraft_version}-common-api:${jei_version}"
 
-	// at runtime, use the full JEI jar
-	//modLocalRuntime("mezz.jei:jei-${minecraft_version}-common:${jei_version}")
+    // at runtime, use the full JEI jar
+    //modLocalRuntime("mezz.jei:jei-${minecraft_version}-common:${jei_version}")
 
-	// Depend on KubeJS
-	modApi "dev.latvian.mods:kubejs:${kubejs_version}"
+    // Depend on KubeJS
+    modApi "dev.latvian.mods:kubejs:${kubejs_version}"
 
-	// MixinExtras
-	implementation(annotationProcessor("com.github.llamalad7.mixinextras:mixinextras-fabric:${rootProject.mixin_extras}"))
+    // MixinExtras
+    implementation(annotationProcessor("com.github.llamalad7.mixinextras:mixinextras-fabric:${rootProject.mixin_extras}"))
 }
 
 architectury {
-	common(enabled_platforms.split(","))
+    common(enabled_platforms.split(","))
 }
 
 loom {
-	accessWidenerPath = file("src/main/resources/${mod_id}.accesswidener")
+    accessWidenerPath = file("src/main/resources/${mod_id}.accesswidener")
 }
 
 publishing {
