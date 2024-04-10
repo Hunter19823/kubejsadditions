@@ -12,6 +12,9 @@ dependencies {
     // at runtime, use the full JEI jar
     //modLocalRuntime("mezz.jei:jei-${minecraft_version}-common:${jei_version}")
 
+    // Jade (optional). The API layer should be common, but no common jar is provided.
+    modApi "curse.maven:${jade_project_id}:${jade_fabric_file_id}"
+
     // Depend on KubeJS
     modApi "dev.latvian.mods:kubejs:${kubejs_version}"
 
