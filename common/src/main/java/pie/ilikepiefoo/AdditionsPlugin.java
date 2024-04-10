@@ -11,6 +11,7 @@ import net.minecraft.data.worldgen.Structures;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.levelgen.feature.Feature;
+import pie.ilikepiefoo.compat.jade.JadeEvents;
 import pie.ilikepiefoo.compat.jei.JEIEvents;
 import pie.ilikepiefoo.events.AdditionalEvents;
 import pie.ilikepiefoo.events.custom.ArchEventRegisterEventJS;
@@ -30,6 +31,7 @@ public class AdditionsPlugin extends KubeJSPlugin {
     public void registerEvents() {
         AdditionalEvents.register();
         JEIEvents.register();
+        JadeEvents.register();
     }
 
     @Override
