@@ -39,6 +39,12 @@ repositories {
     maven {
         url "https://maven.blamejared.com"
     }
+    maven {
+        url "https://www.cursemaven.com"
+        content {
+            includeGroup "curse.maven"
+        }
+    }
 }
 
 dependencies {
@@ -50,6 +56,9 @@ dependencies {
 
     // Arch
     modApi "dev.architectury:architectury-${loader}:${architectury_version}"
+
+    // Jade
+    modImplementation("curse.maven:${jade_project_id}:${jade_forge_file_id}")
 
     // JEI Api
     modCompileOnlyApi "mezz.jei:jei-${minecraft_version}-common-api:${jei_version}"
