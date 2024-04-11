@@ -8,6 +8,7 @@ public interface JadeEvents {
     EventGroup GROUP = EventGroup.of("JadeEvents");
 
     EventHandler ON_COMMON_REGISTRATION = GROUP.startup("onCommonRegistration", () -> WailaCommonRegistrationEventJS.class);
+    EventHandler ON_CLIENT_REGISTRATION = GROUP.client("onClientRegistration", () -> WailaClientRegistrationEventJS.class);
 
     static void register() {
         if (Platform.isModLoaded("jade")) {

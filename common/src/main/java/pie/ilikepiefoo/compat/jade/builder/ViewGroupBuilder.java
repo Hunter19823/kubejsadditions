@@ -1,5 +1,6 @@
 package pie.ilikepiefoo.compat.jade.builder;
 
+import snownee.jade.api.view.ClientViewGroup;
 import snownee.jade.api.view.ViewGroup;
 
 import java.util.List;
@@ -43,10 +44,17 @@ public class ViewGroupBuilder<OUT> {
         return this;
     }
 
-    public ViewGroup<OUT> build() {
+    public ViewGroup<OUT> buildCommon() {
         if (this.elements == null) {
             return null;
         }
-        return new ViewGroup<OUT>(this.elements);
+        return new ViewGroup<>(this.elements);
+    }
+
+    public ClientViewGroup<OUT> buildClient() {
+        if (this.elements == null) {
+            return null;
+        }
+        return new ClientViewGroup<>(this.elements);
     }
 }

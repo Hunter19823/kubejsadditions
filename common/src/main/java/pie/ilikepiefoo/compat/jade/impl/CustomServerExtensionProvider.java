@@ -5,7 +5,7 @@ import net.minecraft.server.level.ServerPlayer;
 import org.jetbrains.annotations.Nullable;
 import pie.ilikepiefoo.compat.jade.builder.ServerExtensionProviderBuilder;
 import pie.ilikepiefoo.compat.jade.builder.ViewGroupBuilder;
-import pie.ilikepiefoo.compat.jade.builder.callback.GetGroupsCallbackJS;
+import pie.ilikepiefoo.compat.jade.builder.callback.GetServerGroupsCallbackJS;
 import snownee.jade.api.view.IServerExtensionProvider;
 import snownee.jade.api.view.ViewGroup;
 
@@ -25,7 +25,7 @@ public class CustomServerExtensionProvider<IN, OUT> extends CustomJadeProvider<S
             IN in,
             boolean b
     ) {
-        GetGroupsCallbackJS<IN, OUT> callback = new GetGroupsCallbackJS<>(
+        GetServerGroupsCallbackJS<IN, OUT> callback = new GetServerGroupsCallbackJS<>(
                 serverPlayer,
                 serverLevel,
                 in,
@@ -37,7 +37,7 @@ public class CustomServerExtensionProvider<IN, OUT> extends CustomJadeProvider<S
         }
         return callback.getGroups()
                 .stream()
-                .map(ViewGroupBuilder::build)
+                .map(ViewGroupBuilder::buildCommon)
                 .filter(Objects::nonNull)
                 .collect(Collectors.toList());
     }

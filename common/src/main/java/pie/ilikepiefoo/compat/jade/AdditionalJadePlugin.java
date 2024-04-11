@@ -1,6 +1,5 @@
 package pie.ilikepiefoo.compat.jade;
 
-import dev.latvian.mods.kubejs.script.ScriptType;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import pie.ilikepiefoo.KubeJSAdditions;
@@ -17,12 +16,15 @@ public class AdditionalJadePlugin implements IWailaPlugin {
     public void register(IWailaCommonRegistration registration) {
         LOG.info("Jade Plugin Registering Common Data");
         var event = new WailaCommonRegistrationEventJS(registration);
-        JadeEvents.ON_COMMON_REGISTRATION.post(ScriptType.STARTUP, event);
+        JadeEvents.ON_COMMON_REGISTRATION.post(event);
         event.register();
     }
 
     @Override
     public void registerClient(IWailaClientRegistration registration) {
         LOG.info("Jade Plugin Registering Client Data");
+        var event = new WailaClientRegistrationEventJS(registration);
+        JadeEvents.ON_CLIENT_REGISTRATION.post(event);
+        event.register();
     }
 }
