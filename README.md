@@ -104,13 +104,13 @@ JadeEvents.onClientRegistration((event) => {
 
 For the most part, a lot of these additions are events, however, there are some type wrappers and bindings as well.
 
-# [Bindings](https://github.com/Hunter19823/kubejsadditions/blob/1.19.2/common/src/main/java/pie/ilikepiefoo/AdditionsPlugin.javaL29)
+# [Bindings](https://github.com/Hunter19823/kubejsadditions/blob/1.19.2/common/src/main/java/pie/ilikepiefoo/AdditionsPlugin.java#L29)
 
 - ### Damage Source
 - ### Structures
 - ### Feature
 
-# [Type Wrappers](https://github.com/Hunter19823/kubejsadditions/blob/1.19.2/common/src/main/java/pie/ilikepiefoo/AdditionsPlugin.javaL35)
+# [Type Wrappers](https://github.com/Hunter19823/kubejsadditions/blob/1.19.2/common/src/main/java/pie/ilikepiefoo/AdditionsPlugin.java#L35)
 
 - ### Chunk Pos
 	- Supports:
