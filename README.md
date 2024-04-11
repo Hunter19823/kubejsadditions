@@ -6,10 +6,103 @@ This is a mod that aims to add some additional events, wrappers,
 and functionality to KubeJS that aren't worth PRing into KubeJS itself
 or just take too long as a PR to get merged.
 
+## *Most Recent Addition*:
+
+### Jade Integration
+
+As of version 4.1.0 of KubeJS Additions, you can now fully use Jade's WAILA Plugin API
+to completely customize the information displayed by Jade.
+
+Jade is a fork of HWYLA, which is a fork of WAILA.
+These mod are the ones that adds information about the block you are looking at in the world, to the top of your screen.
+
+Below you may find an example on how to use this to
+
+#### [WailaCommonRegistrationEventJS]([WailaClientRegistrationEventJS](https://github.com/Hunter19823/kubejsadditions/blob/1.20.1/common/src/main/java/pie/ilikepiefoo/compat/jade/WailaCommonRegistrationEventJS.java) (Startup Only)
+
+```js
+// The following would go inside the startup scripts folder.
+// This is a simple example of how to register a block data provider for a block entity.
+
+// Load the BlockEntity Class that you will be providing data for.
+const $BRUSHABLE_BLOCK_ENTITY = Java.loadClass('net.minecraft.world.level.block.entity.BrushableBlockEntity');
+
+// Store a global function so that if we need to reload the function,
+// we do not need to reload the game. Instead we can run /kubejs reload startup_scripts
+global["JadeBrushableBlocksCallback"] = (tag, accessor) => {
+    // Refer to the Jade API for more information on what accessors are.
+    // This specific accessor is a BlockAccessor.
+    const blockEntity = accessor.getBlockEntity();
+    // Return in case there is no block entity
+    if (!blockEntity) return;
+    // Return in case the Brushable Block entity does not have an item.
+    if (!blockEntity.getItem()) return;
+    // Return in case the Brushable Block entity has an empty item.
+    if (blockEntity.getItem().isEmpty()) return;
+    // Store the item's name in the ServerData tag under the name "brushing_result".
+    // Because we only need to conver the Item's name, we can convert the DisplayName componet
+    // to a JSON object and store the string version of that in the tag.
+    tag.putString("brushing_result", Item.of(blockEntity.getItem()).getDisplayName().toJson());
+};
+
+// This is the hook that will be called when the "IWailaPlugin" common registration event is fired.
+// Refer to WailaCommonRegistrationEventJS for more information about the event.
+JadeEvents.onCommonRegistration((event) => {
+    // Register a new block data provider for the Brushable Block entity.
+    event.blockDataProvider('kubejsadditions:brushable_block', $BRUSHABLE_BLOCK_ENTITY)
+            // Our data provider is useless without a callback function.
+            .setCallback((tag, accessor) => {
+                // Fire the global function we defined earlier.
+                global["JadeBrushableBlocksCallback"](tag, accessor);
+            });
+});
+```
+
+#### [WailaClientRegistrationEventJS](https://github.com/Hunter19823/kubejsadditions/blob/1.20.1/common/src/main/java/pie/ilikepiefoo/compat/jade/WailaClientRegistrationEventJS.java) (Client Only)
+
+```js
+// The following would go in the client scripts folder.
+// This is a simple example on how to retrieve the data we registered in the startup scripts.
+
+// Load the Block Class that you will be providing data for.
+const $BRUSHABLE_BLOCK = Java.loadClass('net.minecraft.world.level.block.BrushableBlock');
+
+// Store a global function so that if we need to reload the function,
+// we do not need to reload the game. Instead we can run /kubejs reload client_scripts
+global["JadeBrushableBlocksClientCallback"] = (tooltip, accessor, pluginConfig) => {
+    // Refer to the Jade API for more information on what accessors are.
+    // Get the server data from the accessor.
+    const {serverData} = accessor;
+    // Return in case there is no server data.
+    if (!serverData) return;
+    // Return in case the server data does not contain the key "brushing_result".
+    if (!serverData.contains("brushing_result")) return;
+    // Get the display name tag from the server data.
+    // This should result in a StringTag being returned.
+    const displayNameTag = serverData.get("brushing_result");
+    // Have the TextWrapper binding convert the StringTag into a TextComponent.
+    const displayName = Text.of(displayNameTag);
+    // If the display name is null, return.
+    if (!displayName) return;
+    // Add the display name to the tooltip.
+    tooltip.add(Text.of(["Item: ", Text.of(displayName)]));
+};
+
+// This is the hook that will be called when the "IWailaPlugin" client registration event is fired.
+// Refer to WailaClientRegistrationEventJS for more information about the event.
+JadeEvents.onClientRegistration((event) => {
+    // Register a new block component provider for the Brushable Block.
+    event.block('kubejsadditions:brushable_block', $BRUSHABLE_BLOCK)
+            .tooltip((tooltip, accessor, pluginConfig) => {
+                // Fire the global function we defined earlier.
+                global["JadeBrushableBlocksClientCallback"](tooltip, accessor, pluginConfig);
+            });
+});
+```
+
 ## Features
 
-For the most part, a lot of these additions are events, however, there is some type wrappers
-and bindings as well.
+For the most part, a lot of these additions are events, however, there are some type wrappers and bindings as well.
 
 # [Bindings](https://github.com/Hunter19823/kubejsadditions/blob/1.19.2/common/src/main/java/pie/ilikepiefoo/AdditionsPlugin.javaL29)
 
