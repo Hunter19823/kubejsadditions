@@ -1,5 +1,6 @@
 package pie.ilikepiefoo.compat.jade.impl;
 
+import dev.latvian.mods.kubejs.util.ConsoleJS;
 import pie.ilikepiefoo.compat.jade.builder.ClientExtensionProviderBuilder;
 import pie.ilikepiefoo.compat.jade.builder.ViewGroupBuilder;
 import pie.ilikepiefoo.compat.jade.builder.callback.GetClientGroupsCallbackJS;
@@ -23,7 +24,12 @@ public class CustomClientExtensionProvider<IN, OUT> extends CustomJadeProvider<C
                 accessor,
                 groups
         );
-        builder.getCallback().accept(callback);
+        try {
+            builder.getCallback().accept(callback);
+        } catch (Throwable throwable) {
+            ConsoleJS.CLIENT.error("Error while executing client extension provider callback", throwable);
+            return null;
+        }
         if (callback.getResultingGroups() == null || callback.getResultingGroups().isEmpty()) {
             return null;
         }

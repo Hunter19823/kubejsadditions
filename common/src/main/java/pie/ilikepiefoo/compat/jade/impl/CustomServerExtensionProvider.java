@@ -1,5 +1,6 @@
 package pie.ilikepiefoo.compat.jade.impl;
 
+import dev.latvian.mods.kubejs.util.ConsoleJS;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import org.jetbrains.annotations.Nullable;
@@ -31,7 +32,12 @@ public class CustomServerExtensionProvider<IN, OUT> extends CustomJadeProvider<S
                 in,
                 b
         );
-        builder.getCallback().accept(callback);
+        try {
+            builder.getCallback().accept(callback);
+        } catch (Throwable throwable) {
+            ConsoleJS.STARTUP.error("Error while executing server extension provider callback", throwable);
+            return null;
+        }
         if (callback.getGroups() == null || callback.getGroups().isEmpty()) {
             return null;
         }

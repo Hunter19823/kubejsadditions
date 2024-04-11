@@ -1,5 +1,6 @@
 package pie.ilikepiefoo.compat.jade.impl;
 
+import dev.latvian.mods.kubejs.util.ConsoleJS;
 import org.jetbrains.annotations.Nullable;
 import pie.ilikepiefoo.compat.jade.ITooltipWrapper;
 import pie.ilikepiefoo.compat.jade.builder.EntityComponentProviderBuilder;
@@ -23,7 +24,12 @@ public class CustomEntityComponentProvider extends CustomToggleableProviderBuild
         if (builder.getIconRetriever() == null) {
             return null;
         }
-        return builder.getIconRetriever().getIcon(accessor, config, currentIcon);
+        try {
+            return builder.getIconRetriever().getIcon(accessor, config, currentIcon);
+        } catch (Throwable throwable) {
+            ConsoleJS.CLIENT.error("Error while executing entity component provider icon retriever", throwable);
+            return null;
+        }
     }
 
     @Override
@@ -35,6 +41,10 @@ public class CustomEntityComponentProvider extends CustomToggleableProviderBuild
         if (builder.getTooltipRetriever() == null) {
             return;
         }
-        builder.getTooltipRetriever().appendTooltip(ITooltipWrapper.of(iTooltip), blockAccessor, iPluginConfig);
+        try {
+            builder.getTooltipRetriever().appendTooltip(ITooltipWrapper.of(iTooltip), blockAccessor, iPluginConfig);
+        } catch (Throwable throwable) {
+            ConsoleJS.CLIENT.error("Error while executing entity component provider tooltip retriever", throwable);
+        }
     }
 }
