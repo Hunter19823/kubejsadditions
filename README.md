@@ -14,7 +14,7 @@ or just take too long as a PR to get merged.
 
 ## Custom JEI Category Example
 
-### [JEIEvents.registerCategories](https://github.com/Hunter19823/kubejsadditions/blob/1.20.1/common/src/main/java/pie/ilikepiefoo/compat/jei/events/RegisterCategoriesEventJS.java)
+### [JEIEvents.registerCategories](https://github.com/Hunter19823/kubejsadditions/blob/1.20.1/common/src/main/java/pie/ilikepiefoo/compat/jei/events/RegisterCategoriesEventJS.java)  (Client Only)
 
 ```js
 JEIAddedEvents.registerCategories((event) => {
@@ -110,7 +110,7 @@ global["renderPainfulBlocks"] = (jeiHelpers, recipe, recipeSlotsView, guiGraphic
 }
 ```
 
-### [JEIEvents.registerRecipes](https://github.com/Hunter19823/kubejsadditions/blob/f541be151f96745a0a184c5b3b8c48b0a07a83b3/common/src/main/java/pie/ilikepiefoo/compat/jei/events/RegisterRecipesEventJS.java#L23-L27)
+### [JEIEvents.registerRecipes](https://github.com/Hunter19823/kubejsadditions/blob/f541be151f96745a0a184c5b3b8c48b0a07a83b3/common/src/main/java/pie/ilikepiefoo/compat/jei/events/RegisterRecipesEventJS.java#L23-L27)  (Client Only)
 
 ```js
 // Here we can hook into the JEI recipe registration event to add some recipes to our
@@ -149,7 +149,7 @@ These mod are the ones that adds information about the block you are looking at 
 
 Below you may find an example on how to use this to
 
-#### [WailaCommonRegistrationEventJS]([WailaClientRegistrationEventJS](https://github.com/Hunter19823/kubejsadditions/blob/1.20.1/common/src/main/java/pie/ilikepiefoo/compat/jade/WailaCommonRegistrationEventJS.java) (Startup Only)
+#### [WailaCommonRegistrationEventJS](https://github.com/Hunter19823/kubejsadditions/blob/1.20.1/common/src/main/java/pie/ilikepiefoo/compat/jade/WailaCommonRegistrationEventJS.java) (Startup Only)
 
 ```js
 // The following would go inside the startup scripts folder.
