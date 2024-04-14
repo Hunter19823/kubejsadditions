@@ -21,6 +21,9 @@
         ],
         "jade": [
             "pie.ilikepiefoo.compat.jade.AdditionalJadePlugin"
+        ],
+        "jei_mod_plugin": [
+            "pie.ilikepiefoo.compat.jei.JEIPlugin"
         ]
     },
     "mixins": [],

@@ -1,2 +1,3 @@
 pie.ilikepiefoo.AdditionsPlugin
 pie.ilikepiefoo.fabric.FabricPlugin
+pie.ilikepiefoo.compat.jei.JEIKubeJSPlugin

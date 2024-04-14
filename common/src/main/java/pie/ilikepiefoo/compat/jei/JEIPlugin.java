@@ -14,7 +14,9 @@ import mezz.jei.api.registration.ISubtypeRegistration;
 import mezz.jei.api.registration.IVanillaCategoryExtensionRegistration;
 import mezz.jei.api.runtime.IJeiRuntime;
 import net.minecraft.resources.ResourceLocation;
+import org.jetbrains.annotations.NotNull;
 import pie.ilikepiefoo.KubeJSAdditions;
+import pie.ilikepiefoo.compat.jei.events.JEIEventJS;
 import pie.ilikepiefoo.compat.jei.events.OnRuntimeAvailableEventJS;
 import pie.ilikepiefoo.compat.jei.events.RegisterAdvancedEventJS;
 import pie.ilikepiefoo.compat.jei.events.RegisterCategoriesEventJS;
@@ -34,7 +36,7 @@ public class JEIPlugin implements IModPlugin {
      * The namespace should be your mod's modId.
      */
     @Override
-    public ResourceLocation getPluginUid() {
+    public @NotNull ResourceLocation getPluginUid() {
         return new ResourceLocation(KubeJSAdditions.MOD_ID, "jei_plugin");
     }
 
@@ -70,12 +72,13 @@ public class JEIPlugin implements IModPlugin {
 
     /**
      * Register the categories handled by this plugin.
-     * These are registered before recipes so they can be checked for validity.
+     * These are registered before recipes, so they can be checked for validity.
      *
      * @param registration
      */
     @Override
     public void registerCategories(IRecipeCategoryRegistration registration) {
+        JEIEventJS.JEI_HELPERS = registration.getJeiHelpers();
         JEIEvents.REGISTER_CATEGORIES.post(new RegisterCategoriesEventJS(registration));
     }
 
@@ -87,6 +90,7 @@ public class JEIPlugin implements IModPlugin {
      */
     @Override
     public void registerVanillaCategoryExtensions(IVanillaCategoryExtensionRegistration registration) {
+        JEIEventJS.JEI_HELPERS = registration.getJeiHelpers();
         JEIEvents.REGISTER_VANILLA_CATEGORY_EXTENSIONS.post(new RegisterVanillaCategoryExtensionsEventJS(registration));
     }
 
@@ -97,7 +101,12 @@ public class JEIPlugin implements IModPlugin {
      */
     @Override
     public void registerRecipes(IRecipeRegistration registration) {
-        JEIEvents.REGISTER_RECIPES.post(new RegisterRecipesEventJS(registration));
+        JEIEventJS.JEI_HELPERS = registration.getJeiHelpers();
+        var event = new RegisterRecipesEventJS(registration);
+        JEIEvents.REGISTER_RECIPES.post(event);
+        for (var builder : event.customRecipeListBuilders) {
+            registration.addRecipes(builder.getRecipeType(), builder.getRecipes());
+        }
     }
 
     /**
@@ -107,6 +116,7 @@ public class JEIPlugin implements IModPlugin {
      */
     @Override
     public void registerRecipeTransferHandlers(IRecipeTransferRegistration registration) {
+        JEIEventJS.JEI_HELPERS = registration.getJeiHelpers();
         JEIEvents.REGISTER_RECIPE_TRANSFER_HANDLERS.post(new RegisterRecipeTransferHandlersEventJS(registration));
     }
 
@@ -119,6 +129,7 @@ public class JEIPlugin implements IModPlugin {
      */
     @Override
     public void registerRecipeCatalysts(IRecipeCatalystRegistration registration) {
+        JEIEventJS.JEI_HELPERS = registration.getJeiHelpers();
         JEIEvents.REGISTER_RECIPE_CATALYSTS.post(new RegisterRecipeCatalystsEventJS(registration));
     }
 
@@ -131,6 +142,7 @@ public class JEIPlugin implements IModPlugin {
      */
     @Override
     public void registerGuiHandlers(IGuiHandlerRegistration registration) {
+        JEIEventJS.JEI_HELPERS = registration.getJeiHelpers();
         JEIEvents.REGISTER_GUI_HANDLERS.post(new RegisterGUIHandlersEventJS(registration));
     }
 
@@ -141,6 +153,7 @@ public class JEIPlugin implements IModPlugin {
      */
     @Override
     public void registerAdvanced(IAdvancedRegistration registration) {
+        JEIEventJS.JEI_HELPERS = registration.getJeiHelpers();
         JEIEvents.REGISTER_ADVANCED.post(new RegisterAdvancedEventJS(registration));
     }
 
@@ -151,6 +164,7 @@ public class JEIPlugin implements IModPlugin {
      */
     @Override
     public void onRuntimeAvailable(IJeiRuntime jeiRuntime) {
+        JEIEventJS.JEI_HELPERS = jeiRuntime.getJeiHelpers();
         JEIEvents.ON_RUNTIME_AVAILABLE.post(new OnRuntimeAvailableEventJS(jeiRuntime));
     }
 
