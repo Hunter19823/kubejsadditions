@@ -1,6 +1,7 @@
 package pie.ilikepiefoo.compat.jei.impl;
 
 import com.mojang.blaze3d.platform.InputConstants;
+import dev.latvian.mods.kubejs.util.ConsoleJS;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.gui.builder.IRecipeSlotBuilder;
 import mezz.jei.api.gui.drawable.IDrawable;
@@ -106,7 +107,11 @@ public class CustomRecipeCategory<T> implements IRecipeCategory<T> {
         if (this.builder.getSetRecipeHandler() == null) {
             return;
         }
-        this.builder.getSetRecipeHandler().setRecipe(builder, recipe, focuses);
+        try {
+            this.builder.getSetRecipeHandler().setRecipe(builder, recipe, focuses);
+        } catch (Throwable e) {
+            ConsoleJS.CLIENT.error("Error setting recipe for recipe category: " + this.builder.getRecipeType().getUid(), e);
+        }
     }
 
     /**
@@ -132,11 +137,14 @@ public class CustomRecipeCategory<T> implements IRecipeCategory<T> {
             double mouseX,
             double mouseY
     ) {
-        if (this.builder.getDrawHandler() == null) {
-            IRecipeCategory.super.draw(recipe, recipeSlotsView, guiGraphics, mouseX, mouseY);
-            return;
+        try {
+            if (this.builder.getDrawHandler() != null) {
+                this.builder.getDrawHandler().draw(recipe, recipeSlotsView, guiGraphics, mouseX, mouseY);
+            }
+        } catch (Throwable e) {
+            ConsoleJS.CLIENT.error("Error drawing recipe category: " + this.builder.getRecipeType().getUid(), e);
         }
-        this.builder.getDrawHandler().draw(recipe, recipeSlotsView, guiGraphics, mouseX, mouseY);
+        IRecipeCategory.super.draw(recipe, recipeSlotsView, guiGraphics, mouseX, mouseY);
     }
 
     /**
@@ -159,8 +167,12 @@ public class CustomRecipeCategory<T> implements IRecipeCategory<T> {
             double mouseX,
             double mouseY
     ) {
-        if (this.builder.getTooltipHandler() != null) {
-            return this.builder.getTooltipHandler().getTooltipStrings(recipe, recipeSlotsView, mouseX, mouseY);
+        try {
+            if (this.builder.getTooltipHandler() != null) {
+                return this.builder.getTooltipHandler().getTooltipStrings(recipe, recipeSlotsView, mouseX, mouseY);
+            }
+        } catch (Throwable e) {
+            ConsoleJS.CLIENT.error("Error getting tooltip strings for recipe category: " + this.builder.getRecipeType().getUid(), e);
         }
         return IRecipeCategory.super.getTooltipStrings(recipe, recipeSlotsView, mouseX, mouseY);
     }
@@ -178,8 +190,12 @@ public class CustomRecipeCategory<T> implements IRecipeCategory<T> {
      */
     @Override
     public boolean handleInput(T recipe, double mouseX, double mouseY, InputConstants.Key input) {
-        if (this.builder.getInputHandler() != null) {
-            return this.builder.getInputHandler().handleInput(recipe, mouseX, mouseY, input);
+        try {
+            if (this.builder.getInputHandler() != null) {
+                return this.builder.getInputHandler().handleInput(recipe, mouseX, mouseY, input);
+            }
+        } catch (Throwable e) {
+            ConsoleJS.CLIENT.error("Error handling input for recipe category: " + this.builder.getRecipeType().getUid(), e);
         }
         return IRecipeCategory.super.handleInput(recipe, mouseX, mouseY, input);
     }
@@ -191,8 +207,12 @@ public class CustomRecipeCategory<T> implements IRecipeCategory<T> {
      */
     @Override
     public boolean isHandled(T recipe) {
-        if (this.builder.getIsRecipeHandledByCategory() != null) {
-            return this.builder.getIsRecipeHandledByCategory().isHandled(recipe);
+        try {
+            if (this.builder.getIsRecipeHandledByCategory() != null) {
+                return this.builder.getIsRecipeHandledByCategory().isHandled(recipe);
+            }
+        } catch (Throwable e) {
+            ConsoleJS.CLIENT.error("Error checking if recipe is handled by category: " + this.builder.getRecipeType().getUid(), e);
         }
         return IRecipeCategory.super.isHandled(recipe);
     }
@@ -210,8 +230,12 @@ public class CustomRecipeCategory<T> implements IRecipeCategory<T> {
      */
     @Override
     public @Nullable ResourceLocation getRegistryName(T recipe) {
-        if (this.builder.getGetRegisterName() != null) {
-            return this.builder.getGetRegisterName().getRegistryName(recipe);
+        try {
+            if (this.builder.getGetRegisterName() != null) {
+                return this.builder.getGetRegisterName().getRegistryName(recipe);
+            }
+        } catch (Throwable e) {
+            ConsoleJS.CLIENT.error("Error getting registry name for recipe category: " + this.builder.getRecipeType().getUid(), e);
         }
         return IRecipeCategory.super.getRegistryName(recipe);
     }

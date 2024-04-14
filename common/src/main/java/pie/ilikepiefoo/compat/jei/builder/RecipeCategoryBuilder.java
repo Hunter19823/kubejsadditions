@@ -194,6 +194,10 @@ public class RecipeCategoryBuilder<T> {
         return setTooltipHandler(tooltipHandler);
     }
 
+    public RecipeCategoryBuilder<T> handleLookup(SetRecipeHandler<T> recipeHandler) {
+        return this.setSetRecipeHandler(recipeHandler);
+    }
+
 
     @FunctionalInterface
     public interface SetRecipeHandler<T> {
