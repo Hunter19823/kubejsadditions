@@ -40,7 +40,7 @@ public class WailaCommonRegistrationEventJS extends EventJS {
      * @param block    The highest level class to apply to
      * @return A builder for the data provider
      */
-    public ServerDataProviderBuilder<BlockAccessor> blockDataProvider(ResourceLocation location, Class<? extends BlockEntity> block) {
+    public ServerDataProviderBuilder<BlockAccessor> blockDataProvider(ResourceLocation location, Class<?> block) {
         ServerDataProviderBuilder<BlockAccessor> builder = new ServerDataProviderBuilder<>(location);
         registrationCallbacks.add(() -> registration.registerBlockDataProvider(new CustomServerDataProvider<>(builder), block));
         return builder;
