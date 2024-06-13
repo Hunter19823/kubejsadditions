@@ -16,13 +16,15 @@ public class RegisterCategoriesEventJS extends JEIEventJS {
         this.data = data;
     }
 
-    public void custom(ResourceLocation recipeType, Consumer<RecipeCategoryBuilder<CustomJSRecipe>> categoryConsumer) {
-        register(getOrCreateCustomRecipeType(recipeType), categoryConsumer);
+    public CustomRecipeCategory<?> custom(ResourceLocation recipeType, Consumer<RecipeCategoryBuilder<CustomJSRecipe>> categoryConsumer) {
+        return register(getOrCreateCustomRecipeType(recipeType), categoryConsumer);
     }
 
-    public <T> void register(RecipeType<T> recipeType, Consumer<RecipeCategoryBuilder<T>> categoryConsumer) {
+    public <T> CustomRecipeCategory<T> register(RecipeType<T> recipeType, Consumer<RecipeCategoryBuilder<T>> categoryConsumer) {
         RecipeCategoryBuilder<T> category = new RecipeCategoryBuilder<>(recipeType, data.getJeiHelpers());
         categoryConsumer.accept(category);
-        data.addRecipeCategories(new CustomRecipeCategory<>(category));
+        var customRecipeCategory = new CustomRecipeCategory<>(category);
+        data.addRecipeCategories(customRecipeCategory);
+        return customRecipeCategory;
     }
 }
