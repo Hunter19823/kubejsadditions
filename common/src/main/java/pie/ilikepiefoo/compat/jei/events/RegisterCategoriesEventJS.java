@@ -22,9 +22,9 @@ public class RegisterCategoriesEventJS extends JEIEventJS {
         return register(getOrCreateCustomRecipeType(recipeType), categoryConsumer);
     }
 
-    public <T> CustomRecipeCategory<T> wrap(ResourceLocation recipeType, IRecipeCategory<T> existingCategory, Consumer<RecipeCategoryWrapperBuilder<T>> categoryConsumer) {
+    public <T> CustomRecipeCategory<T> wrap(RecipeType<T> recipeType, IRecipeCategory<T> existingCategory, Consumer<RecipeCategoryWrapperBuilder<T>> categoryConsumer) {
         RecipeCategoryWrapperBuilder<T> builder = new RecipeCategoryWrapperBuilder<>(
-                getOrCreateCustomOverriddenRecipeType(recipeType, existingCategory.getRecipeType()),
+                recipeType,
                 data.getJeiHelpers(),
                 existingCategory
         );
