@@ -96,14 +96,17 @@ public class EventAdapter<T> implements InvocationHandler {
             }
             if (event.requiresResult()) {
                 if (!event.hasResult()) {
-                    throw new IllegalArgumentException("Arch Event requires a result but was provided none!");
+                    throw new IllegalArgumentException("Event requires a result but was not provided one!");
                 } else {
                     return event.getResult();
                 }
             }
             return null;
-        } else {
+        }
+        if (method.isDefault()) {
             return InvocationHandler.invokeDefault(proxy, method, args);
+        } else {
+            return method.invoke(this, args);
         }
     }
 
