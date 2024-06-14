@@ -1,9 +1,11 @@
 package pie.ilikepiefoo.compat.jei.events;
 
 import mezz.jei.api.recipe.RecipeType;
+import mezz.jei.api.recipe.category.IRecipeCategory;
 import mezz.jei.api.registration.IRecipeCategoryRegistration;
 import net.minecraft.resources.ResourceLocation;
 import pie.ilikepiefoo.compat.jei.builder.RecipeCategoryBuilder;
+import pie.ilikepiefoo.compat.jei.builder.RecipeCategoryWrapperBuilder;
 import pie.ilikepiefoo.compat.jei.impl.CustomJSRecipe;
 import pie.ilikepiefoo.compat.jei.impl.CustomRecipeCategory;
 
@@ -18,6 +20,18 @@ public class RegisterCategoriesEventJS extends JEIEventJS {
 
     public CustomRecipeCategory<?> custom(ResourceLocation recipeType, Consumer<RecipeCategoryBuilder<CustomJSRecipe>> categoryConsumer) {
         return register(getOrCreateCustomRecipeType(recipeType), categoryConsumer);
+    }
+
+    public <T> CustomRecipeCategory<T> wrap(ResourceLocation recipeType, IRecipeCategory<T> existingCategory, Consumer<RecipeCategoryWrapperBuilder<T>> categoryConsumer) {
+        RecipeCategoryWrapperBuilder<T> builder = new RecipeCategoryWrapperBuilder<>(
+                getOrCreateCustomOverriddenRecipeType(recipeType, existingCategory.getRecipeType()),
+                data.getJeiHelpers(),
+                existingCategory
+        );
+        categoryConsumer.accept(builder);
+        var customRecipeCategory = new CustomRecipeCategory<>(builder);
+        data.addRecipeCategories(customRecipeCategory);
+        return customRecipeCategory;
     }
 
     public <T> CustomRecipeCategory<T> register(RecipeType<T> recipeType, Consumer<RecipeCategoryBuilder<T>> categoryConsumer) {
