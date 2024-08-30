@@ -1,13 +1,11 @@
 pluginManagement {
     repositories {
-        maven { url "https://maven.fabricmc.net/" }
-        maven { url "https://maven.architectury.dev/" }
-        maven { url "https://maven.minecraftforge.net/" }
         gradlePluginPortal()
+        mavenCentral()
+        maven { url "https://maven.creeperhost.net/" }
     }
 }
 
-include("common")
-include("fabric")
-include("forge")
-
+plugins {
+    id 'org.gradle.toolchains.foojay-resolver-convention' version '0.8.0'
+}
