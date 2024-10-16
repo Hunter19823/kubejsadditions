@@ -14,7 +14,6 @@ import net.minecraft.world.level.levelgen.feature.Feature;
 import pie.ilikepiefoo.compat.jei.JEIEvents;
 import pie.ilikepiefoo.events.AdditionalEvents;
 import pie.ilikepiefoo.events.custom.ArchEventRegisterEventJS;
-import pie.ilikepiefoo.player.CustomDamageSourceJS;
 
 public class AdditionsPlugin extends KubeJSPlugin {
 
@@ -34,7 +33,6 @@ public class AdditionsPlugin extends KubeJSPlugin {
 
     @Override
     public void registerBindings( BindingsEvent event ) {
-        event.add("DamageSource", CustomDamageSourceJS.class);
         event.add("Structures", Structures.class);
         event.add("Feature", Feature.class);
     }
