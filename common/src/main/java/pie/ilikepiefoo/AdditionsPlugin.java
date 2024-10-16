@@ -20,7 +20,6 @@ import pie.ilikepiefoo.compat.jei.JEIEvents;
 import pie.ilikepiefoo.compat.jei.events.JEIEventJS;
 import pie.ilikepiefoo.events.AdditionalEvents;
 import pie.ilikepiefoo.events.custom.ArchEventRegisterEventJS;
-import pie.ilikepiefoo.player.CustomDamageSourceJS;
 
 public class AdditionsPlugin extends KubeJSPlugin {
 
