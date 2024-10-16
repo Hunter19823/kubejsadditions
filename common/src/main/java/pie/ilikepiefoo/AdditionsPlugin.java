@@ -41,7 +41,6 @@ public class AdditionsPlugin extends KubeJSPlugin {
 
     @Override
     public void registerBindings(BindingsEvent event) {
-        event.add("DamageSource", CustomDamageSourceJS.class);
         event.add("Structures", Structures.class);
         event.add("Feature", Feature.class);
     }
