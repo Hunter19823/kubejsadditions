@@ -18,6 +18,7 @@ or just take too long as a PR to get merged.
 
 ```js
 JEIAddedEvents.registerCategories((event) => {
+    const guiHelper = event.JEI_HELPERS.guiHelper;
     // Register a new CustomCategory with the id "kubejsadditions:painful_blocks".
     event.custom("kubejsadditions:painful_blocks", (category) => {
         // Set the title of the category to "Painful Blocks".
