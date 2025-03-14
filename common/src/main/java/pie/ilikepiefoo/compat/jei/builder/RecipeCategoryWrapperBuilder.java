@@ -20,6 +20,7 @@ public class RecipeCategoryWrapperBuilder<T> extends RecipeCategoryBuilder<T> {
         this.setDrawHandler(recipeCategory::draw);
         this.setIsRecipeHandledByCategory(recipeCategory::isHandled);
         this.setSetRecipeHandler(recipeCategory::setRecipe);
+        this.setCreateRecipeExtrasHandler(recipeCategory::createRecipeExtras);
         this.setTooltipHandler(recipeCategory::getTooltipStrings);
         this.setInputHandler(recipeCategory::handleInput);
         this.setTooltipHandler(recipeCategory::getTooltipStrings);
@@ -34,4 +35,3 @@ public class RecipeCategoryWrapperBuilder<T> extends RecipeCategoryBuilder<T> {
         return sourceCategory;
     }
 }
-
