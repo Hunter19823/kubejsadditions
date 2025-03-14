@@ -6,6 +6,7 @@ import mezz.jei.api.gui.builder.IRecipeSlotBuilder;
 import mezz.jei.api.gui.drawable.IDrawable;
 import mezz.jei.api.gui.ingredient.IRecipeSlotTooltipCallback;
 import mezz.jei.api.gui.ingredient.IRecipeSlotsView;
+import mezz.jei.api.gui.widgets.IRecipeExtrasBuilder;
 import mezz.jei.api.helpers.IGuiHelper;
 import mezz.jei.api.helpers.IJeiHelpers;
 import mezz.jei.api.recipe.IFocusGroup;
@@ -34,12 +35,12 @@ public class RecipeCategoryBuilder<T> {
     private int width;
     private int height;
     private SetRecipeHandler<T> setRecipeHandler;
+    private CreateRecipeExtrasHandler<T> createRecipeExtrasHandler;
     private DrawHandler<T> drawHandler;
     private TooltipHandler<T> tooltipHandler;
     private InputHandler<T> inputHandler;
     private IsRecipeHandledByCategory<T> isRecipeHandledByCategory;
     private GetRegisterName<T> getRegisterName;
-
 
     public RecipeCategoryBuilder(@NotNull RecipeType<T> recipeType, @NotNull IJeiHelpers jeiHelpers) {
         this.recipeType = recipeType;
@@ -133,6 +134,15 @@ public class RecipeCategoryBuilder<T> {
         return this;
     }
 
+    public CreateRecipeExtrasHandler<T> getCreateRecipeExtrasHandler() {
+        return createRecipeExtrasHandler;
+    }
+
+    public RecipeCategoryBuilder<T> setCreateRecipeExtrasHandler(CreateRecipeExtrasHandler<T> setRecipeExtrasHandler) {
+        this.createRecipeExtrasHandler = setRecipeExtrasHandler;
+        return this;
+    }
+
     public DrawHandler<T> getDrawHandler() {
         return drawHandler;
     }
@@ -198,7 +208,6 @@ public class RecipeCategoryBuilder<T> {
         return this.setSetRecipeHandler(recipeHandler);
     }
 
-
     @FunctionalInterface
     public interface SetRecipeHandler<T> {
         /**
@@ -208,6 +217,12 @@ public class RecipeCategoryBuilder<T> {
          * @since 9.4.0
          */
         void setRecipe(IRecipeLayoutBuilder builder, T recipe, IFocusGroup focuses);
+    }
+
+    @FunctionalInterface
+    public interface CreateRecipeExtrasHandler<T> {
+        void createRecipeExtras(IRecipeExtrasBuilder builder, T recipe,
+                IFocusGroup focuses);
     }
 
     @FunctionalInterface

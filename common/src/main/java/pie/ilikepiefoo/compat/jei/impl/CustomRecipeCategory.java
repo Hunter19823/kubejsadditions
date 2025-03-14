@@ -7,6 +7,7 @@ import mezz.jei.api.gui.builder.IRecipeSlotBuilder;
 import mezz.jei.api.gui.drawable.IDrawable;
 import mezz.jei.api.gui.ingredient.IRecipeSlotTooltipCallback;
 import mezz.jei.api.gui.ingredient.IRecipeSlotsView;
+import mezz.jei.api.gui.widgets.IRecipeExtrasBuilder;
 import mezz.jei.api.helpers.IGuiHelper;
 import mezz.jei.api.ingredients.IIngredientType;
 import mezz.jei.api.recipe.IFocusGroup;
@@ -145,6 +146,33 @@ public class CustomRecipeCategory<T> implements IRecipeCategory<T> {
             ConsoleJS.CLIENT.error("Error drawing recipe category: " + this.builder.getRecipeType().getUid(), e);
         }
         IRecipeCategory.super.draw(recipe, recipeSlotsView, guiGraphics, mouseX, mouseY);
+    }
+
+    /**
+     * Create per-recipe extras like {@link IRecipeWidget} and
+     * {@link IJeiInputHandler}.
+     *
+     * These have access to a specific recipe, and will persist as long as a recipe
+     * layout is on screen,
+     * so they can be used for caching and displaying recipe-specific
+     * information more easily than from the recipe category directly.
+     *
+     * @param builder the recipe extras builder to draw the extra widgets
+     * @param recipe  the recipe to draw extras for
+     * @param focuses the focus areas of the recipe
+     * @since 15.9.0
+     */
+    @Override
+    public void createRecipeExtras(IRecipeExtrasBuilder builder, T recipe, IFocusGroup focuses) {
+        if (this.builder.getCreateRecipeExtrasHandler() == null) {
+            return;
+        }
+        try {
+            this.builder.getCreateRecipeExtrasHandler().createRecipeExtras(builder, recipe, focuses);
+        } catch (Throwable e) {
+            ConsoleJS.CLIENT
+                    .error("Error creating recipe extras for category: " + this.builder.getRecipeType().getUid(), e);
+        }
     }
 
     /**
