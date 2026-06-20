@@ -3,7 +3,9 @@ package pie.ilikepiefoo;
 import dev.latvian.mods.kubejs.event.EventGroupRegistry;
 import dev.latvian.mods.kubejs.level.BlockContainerJS;
 import dev.latvian.mods.kubejs.plugin.KubeJSPlugin;
+import dev.latvian.mods.kubejs.script.ScriptType;
 import dev.latvian.mods.kubejs.script.TypeWrapperRegistry;
+import mezz.jei.api.gui.drawable.IDrawable;
 import mezz.jei.api.recipe.RecipeType;
 import mezz.jei.api.recipe.category.IRecipeCategory;
 import net.minecraft.core.BlockPos;
@@ -12,21 +14,24 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.ChunkPos;
 import net.neoforged.fml.ModList;
 import pie.ilikepiefoo.compat.jade.JadeEvents;
+import pie.ilikepiefoo.compat.jei.JEIDrawableWrapper;
 import pie.ilikepiefoo.compat.jei.JEIEvents;
 import pie.ilikepiefoo.compat.jei.events.JEIEventJS;
 import pie.ilikepiefoo.events.AdditionalEvents;
+import pie.ilikepiefoo.events.custom.ArchEventRegisterEventJS;
 
 public class AdditionsPlugin implements KubeJSPlugin {
 
     @Override
     public void initStartup() {
+        AdditionalEvents.ARCH_EVENT_REGISTER.post(ScriptType.STARTUP, new ArchEventRegisterEventJS());
     }
 
     @Override
     public void registerEvents(EventGroupRegistry registry) {
-        AdditionalEvents.register();
-        JEIEvents.register();
-        JadeEvents.register();
+        AdditionalEvents.register(registry);
+        JEIEvents.register(registry);
+        JadeEvents.register(registry);
     }
 
     @Override
@@ -47,6 +52,9 @@ public class AdditionsPlugin implements KubeJSPlugin {
         });
 
         if (ModList.get().isLoaded("jei")) {
+            if (registry.scriptType() == ScriptType.CLIENT) {
+                registry.register(IDrawable.class, JEIDrawableWrapper::of);
+            }
             registry.register(RecipeType.class, (object) -> {
                 if (object instanceof RecipeType<?> recipeType) {
                     return recipeType;

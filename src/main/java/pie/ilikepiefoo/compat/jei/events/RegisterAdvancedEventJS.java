@@ -16,6 +16,6 @@ public class RegisterAdvancedEventJS extends JEIEventJS {
     }
 
     public <T> CustomRecipeCategoryDecorator<T> categoryDecorator(CustomRecipeCategoryDecorator.DrawDecorator<T> drawDecorator) {
-        return new CustomRecipeCategoryDecorator<>(drawDecorator, (t, r, c, s, x, y) -> t);
+        return new CustomRecipeCategoryDecorator<>(drawDecorator, (tooltips, recipe, category, slots, mouseX, mouseY) -> tooltips);
     }
 }

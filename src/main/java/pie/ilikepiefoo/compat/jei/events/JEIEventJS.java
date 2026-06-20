@@ -1,6 +1,7 @@
 package pie.ilikepiefoo.compat.jei.events;
 
-import dev.latvian.mods.kubejs.event.EventJS;
+
+import dev.latvian.mods.kubejs.event.KubeEvent;
 import mezz.jei.api.helpers.IJeiHelpers;
 import mezz.jei.api.recipe.RecipeType;
 import net.minecraft.resources.ResourceLocation;
@@ -9,7 +10,7 @@ import pie.ilikepiefoo.compat.jei.impl.CustomJSRecipe;
 import java.util.Map;
 import java.util.TreeMap;
 
-public class JEIEventJS extends EventJS {
+public class JEIEventJS implements KubeEvent {
     public static final Map<ResourceLocation, RecipeType<CustomJSRecipe>> customRecipeTypes = new TreeMap<>();
     public static final Map<ResourceLocation, RecipeType> overriddenRecipeTypes = new TreeMap<>();
     public static IJeiHelpers JEI_HELPERS;

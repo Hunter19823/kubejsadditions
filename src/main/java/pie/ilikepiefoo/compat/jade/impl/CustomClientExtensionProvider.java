@@ -1,6 +1,6 @@
 package pie.ilikepiefoo.compat.jade.impl;
 
-import dev.latvian.mods.kubejs.util.ConsoleJS;
+import dev.latvian.mods.kubejs.script.ConsoleJS;
 import pie.ilikepiefoo.compat.jade.builder.ClientExtensionProviderBuilder;
 import pie.ilikepiefoo.compat.jade.builder.ViewGroupBuilder;
 import pie.ilikepiefoo.compat.jade.builder.callback.GetClientGroupsCallbackJS;

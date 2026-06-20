@@ -4,7 +4,9 @@ import mezz.jei.api.helpers.IJeiHelpers;
 import mezz.jei.api.recipe.RecipeType;
 import mezz.jei.api.recipe.category.IRecipeCategory;
 import org.jetbrains.annotations.NotNull;
+import pie.ilikepiefoo.compat.jei.impl.ComponentListTooltipBuilder;
 
+@SuppressWarnings("removal")
 public class RecipeCategoryWrapperBuilder<T> extends RecipeCategoryBuilder<T> {
     private final IRecipeCategory<T> sourceCategory;
 
@@ -20,9 +22,12 @@ public class RecipeCategoryWrapperBuilder<T> extends RecipeCategoryBuilder<T> {
         this.setDrawHandler(recipeCategory::draw);
         this.setIsRecipeHandledByCategory(recipeCategory::isHandled);
         this.setSetRecipeHandler(recipeCategory::setRecipe);
-        this.setTooltipHandler(recipeCategory::getTooltipStrings);
-        this.setInputHandler(recipeCategory::handleInput);
-        this.setTooltipHandler(recipeCategory::getTooltipStrings);
+        this.setTooltipHandler((recipe, view, mouseX, mouseY) -> {
+            var tooltipBuilder = new ComponentListTooltipBuilder();
+            sourceCategory.getTooltip(tooltipBuilder, recipe, view, mouseX, mouseY);
+            return tooltipBuilder.getComponents();
+        });
+        this.setInputHandler(sourceCategory::handleInput);
         this.title(recipeCategory.getTitle());
         this.background(recipeCategory.getBackground());
         this.icon(recipeCategory.getIcon());
@@ -34,4 +39,3 @@ public class RecipeCategoryWrapperBuilder<T> extends RecipeCategoryBuilder<T> {
         return sourceCategory;
     }
 }
-

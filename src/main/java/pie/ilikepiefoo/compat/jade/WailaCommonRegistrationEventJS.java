@@ -1,6 +1,6 @@
 package pie.ilikepiefoo.compat.jade;
 
-import dev.latvian.mods.kubejs.event.EventJS;
+import dev.latvian.mods.kubejs.event.KubeEvent;
 import dev.latvian.mods.rhino.util.HideFromJS;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
@@ -20,7 +20,7 @@ import snownee.jade.api.view.IServerExtensionProvider;
 import java.util.ArrayList;
 import java.util.List;
 
-public class WailaCommonRegistrationEventJS extends EventJS {
+public class WailaCommonRegistrationEventJS implements KubeEvent {
     private final IWailaCommonRegistration registration;
     private final List<Runnable> registrationCallbacks;
 
@@ -60,7 +60,7 @@ public class WailaCommonRegistrationEventJS extends EventJS {
     }
 
     /**
-     * Register an {@link IServerExtensionProvider<T,ItemStack>} instance for data syncing purposes.
+     * Register an {@link IServerExtensionProvider} instance for data syncing purposes.
      *
      * @param location     The unique identifier used for the Jade Provider instance
      * @param highestClass The highest level class to apply to
@@ -74,7 +74,7 @@ public class WailaCommonRegistrationEventJS extends EventJS {
     }
 
     /**
-     * Register an {@link IServerExtensionProvider<T,CompoundTag>} instance for data syncing purposes.
+     * Register an {@link IServerExtensionProvider} instance for data syncing purposes.
      *
      * @param location     The unique identifier used for the Jade Provider instance
      * @param highestClass The highest level class to apply to
@@ -88,7 +88,7 @@ public class WailaCommonRegistrationEventJS extends EventJS {
     }
 
     /**
-     * Register an {@link IServerExtensionProvider<T,CompoundTag>} instance for data syncing purposes.
+     * Register an {@link IServerExtensionProvider} instance for data syncing purposes.
      *
      * @param location     The unique identifier used for the Jade Provider instance
      * @param highestClass The highest level class to apply to
@@ -102,7 +102,7 @@ public class WailaCommonRegistrationEventJS extends EventJS {
     }
 
     /**
-     * Register an {@link IServerExtensionProvider<T,CompoundTag>} instance for data syncing purposes.
+     * Register an {@link IServerExtensionProvider} instance for data syncing purposes.
      *
      * @param location     The unique identifier used for the Jade Provider instance
      * @param highestClass The highest level class to apply to

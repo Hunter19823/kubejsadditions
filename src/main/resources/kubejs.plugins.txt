@@ -1,2 +1,1 @@
 pie.ilikepiefoo.AdditionsPlugin
-pie.ilikepiefoo.compat.jei.JEIKubeJSPlugin

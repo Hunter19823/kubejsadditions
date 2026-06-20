@@ -1,9 +1,10 @@
 package pie.ilikepiefoo.compat.jei.impl;
 
 import com.mojang.blaze3d.platform.InputConstants;
-import dev.latvian.mods.kubejs.util.ConsoleJS;
+import dev.latvian.mods.kubejs.script.ConsoleJS;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.gui.builder.IRecipeSlotBuilder;
+import mezz.jei.api.gui.builder.ITooltipBuilder;
 import mezz.jei.api.gui.drawable.IDrawable;
 import mezz.jei.api.gui.ingredient.IRecipeSlotTooltipCallback;
 import mezz.jei.api.gui.ingredient.IRecipeSlotsView;
@@ -18,8 +19,6 @@ import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import pie.ilikepiefoo.compat.jei.builder.RecipeCategoryBuilder;
-
-import java.util.List;
 
 public class CustomRecipeCategory<T> implements IRecipeCategory<T> {
 
@@ -117,7 +116,7 @@ public class CustomRecipeCategory<T> implements IRecipeCategory<T> {
     /**
      * Draw extras or additional info about the recipe.
      * Use the mouse position for things like button highlights.
-     * Tooltips are handled by {@link #getTooltipStrings(Object, IRecipeSlotsView, double, double)}
+     * Tooltips are handled by {@link #getTooltip(ITooltipBuilder, Object, IRecipeSlotsView, double, double)}
      *
      * @param recipe          the current recipe being drawn.
      * @param recipeSlotsView a view of the current recipe slots being drawn.
@@ -161,7 +160,8 @@ public class CustomRecipeCategory<T> implements IRecipeCategory<T> {
      * @since 9.3.0
      */
     @Override
-    public @NotNull List<Component> getTooltipStrings(
+    public void getTooltip(
+            ITooltipBuilder tooltip,
             T recipe,
             IRecipeSlotsView recipeSlotsView,
             double mouseX,
@@ -169,12 +169,13 @@ public class CustomRecipeCategory<T> implements IRecipeCategory<T> {
     ) {
         try {
             if (this.builder.getTooltipHandler() != null) {
-                return this.builder.getTooltipHandler().getTooltipStrings(recipe, recipeSlotsView, mouseX, mouseY);
+                tooltip.addAll(this.builder.getTooltipHandler().getTooltipStrings(recipe, recipeSlotsView, mouseX, mouseY));
+                return;
             }
         } catch (Throwable e) {
             ConsoleJS.CLIENT.error("Error getting tooltip strings for recipe category: " + this.builder.getRecipeType().getUid(), e);
         }
-        return IRecipeCategory.super.getTooltipStrings(recipe, recipeSlotsView, mouseX, mouseY);
+        IRecipeCategory.super.getTooltip(tooltip, recipe, recipeSlotsView, mouseX, mouseY);
     }
 
     /**
@@ -189,6 +190,7 @@ public class CustomRecipeCategory<T> implements IRecipeCategory<T> {
      * @since 8.3.0
      */
     @Override
+    @SuppressWarnings("removal")
     public boolean handleInput(T recipe, double mouseX, double mouseY, InputConstants.Key input) {
         try {
             if (this.builder.getInputHandler() != null) {

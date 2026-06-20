@@ -1,7 +1,7 @@
 package pie.ilikepiefoo.util;
 
-import dev.latvian.mods.kubejs.event.EventHandler;
 import dev.latvian.mods.kubejs.event.EventResult;
+import dev.latvian.mods.kubejs.event.TargetedEventHandler;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import pie.ilikepiefoo.events.ProxyEventJS;
@@ -21,9 +21,10 @@ public class EventAdapter<T> implements InvocationHandler {
     public final T handler;
     public final Class<T> eventClass;
     public final Set<Method> customMethods;
-    public final EventHandler[] handlers;
+    public final TargetedEventHandler<String>[] handlers;
 
-    public EventAdapter(Class<T> eventClass, String eventName, EventHandler... handlers) {
+    @SafeVarargs
+    public EventAdapter(Class<T> eventClass, String eventName, TargetedEventHandler<String>... handlers) {
         this.name = eventName;
         this.eventClass = eventClass;
         this.handlers = handlers;
@@ -87,7 +88,7 @@ public class EventAdapter<T> implements InvocationHandler {
         if (this.customMethods.contains(method)) {
             ProxyEventJS event = new ProxyEventJS(method, args);
             EventResult result = EventResult.PASS;
-            for (EventHandler handler : this.handlers) {
+            for (TargetedEventHandler<String> handler : this.handlers) {
                 if (result == EventResult.PASS) {
                     result = handler.post(event, this.name);
                 } else {

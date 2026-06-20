@@ -1,6 +1,7 @@
 package pie.ilikepiefoo;
 
 import dev.latvian.mods.kubejs.event.EventResult;
+import dev.latvian.mods.kubejs.script.ScriptType;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
@@ -30,21 +31,21 @@ public class EventHandler {
         if (event.getEntity() instanceof ServerPlayer player) {
             ResourceKey<Level> from = event.getFrom();
             ResourceKey<Level> to = event.getTo();
-            AdditionalEvents.PLAYER_CHANGE_DIMENSION.post(new PlayerChangeDimensionEventJS(player, from, to));
+            AdditionalEvents.PLAYER_CHANGE_DIMENSION.post(ScriptType.SERVER, new PlayerChangeDimensionEventJS(player, from, to));
         }
     }
 
     @SubscribeEvent
     public static void onPlayerClone(PlayerEvent.Clone event) {
         if (event.getOriginal() instanceof ServerPlayer oldPlayer && event.getEntity() instanceof ServerPlayer newPlayer) {
-            AdditionalEvents.PLAYER_CLONE.post(new PlayerCloneEventJS(oldPlayer, newPlayer, event.isWasDeath()));
+            AdditionalEvents.PLAYER_CLONE.post(ScriptType.SERVER, new PlayerCloneEventJS(oldPlayer, newPlayer, event.isWasDeath()));
         }
     }
 
     @SubscribeEvent
     public static void onPlayerRespawn(PlayerEvent.PlayerRespawnEvent event) {
         if (event.getEntity() instanceof ServerPlayer serverPlayer) {
-            AdditionalEvents.PLAYER_RESPAWN.post(new PlayerRespawnEventJS(serverPlayer, event.isEndConquered()));
+            AdditionalEvents.PLAYER_RESPAWN.post(ScriptType.SERVER, new PlayerRespawnEventJS(serverPlayer, event.isEndConquered()));
         }
     }
 
@@ -58,7 +59,7 @@ public class EventHandler {
             int prevX = event.getOldPos().getX();
             int prevY = event.getOldPos().getY();
             int prevZ = event.getOldPos().getZ();
-            AdditionalEvents.ENTITY_ENTER_CHUNK.post(new EntityEnterChunkEventJS(entity, chunkX, chunkY, chunkZ, prevX, prevY, prevZ));
+            AdditionalEvents.ENTITY_ENTER_CHUNK.post(ScriptType.SERVER, new EntityEnterChunkEventJS(entity, chunkX, chunkY, chunkZ, prevX, prevY, prevZ));
         }
     }
 
@@ -67,7 +68,7 @@ public class EventHandler {
         Animal animal = event.getAnimal();
         Player player = event.getTamer();
         if (player instanceof ServerPlayer serverPlayer) {
-            EventResult result = AdditionalEvents.ENTITY_TAME.post(new EntityTameEventJS(animal, player));
+            EventResult result = AdditionalEvents.ENTITY_TAME.post(ScriptType.SERVER, new EntityTameEventJS(animal, player));
             result.applyCancel(event);
         }
     }

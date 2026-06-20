@@ -1,6 +1,7 @@
 package pie.ilikepiefoo.compat.jei;
 
 import dev.latvian.mods.kubejs.event.EventGroup;
+import dev.latvian.mods.kubejs.event.EventGroupRegistry;
 import dev.latvian.mods.kubejs.event.EventHandler;
 import net.neoforged.fml.ModList;
 import pie.ilikepiefoo.compat.jei.events.OnRuntimeAvailableEventJS;
@@ -32,9 +33,9 @@ public interface JEIEvents {
     EventHandler REGISTER_VANILLA_CATEGORY_EXTENSIONS = GROUP.client("registerVanillaCategoryExtensions",
             () -> RegisterVanillaCategoryExtensionsEventJS.class);
 
-    static void register() {
+    static void register(EventGroupRegistry registry) {
         if (ModList.get().isLoaded("jei")) {
-            GROUP.register();
+            registry.register(GROUP);
         }
     }
 

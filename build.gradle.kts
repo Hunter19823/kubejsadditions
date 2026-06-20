@@ -87,6 +87,7 @@ repositories {
 dependencies {
     api("dev.latvian.mods:kubejs-neoforge:${property("kubejsVersion")}")
 
+    compileOnly("dev.architectury:architectury-neoforge:${property("architecturyVersion")}")
     compileOnly("curse.maven:jade-324717:${property("jadeFileId")}")
 }
 

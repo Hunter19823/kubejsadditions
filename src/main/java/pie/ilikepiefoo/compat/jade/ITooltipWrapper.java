@@ -12,19 +12,10 @@ import java.util.List;
  * This class exists to resolve ambiguous method calls on the JS side,
  * when methods are overloaded with similar parameters.
  */
-public class ITooltipWrapper {
-    public final ITooltip tooltip;
-
-    public ITooltipWrapper(ITooltip tooltip) {
-        this.tooltip = tooltip;
-    }
+public record ITooltipWrapper(ITooltip tooltip) {
 
     public static ITooltipWrapper of(ITooltip tooltip) {
         return new ITooltipWrapper(tooltip);
-    }
-
-    public ITooltip getTooltip() {
-        return this.tooltip;
     }
 
     public void clear() {
@@ -100,7 +91,7 @@ public class ITooltipWrapper {
     }
 
     public IElementHelper getElementHelper() {
-        return tooltip.getElementHelper();
+        return IElementHelper.get();
     }
 
     public List<IElement> get(ResourceLocation resourceLocation) {

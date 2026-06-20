@@ -1,6 +1,6 @@
 package pie.ilikepiefoo.compat.jade.impl;
 
-import dev.latvian.mods.kubejs.util.ConsoleJS;
+import dev.latvian.mods.kubejs.script.ConsoleJS;
 import org.jetbrains.annotations.Nullable;
 import pie.ilikepiefoo.compat.jade.ITooltipWrapper;
 import pie.ilikepiefoo.compat.jade.builder.BlockComponentProviderBuilder;

@@ -1,6 +1,6 @@
 package pie.ilikepiefoo.compat.jade;
 
-import dev.latvian.mods.kubejs.event.EventJS;
+import dev.latvian.mods.kubejs.event.KubeEvent;
 import dev.latvian.mods.rhino.util.HideFromJS;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.core.BlockPos;
@@ -21,6 +21,7 @@ import pie.ilikepiefoo.compat.jade.impl.CustomBlockComponentProvider;
 import pie.ilikepiefoo.compat.jade.impl.CustomClientExtensionProvider;
 import pie.ilikepiefoo.compat.jade.impl.CustomEntityComponentProvider;
 import snownee.jade.api.Accessor;
+import snownee.jade.api.AccessorClientHandler;
 import snownee.jade.api.BlockAccessor;
 import snownee.jade.api.EntityAccessor;
 import snownee.jade.api.IBlockComponentProvider;
@@ -29,13 +30,11 @@ import snownee.jade.api.IJadeProvider;
 import snownee.jade.api.IWailaClientRegistration;
 import snownee.jade.api.callback.JadeAfterRenderCallback;
 import snownee.jade.api.callback.JadeBeforeRenderCallback;
+import snownee.jade.api.callback.JadeBeforeTooltipCollectCallback;
 import snownee.jade.api.callback.JadeItemModNameCallback;
 import snownee.jade.api.callback.JadeRayTraceCallback;
-import snownee.jade.api.callback.JadeRenderBackgroundCallback;
 import snownee.jade.api.callback.JadeTooltipCollectedCallback;
-import snownee.jade.api.config.IPluginConfig;
 import snownee.jade.api.platform.CustomEnchantPower;
-import snownee.jade.api.ui.IElement;
 import snownee.jade.api.view.EnergyView;
 import snownee.jade.api.view.FluidView;
 import snownee.jade.api.view.IClientExtensionProvider;
@@ -47,7 +46,7 @@ import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 
-public class WailaClientRegistrationEventJS extends EventJS {
+public class WailaClientRegistrationEventJS implements KubeEvent {
     private final IWailaClientRegistration registration;
     private final List<Runnable> registrationCallbacks;
 
@@ -66,7 +65,7 @@ public class WailaClientRegistrationEventJS extends EventJS {
         registration.addConfig(key, defaultValue);
     }
 
-    public void addConfig(ResourceLocation key, Enum<?> defaultValue) {
+    public <T extends Enum<T>> void addConfig(ResourceLocation key, T defaultValue) {
         registration.addConfig(key, defaultValue);
     }
 
@@ -190,7 +189,7 @@ public class WailaClientRegistrationEventJS extends EventJS {
 
     /**
      * Register an {@link IJadeProvider} instance to allow overriding the icon for a block via the
-     * {@link IBlockComponentProvider#getIcon(BlockAccessor, IPluginConfig, IElement)} method.
+     * {@link IBlockComponentProvider} icon retrieval.
      *
      * @param provider The data provider instance
      * @param block    The highest level class to apply to
@@ -212,7 +211,7 @@ public class WailaClientRegistrationEventJS extends EventJS {
 
     /**
      * Register an {@link IEntityComponentProvider} instance to allow overriding the icon for a entity via the
-     * {@link IEntityComponentProvider#getIcon(EntityAccessor, IPluginConfig, IElement)} method.
+     * {@link IEntityComponentProvider} icon retrieval.
      *
      * @param provider The data provider instance
      * @param entity   The highest level class to apply to
@@ -333,16 +332,20 @@ public class WailaClientRegistrationEventJS extends EventJS {
         registration.addItemModNameCallback(priority, callback);
     }
 
-    public void addRenderBackgroundCallback(JadeRenderBackgroundCallback callback) {
-        registration.addRenderBackgroundCallback(callback);
+    public void addBeforeTooltipCollectCallback(JadeBeforeTooltipCollectCallback callback) {
+        registration.addBeforeTooltipCollectCallback(callback);
     }
 
-    public void addRenderBackgroundCallback(int priority, JadeRenderBackgroundCallback callback) {
-        registration.addRenderBackgroundCallback(priority, callback);
+    public void addBeforeTooltipCollectCallback(int priority, JadeBeforeTooltipCollectCallback callback) {
+        registration.addBeforeTooltipCollectCallback(priority, callback);
+    }
+
+    public Screen createPluginConfigScreen(@Nullable Screen parent, @Nullable Component namespace) {
+        return registration.createPluginConfigScreen(parent, namespace);
     }
 
     public Screen createPluginConfigScreen(@Nullable Screen parent, @Nullable String namespace) {
-        return registration.createPluginConfigScreen(parent, namespace);
+        return registration.createPluginConfigScreen(parent, namespace == null ? null : Component.literal(namespace));
     }
 
     public void registerItemStorageClient(IClientExtensionProvider<ItemStack, ItemView> provider) {
@@ -397,11 +400,11 @@ public class WailaClientRegistrationEventJS extends EventJS {
         return registration.isClientFeature(uid);
     }
 
-    public <T extends Accessor<?>> void registerAccessorHandler(Class<T> clazz, Accessor.ClientHandler<T> handler) {
+    public <T extends Accessor<?>> void registerAccessorHandler(Class<T> clazz, AccessorClientHandler<T> handler) {
         registration.registerAccessorHandler(clazz, handler);
     }
 
-    public Accessor.ClientHandler<Accessor<?>> getAccessorHandler(Class<? extends Accessor<?>> clazz) {
+    public AccessorClientHandler<Accessor<?>> getAccessorHandler(Class<? extends Accessor<?>> clazz) {
         return registration.getAccessorHandler(clazz);
     }
 

@@ -37,7 +37,7 @@ public class JEIPlugin implements IModPlugin {
      */
     @Override
     public @NotNull ResourceLocation getPluginUid() {
-        return new ResourceLocation(KubeJSAdditions.MOD_ID, "jei_plugin");
+        return ResourceLocation.fromNamespaceAndPath(KubeJSAdditions.MOD_ID, "jei_plugin");
     }
 
     /**
@@ -46,7 +46,7 @@ public class JEIPlugin implements IModPlugin {
      * @param registration
      */
     @Override
-    public void registerItemSubtypes(ISubtypeRegistration registration) {
+    public void registerItemSubtypes(@NotNull ISubtypeRegistration registration) {
         JEIEvents.REGISTER_ITEM_SUBTYPES.post(new RegisterItemSubtypeEventJS(registration));
     }
 
@@ -56,7 +56,7 @@ public class JEIPlugin implements IModPlugin {
      * @param registration
      */
     @Override
-    public <T> void registerFluidSubtypes(ISubtypeRegistration registration, IPlatformFluidHelper<T> platformFluidHelper) {
+    public <T> void registerFluidSubtypes(@NotNull ISubtypeRegistration registration, @NotNull IPlatformFluidHelper<T> platformFluidHelper) {
         JEIEvents.REGISTER_FLUID_SUBTYPES.post(new RegisterFluidSubtypeEventJS(registration));
     }
 
@@ -66,7 +66,7 @@ public class JEIPlugin implements IModPlugin {
      * @param registration
      */
     @Override
-    public void registerIngredients(IModIngredientRegistration registration) {
+    public void registerIngredients(@NotNull IModIngredientRegistration registration) {
         JEIEvents.REGISTER_INGREDIENTS.post(new RegisterIngredientsEventJS(registration));
     }
 
