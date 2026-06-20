@@ -1,8 +1,8 @@
 package pie.ilikepiefoo.compat.jade;
 
-import dev.architectury.platform.Platform;
 import dev.latvian.mods.kubejs.event.EventGroup;
 import dev.latvian.mods.kubejs.event.EventHandler;
+import net.neoforged.fml.ModList;
 
 public interface JadeEvents {
     EventGroup GROUP = EventGroup.of("JadeEvents");
@@ -11,7 +11,7 @@ public interface JadeEvents {
     EventHandler ON_CLIENT_REGISTRATION = GROUP.client("onClientRegistration", () -> WailaClientRegistrationEventJS.class);
 
     static void register() {
-        if (Platform.isModLoaded("jade")) {
+        if (ModList.get().isLoaded("jade")) {
             GROUP.register();
         }
     }

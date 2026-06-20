@@ -1,6 +1,5 @@
 package pie.ilikepiefoo;
 
-import dev.architectury.platform.Platform;
 import dev.latvian.mods.kubejs.KubeJSPlugin;
 import dev.latvian.mods.kubejs.event.EventGroup;
 import dev.latvian.mods.kubejs.level.BlockContainerJS;
@@ -15,6 +14,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.level.levelgen.feature.Feature;
+import net.neoforged.fml.ModList;
 import pie.ilikepiefoo.compat.jade.JadeEvents;
 import pie.ilikepiefoo.compat.jei.JEIEvents;
 import pie.ilikepiefoo.compat.jei.events.JEIEventJS;
@@ -63,7 +63,7 @@ public class AdditionsPlugin extends KubeJSPlugin {
             return ChunkPos.ZERO;
         });
 
-        if (Platform.isModLoaded("jei")) {
+        if (ModList.get().isLoaded("jei")) {
             typeWrappers.registerSimple(RecipeType.class, (object) -> {
                 if (object instanceof RecipeType<?> recipeType) {
                     return recipeType;

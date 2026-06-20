@@ -1,0 +1,46 @@
+modLoader = "javafml"
+loaderVersion = "[4,)"
+issueTrackerURL = "${modIssues}"
+license = "${modLicense}"
+
+[[mods]]
+modId = "${modId}"
+version = "${version}"
+displayName = "${modName}"
+authors = "${modAuthor}"
+description = '''
+${modDescription}
+'''
+logoFile = "${modIcon}"
+displayURL = "${modHomepage}"
+
+[[accessWideners]]
+file = "kubejsadditions.accesswidener"
+
+[[dependencies.${ modId }]]
+modId = "neoforge"
+type = "required"
+versionRange = "${neoforgeVersions}"
+ordering = "AFTER"
+side = "BOTH"
+
+[[dependencies.${ modId }]]
+modId = "kubejs"
+type = "required"
+versionRange = "[${kubejsVersion},)"
+ordering = "AFTER"
+side = "BOTH"
+
+[[dependencies.${ modId }]]
+modId = "jei"
+type = "optional"
+versionRange = "[${jeiVersion},)"
+ordering = "AFTER"
+side = "CLIENT"
+
+[[dependencies.${ modId }]]
+modId = "jade"
+type = "optional"
+versionRange = "[${jadeVersion},)"
+ordering = "AFTER"
+side = "BOTH"
