@@ -1,10 +1,10 @@
 package pie.ilikepiefoo.events;
 
-import dev.latvian.mods.kubejs.player.PlayerEventJS;
+import dev.latvian.mods.kubejs.player.KubePlayerEvent;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 
-public class PlayerRespawnEventJS extends PlayerEventJS {
+public class PlayerRespawnEventJS implements KubePlayerEvent {
     private final ServerPlayer player;
     private final boolean conqueredEnd;
 

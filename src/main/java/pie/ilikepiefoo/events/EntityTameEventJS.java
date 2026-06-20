@@ -1,11 +1,11 @@
 package pie.ilikepiefoo.events;
 
-import dev.latvian.mods.kubejs.player.PlayerEventJS;
+import dev.latvian.mods.kubejs.player.KubePlayerEvent;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.player.Player;
 
-public class EntityTameEventJS extends PlayerEventJS {
+public class EntityTameEventJS implements KubePlayerEvent {
     private final Animal animal;
     private final Player player;
 

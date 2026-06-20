@@ -11,9 +11,11 @@ import java.util.stream.Stream;
 
 public class ReflectionUtils {
 
-    public static <T> Pair<Class<?>, T> retrieveEventClass(Class<?> eventProvider,
-                                                           String fieldName,
-                                                           Class<T> eventType) throws IllegalArgumentException {
+    public static <T> Pair<Class<?>, T> retrieveEventClass(
+            Class<?> eventProvider,
+            String fieldName,
+            Class<T> eventType
+    ) throws IllegalArgumentException {
         if (eventProvider == null) {
             throw new IllegalArgumentException("Event Provider cannot be null!");
         }
@@ -63,11 +65,10 @@ public class ReflectionUtils {
 
     @NotNull
     private static String getFieldList(Field[] eventProvider) {
-        String field_list = Arrays.toString(Stream.of(eventProvider)
+        return Arrays.toString(Stream.of(eventProvider)
                 .filter(f -> Modifier.isPublic(f.getModifiers()) && Modifier.isStatic(f.getModifiers()))
                 .map(Field::getName)
                 .toArray());
-        return field_list;
     }
 
     public static class Pair<A, B> {

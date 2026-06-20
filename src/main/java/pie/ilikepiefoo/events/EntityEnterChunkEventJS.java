@@ -1,9 +1,9 @@
 package pie.ilikepiefoo.events;
 
-import dev.latvian.mods.kubejs.entity.EntityEventJS;
+import dev.latvian.mods.kubejs.entity.KubeEntityEvent;
 import net.minecraft.world.entity.Entity;
 
-public class EntityEnterChunkEventJS extends EntityEventJS {
+public class EntityEnterChunkEventJS implements KubeEntityEvent {
     private final Entity entity;
     private final int chunkX;
     private final int chunkY;

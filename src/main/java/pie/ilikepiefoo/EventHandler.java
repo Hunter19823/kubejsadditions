@@ -52,12 +52,12 @@ public class EventHandler {
     public static void onEntityEnterChunk(EntityEvent.EnteringSection event) {
         if (event.didChunkChange()) {
             Entity entity = event.getEntity();
-            int chunkX = event.getNewSectionX();
-            int chunkY = event.getNewSectionY();
-            int chunkZ = event.getNewSectionZ();
-            int prevX = event.getOldSectionX();
-            int prevY = event.getOldSectionY();
-            int prevZ = event.getOldSectionZ();
+            int chunkX = event.getNewPos().getX();
+            int chunkY = event.getNewPos().getY();
+            int chunkZ = event.getNewPos().getZ();
+            int prevX = event.getOldPos().getX();
+            int prevY = event.getOldPos().getY();
+            int prevZ = event.getOldPos().getZ();
             AdditionalEvents.ENTITY_ENTER_CHUNK.post(new EntityEnterChunkEventJS(entity, chunkX, chunkY, chunkZ, prevX, prevY, prevZ));
         }
     }
@@ -68,9 +68,7 @@ public class EventHandler {
         Player player = event.getTamer();
         if (player instanceof ServerPlayer serverPlayer) {
             EventResult result = AdditionalEvents.ENTITY_TAME.post(new EntityTameEventJS(animal, player));
-            if (result == EventResult.STOP) {
-                event.setCanceled(true);
-            }
+            result.applyCancel(event);
         }
     }
 }

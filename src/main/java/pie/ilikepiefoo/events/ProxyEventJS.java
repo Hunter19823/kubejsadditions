@@ -1,6 +1,6 @@
 package pie.ilikepiefoo.events;
 
-import dev.latvian.mods.kubejs.event.EventJS;
+import dev.latvian.mods.kubejs.event.KubeEvent;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -9,11 +9,12 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
-public class ProxyEventJS extends EventJS {
+public class ProxyEventJS implements KubeEvent {
     public static final Logger LOG = LogManager.getLogger();
     private final Method method;
     private final Object[] args;
     private final Map<String, Object> parameterMap;
+    @SuppressWarnings("OptionalUsedAsFieldOrParameterType")
     private Optional<Object> result;
     private boolean hasResult = false;
 

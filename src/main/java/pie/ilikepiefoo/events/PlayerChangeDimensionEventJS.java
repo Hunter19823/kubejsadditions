@@ -1,12 +1,12 @@
 package pie.ilikepiefoo.events;
 
-import dev.latvian.mods.kubejs.player.PlayerEventJS;
+import dev.latvian.mods.kubejs.player.KubePlayerEvent;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 
-public class PlayerChangeDimensionEventJS extends PlayerEventJS {
+public class PlayerChangeDimensionEventJS implements KubePlayerEvent {
     private final ServerPlayer player;
     private final ResourceKey<Level> oldWorld;
     private final ResourceKey<Level> newWorld;

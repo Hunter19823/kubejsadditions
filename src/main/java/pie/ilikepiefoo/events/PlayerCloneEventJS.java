@@ -1,10 +1,10 @@
 package pie.ilikepiefoo.events;
 
-import dev.latvian.mods.kubejs.player.PlayerEventJS;
+import dev.latvian.mods.kubejs.player.KubePlayerEvent;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 
-public class PlayerCloneEventJS extends PlayerEventJS {
+public class PlayerCloneEventJS implements KubePlayerEvent {
     private final ServerPlayer oldPlayer;
     private final ServerPlayer newPlayer;
     private final boolean conqueredEnd;

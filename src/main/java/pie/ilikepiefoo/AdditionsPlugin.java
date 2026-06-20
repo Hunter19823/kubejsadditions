@@ -1,54 +1,37 @@
 package pie.ilikepiefoo;
 
-import dev.latvian.mods.kubejs.KubeJSPlugin;
-import dev.latvian.mods.kubejs.event.EventGroup;
+import dev.latvian.mods.kubejs.event.EventGroupRegistry;
 import dev.latvian.mods.kubejs.level.BlockContainerJS;
-import dev.latvian.mods.kubejs.script.BindingsEvent;
-import dev.latvian.mods.kubejs.script.ScriptType;
-import dev.latvian.mods.rhino.util.wrap.TypeWrappers;
+import dev.latvian.mods.kubejs.plugin.KubeJSPlugin;
+import dev.latvian.mods.kubejs.script.TypeWrapperRegistry;
 import mezz.jei.api.recipe.RecipeType;
 import mezz.jei.api.recipe.category.IRecipeCategory;
 import net.minecraft.core.BlockPos;
-import net.minecraft.data.worldgen.Structures;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.ChunkPos;
-import net.minecraft.world.level.levelgen.feature.Feature;
 import net.neoforged.fml.ModList;
 import pie.ilikepiefoo.compat.jade.JadeEvents;
 import pie.ilikepiefoo.compat.jei.JEIEvents;
 import pie.ilikepiefoo.compat.jei.events.JEIEventJS;
 import pie.ilikepiefoo.events.AdditionalEvents;
-import pie.ilikepiefoo.events.custom.ArchEventRegisterEventJS;
-import pie.ilikepiefoo.player.CustomDamageSourceJS;
 
-public class AdditionsPlugin extends KubeJSPlugin {
+public class AdditionsPlugin implements KubeJSPlugin {
 
     @Override
     public void initStartup() {
-        AdditionalEvents.ARCH_EVENT_REGISTER.post(new ArchEventRegisterEventJS());
     }
 
-    /**
-     * Call {@link EventGroup#register()} of events your mod adds
-     */
     @Override
-    public void registerEvents() {
+    public void registerEvents(EventGroupRegistry registry) {
         AdditionalEvents.register();
         JEIEvents.register();
         JadeEvents.register();
     }
 
     @Override
-    public void registerBindings(BindingsEvent event) {
-        event.add("DamageSource", CustomDamageSourceJS.class);
-        event.add("Structures", Structures.class);
-        event.add("Feature", Feature.class);
-    }
-
-    @Override
-    public void registerTypeWrappers(ScriptType type, TypeWrappers typeWrappers) {
-        typeWrappers.registerSimple(ChunkPos.class, o -> {
+    public void registerTypeWrappers(TypeWrapperRegistry registry) {
+        registry.register(ChunkPos.class, o -> {
             if (o instanceof ChunkPos chunkPos) {
                 return chunkPos;
             } else if (o instanceof BlockPos blockPos) {
@@ -64,7 +47,7 @@ public class AdditionsPlugin extends KubeJSPlugin {
         });
 
         if (ModList.get().isLoaded("jei")) {
-            typeWrappers.registerSimple(RecipeType.class, (object) -> {
+            registry.register(RecipeType.class, (object) -> {
                 if (object instanceof RecipeType<?> recipeType) {
                     return recipeType;
                 }
@@ -75,7 +58,7 @@ public class AdditionsPlugin extends KubeJSPlugin {
                     return null;
                 }
                 if (object instanceof String recipeType) {
-                    return JEIEventJS.JEI_HELPERS.getRecipeType(new ResourceLocation(recipeType)).orElse(null);
+                    return JEIEventJS.JEI_HELPERS.getRecipeType(ResourceLocation.parse(recipeType)).orElse(null);
                 }
                 if (object instanceof ResourceLocation recipeType) {
                     return JEIEventJS.JEI_HELPERS.getRecipeType(recipeType).orElse(null);
