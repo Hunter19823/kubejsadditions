@@ -17,28 +17,28 @@ displayURL = "${modHomepage}"
 [[accessWideners]]
 file = "kubejsadditions.accesswidener"
 
-[[dependencies.${ modId }]]
+[[dependencies.${modId}]]
 modId = "neoforge"
 type = "required"
 versionRange = "${neoforgeVersions}"
 ordering = "AFTER"
 side = "BOTH"
 
-[[dependencies.${ modId }]]
+[[dependencies.${modId}]]
 modId = "kubejs"
 type = "required"
 versionRange = "[${kubejsVersion},)"
 ordering = "AFTER"
 side = "BOTH"
 
-[[dependencies.${ modId }]]
+[[dependencies.${modId}]]
 modId = "jei"
 type = "optional"
 versionRange = "[${jeiVersion},)"
 ordering = "AFTER"
 side = "CLIENT"
 
-[[dependencies.${ modId }]]
+[[dependencies.${modId}]]
 modId = "jade"
 type = "optional"
 versionRange = "[${jadeVersion},)"
