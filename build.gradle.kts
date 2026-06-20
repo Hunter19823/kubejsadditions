@@ -40,7 +40,6 @@ neoForge {
 }
 
 repositories {
-    mavenLocal()
     mavenCentral()
 
     maven {
@@ -52,6 +51,13 @@ repositories {
         content {
             includeGroup("dev.latvian.mods")
             includeGroup("dev.latvian.apps")
+        }
+    }
+
+    maven {
+        setUrl("https://jitpack.io")
+        content {
+            includeGroup("com.github.rtyley")
         }
     }
 
@@ -81,13 +87,7 @@ repositories {
 dependencies {
     api("dev.latvian.mods:kubejs-neoforge:${property("kubejsVersion")}")
 
-    compileOnly("mezz.jei:jei-${property("minecraftVersion")}-neoforge:${property("jeiVersion")}")
-    compileOnly("dev.architectury:architectury-neoforge:${property("architecturyVersion")}")
-    compileOnly("snownee.jade:Jade-neoforge:${property("jadeVersion")}")
-}
-
-tasks.withType<JavaCompile>().configureEach {
-    options.compilerArgs.addAll(listOf("-Xmaxerrs", "1000"))
+    compileOnly("curse.maven:jade-324717:${property("jadeFileId")}")
 }
 
 /*unifiedPublishing {
