@@ -93,7 +93,7 @@ dependencies {
     api("dev.latvian.mods:kubejs-neoforge:${property("kubejsVersion")}")
     interfaceInjectionData("dev.latvian.mods:kubejs-neoforge:${property("kubejsVersion")}")
 
-    compileOnly("dev.architectury:architectury-neoforge:${property("architecturyVersion")}")
+    api("dev.architectury:architectury-neoforge:${property("architecturyVersion")}")
     api("curse.maven:jade-324717:${property("jadeFileId")}")
 }
 

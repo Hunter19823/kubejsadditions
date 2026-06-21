@@ -95,7 +95,7 @@ public class EventAdapter<T> implements InvocationHandler {
                     break;
                 }
             }
-            if (event.requiresResult()) {
+            if (event.isResultRequired()) {
                 if (!event.hasResult()) {
                     throw new IllegalArgumentException("Event requires a result but was not provided one!");
                 } else {

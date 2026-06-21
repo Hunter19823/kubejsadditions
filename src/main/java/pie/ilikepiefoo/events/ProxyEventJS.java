@@ -65,7 +65,7 @@ public class ProxyEventJS implements KubeEvent {
         return hasResult;
     }
 
-    public boolean requiresResult() {
+    public boolean isResultRequired() {
         return !method.getReturnType().equals(Void.TYPE);
     }
 

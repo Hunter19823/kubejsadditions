@@ -272,7 +272,7 @@ ArchEvents.handleServer('server starting', event => {
 	console.log("Parameter List: " + event.getArgs()); // Returns an array of parameters. Most likley will only show up as a list of objects.
 	console.log("Parameter 0: " + event.getArg(0)); // Returns a specific parameter at the given index.
 	console.log("Parameter Map: " + event.getParameters()); // Returns a map of parameters. Most parameter names will be "arg0", "arg1", etc.
-	console.log("Requires Return: " + event.requiresReturn()); // Returns true if the event requires a return value.
+    console.log("Requires Return: " + event.isResultRequired()); // Returns true if the event requires a return value.
 	console.log("Return Type: " + event.getReturnType()); // Returns the type of the return value.
 	console.log("Generic Return Type: " + event.getGenericReturnType()); // Returns the generic type of the return value.
 	// Let's say the event requires a return value.

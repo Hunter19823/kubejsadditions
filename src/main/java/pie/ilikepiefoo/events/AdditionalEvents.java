@@ -5,6 +5,7 @@ import dev.latvian.mods.kubejs.event.EventGroupRegistry;
 import dev.latvian.mods.kubejs.event.EventHandler;
 import dev.latvian.mods.kubejs.event.EventTargetType;
 import dev.latvian.mods.kubejs.event.TargetedEventHandler;
+import net.neoforged.fml.ModList;
 import pie.ilikepiefoo.events.custom.ArchEventRegisterEventJS;
 
 public interface AdditionalEvents {
@@ -27,7 +28,9 @@ public interface AdditionalEvents {
 
     static void register(EventGroupRegistry registry) {
         registry.register(GROUP);
-        registry.register(ARCH_EVENTS);
+        if (ModList.get().isLoaded("architectury")) {
+            registry.register(ARCH_EVENTS);
+        }
     }
 
 }
