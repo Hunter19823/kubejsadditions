@@ -2,7 +2,7 @@ import com.almostreliable.almostgradle.dependency.LoadingMode
 
 plugins {
     id("net.neoforged.moddev") version "2.0.138"
-    id("com.almostreliable.almostgradle") version "2.1.1"
+    id("com.almostreliable.almostgradle") version "2.2.0"
     id("idea")
     id("me.shedaniel.unified-publishing") version "0.1.13"
 }
@@ -11,11 +11,12 @@ val runningInCI = System.getenv("CI").toBoolean()
 val env = System.getenv()
 
 almostgradle.setup {
-    javaVersion = 25
+    javaVersion = 21
     modPackage = "pie.ilikepiefoo"
 
     launchArgs {
         loggingLevel = "INFO"
+        autoWorldJoin = true
     }
 
     dataGen = false
@@ -29,6 +30,10 @@ almostgradle.setup {
             version = project.property("jeiVersion").toString()
             minecraftVersion = project.property("minecraftVersion").toString()
         }
+    }
+
+    tests {
+        jUnit = true
     }
 }
 
@@ -86,39 +91,40 @@ repositories {
 
 dependencies {
     api("dev.latvian.mods:kubejs-neoforge:${property("kubejsVersion")}")
+    interfaceInjectionData("dev.latvian.mods:kubejs-neoforge:${property("kubejsVersion")}")
 
     compileOnly("dev.architectury:architectury-neoforge:${property("architecturyVersion")}")
-    compileOnly("curse.maven:jade-324717:${property("jadeFileId")}")
+    api("curse.maven:jade-324717:${property("jadeFileId")}")
 }
 
-/*unifiedPublishing {
-	project {
-		releaseType = property("uploadType").toString()
-		gameVersions = property("supportedVersions").toString().split(", ").toList()
-		gameLoaders = listOf("neoforge")
-		displayName = "${property("modName")} NeoForge ${project.version}"
-		mainPublication(tasks.jar.get())
+unifiedPublishing {
+    project {
+        releaseType = property("uploadType").toString()
+        gameVersions = property("supportedVersions").toString().split(", ").toList()
+        gameLoaders = listOf("neoforge")
+        displayName = "${property("modName")} NeoForge ${project.version}"
+        mainPublication(tasks.jar.get())
 
-		relations {
-			depends {
-				curseforge = "kubejs"
-				modrinth = "kubejs"
-			}
-		}
+        relations {
+            depends {
+                curseforge = "kubejs"
+                modrinth = "kubejs"
+            }
+        }
 
-		if (env["CURSEFORGE_KEY"] != null) {
-			curseforge {
-				token = env["CURSEFORGE_KEY"]
-				id = property("curseforge_id").toString()
-			}
-		}
+        if (env["CURSEFORGE_KEY"] != null) {
+            curseforge {
+                token = env["CURSEFORGE_KEY"]
+                id = property("curseforge_id").toString()
+            }
+        }
 
-		if (env["MODRINTH_TOKEN"] != null) {
-			modrinth {
-				token = env["MODRINTH_TOKEN"]
-				id = property("modrinth_id").toString()
-				version = "${property("modId")}-neoforge-${property("modVersion")}"
-			}
-		}
-	}
-}*/
+        if (env["MODRINTH_TOKEN"] != null) {
+            modrinth {
+                token = env["MODRINTH_TOKEN"]
+                id = property("modrinth_id").toString()
+                version = "${property("modId")}-neoforge-${property("modVersion")}"
+            }
+        }
+    }
+}
