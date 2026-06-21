@@ -110,19 +110,27 @@ unifiedPublishing {
                 curseforge = "kubejs"
                 modrinth = "kubejs"
             }
+            optional {
+                curseforge = "architectury"
+                curseforge = "jade"
+                curseforge = "jei"
+                modrinth = "architectury"
+                modrinth = "jade"
+                modrinth = "jei"
+            }
         }
 
         if (env["CURSEFORGE_KEY"] != null) {
             curseforge {
                 token = env["CURSEFORGE_KEY"]
-                id = property("curseforge_id").toString()
+                id = property("curseforgeId").toString()
             }
         }
 
         if (env["MODRINTH_TOKEN"] != null) {
             modrinth {
                 token = env["MODRINTH_TOKEN"]
-                id = property("modrinth_id").toString()
+                id = property("modrinthId").toString()
                 version = "${property("modId")}-neoforge-${property("modVersion")}"
             }
         }
